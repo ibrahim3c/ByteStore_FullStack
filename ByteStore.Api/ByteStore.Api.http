@@ -1,0 +1,6 @@
+@ByteStore.Api_HostAddress = http://localhost:5034
+
+GET {{ByteStore.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
