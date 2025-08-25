@@ -1,8 +1,8 @@
 ﻿# ByteStore – Backend Project Documentation
 
-**Stack:** ASP.NET Core 8 Web API, EF Core 8, SQL Server (or PostgreSQL), Redis, Serilog, FluentValidation, Identity + JWT, Stripe (payments), Docker.
+**Stack:** ASP.NET Core 8 Web API, EF Core 8, PostgreSQL, Redis, Serilog, FluentValidation, Identity + JWT, Stripe (payments), .
 
-**Architecture:** Onion Architecture (Domain-centric). No CQRS. Service + Repository + Unit of Work. Minimal APIs (or Controllers) with Endpoint grouping.
+**Architecture:** Onion Architecture (Domain-centric). No CQRS. Service + Repository + Unit of Work. Controllers with Endpoint grouping.
 
 **Repo layout (monorepo):**
 
@@ -12,7 +12,6 @@
     /Core
       /Domain
         /Entities
-        /Enums
         /Repositories
       /Application
         /Services
@@ -20,18 +19,21 @@
         /Validators
         /Mappings
         /Exceptions
+        DependencyInjection.cs
       /External
         /Api (ASP.NET Core host)
-          /Endpoints
+          /Controllers
           /Extensions (DI, Auth, Swagger, HealthChecks)
           appsettings.json
           Program.cs
+          secret.json
         /Persistence (Infrastructure)
           /Database (DbContext, Configurations)
           /Migrations
           /Repositories
-          /UnitOfWork
+          /Seeders
           /Integration (Payment, Email)
+          DependencyInjection.cs
   /deploy
     docker-compose.yml
     k8s/ (optional)
@@ -74,20 +76,22 @@ ByteStore backend is a modular eCommerce API with a clean domain model, split by
 
 **Key Entities**
 
-* **User** – Roles: Customer, Admin.
-* **CustomerProfile** – name, phone, defaultAddressId.
-* **Address** – street, city, country, zip, isDefault.
-* **Category** – hierarchical (ParentCategoryId), slug.
-* **Brand** – name, slug.
-* **Product** – name, slug, sku, description, brandId, categoryId, price, discountPrice, status, stockQuantity, ratingAvg, createdAt.
-* **Cart** – customerId, CartItems (productId, qty, priceSnapshot).
-* **Order** – orderNo, customerId, status (Pending, Paid, Shipped, Completed, Cancelled, Refunded), totals, shippingAddressId, paymentId, shipmentId.
-* **OrderItem** – orderId, product ref, qty, unitPrice, discount.
-* **Payment** – provider, amount, currency, status, intentId.
-* **Shipment** – carrier, trackingNo, status.
-* **Review** – productId, customerId, rating, comment, createdAt.
-* **Wishlist** – customerId, items(list of productIds).
-* **Promotion** (optional) – code, type (percentage/fixed/freeShip), rules, start/end.
+    Address – id,street, city, state, postalCode, country, isPrimary, addressType, userId → (FK to Customer).
+    Brand – id, name, description, logoUrl, products (list of Product).
+    CartItem – id, quantity, shoppingCartId (FK), productId (FK), shoppingCart (ref), product (ref).
+    Category – id, name, description, imageUrl, parentCategoryId (nullable), parentCategory (ref), subCategories (list of Category), products (list of Product).
+    Customer – firstName, lastName, dateOfBirth, orders (list of Order), addresses (list of Address), shoppingCart (ref), reviews (list of ProductReview).
+    Order – orderDate, totalAmount, status (Pending, Processing, Shipped, Delivered, Cancelled), userId, shippingAddressId, billingAddressId, user (ref Customer), shippingAddress (ref Address), billingAddress (ref Address), orderItems (list of OrderItem).
+    OrderItem – id, quantity, unitPrice, orderId, productId, order (ref Order), product (ref Product).
+    Product – id, name, description, price, stockQuantity, isActive, createdAt, updatedAt, categoryId, brandId, category (ref Category), brand (ref Brand), specifications (list of ProductSpecification), orderItems (list of OrderItem), cartItems (list of CartItem), reviews (list of ProductReview), images (list of ProductImage).
+    ProductImage – id, imageUrl, isPrimary, title, productId, product (ref Product).
+    ProductReview – id, title, content, rating, createdOn, productId, userId, product (ref Product), customer (ref Customer).
+    ProductSpecification – id, key, value, productId, product (ref Product).
+    ShoppingCart – id, createdAt, updatedAt, customerId, customer (ref Customer), cartItems (list of CartItem).
+    AppRole
+    AppUser
+
+
 
 **Aggregates**
 
@@ -247,3 +251,13 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 7. Reviews & Wishlist.
 8. Caching & Performance.
 
+
+
+
+/// my notes
+* PK 
+    User, Product, Category, Brand → int (كفاية).
+    Order, Payment, Shipment → Guid (عشان IDs دي غالبًا بتيجي من بره أو محتاج تخزنها Unique).
+
+why product with cartItems not shoppingCart and why with OrderItems not Order?
+what is prodcut specification?
