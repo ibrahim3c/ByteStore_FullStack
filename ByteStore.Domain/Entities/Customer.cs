@@ -2,14 +2,16 @@
 {
     public class Customer
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
-        // Navigation Properties
         public ICollection<Order> Orders { get; set; }
         public ICollection<Address> Addresses { get; set; }
-        public ShoppingCart ShoppingCart { get; set; } // One-to-One relationship
+        public ShoppingCart ShoppingCart { get; set; }
         public ICollection<ProductReview> Reviews { get; set; }
+
+        // TODO: add relation with IdentityUser
     }
 }

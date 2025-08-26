@@ -8,7 +8,7 @@ namespace ByteStore.Api.Extenstions
         public static IServiceCollection AddDependencyInjectionService(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddApplicationLayer();
-            services.AddPersistanceLayer();
+            services.AddPersistanceLayer(configuration);
 
             return services;
         }

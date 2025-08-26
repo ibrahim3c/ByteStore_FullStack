@@ -1,4 +1,6 @@
-﻿using ByteStore.Persistance.Database;
+﻿using ByteStore.Domain.Repositories;
+using ByteStore.Persistance.Database;
+using ByteStore.Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,8 @@ namespace ByteStore.Persistance
                 options.UseNpgsql(connectionString);
             });
             #endregion
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }

@@ -259,5 +259,20 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     User, Product, Category, Brand → int (كفاية).
     Order, Payment, Shipment → Guid (عشان IDs دي غالبًا بتيجي من بره أو محتاج تخزنها Unique).
 
-why product with cartItems not shoppingCart and why with OrderItems not Order?
-what is prodcut specification?
+
+* the relation configuration we put it in the entity configuration that has FK
+
+* Billing Address:   عنوان الفواتير => الخاص بالدفع.
+* Shipping Address:  عنوان الشحن => المنتج يتبعت عليه.
+
+* the relation between order and address i am still can't get it right            
+    one address has many orders: زي مثلا العميل عمل 3 طلبات مختلفة في 3 أيام، وكلهم استخدموا نفس العنوان للشحن 
+
+* why i stored AddressTypeEnum as string in db and OrderStatus as int ?
+    because AddressTypeEnum has only 2 values and they rarely change, so storing them as string is fine and makes the db more readable
+    but OrderStatus has many values and might change in the future, so storing them as int is better for performance and flexibility
+
+
+// TODO: 
+    add relation with IdentityUser
+    what is prodcut specification?

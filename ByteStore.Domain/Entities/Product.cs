@@ -17,10 +17,7 @@
         public int BrandId { get; set; }
         public Brand Brand { get; set; } 
 
-        // A product can have many specifications (key-value pairs)
-        public ICollection<ProductSpecification> Specifications { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
-        // A product can be in many shopping carts
         public ICollection<CartItem> CartItems { get; set; }
         public ICollection<ProductReview> Reviews { get; set; }
         public ICollection<ProductImage> Images { get; set; }

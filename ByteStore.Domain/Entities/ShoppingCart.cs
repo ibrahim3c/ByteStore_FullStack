@@ -7,7 +7,6 @@
         public DateTime? UpdatedAt { get; set; }
 
         public int CustomerId { get; set; }
-        // Navigation Properties
         public Customer Customer { get; set; }
         public ICollection<CartItem> CartItems { get; set; }
     }
