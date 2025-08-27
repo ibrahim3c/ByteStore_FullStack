@@ -34,8 +34,7 @@ namespace ByteStore.Persistance.Configurations
                    .HasDefaultValue(true);
 
             builder.Property(p => p.CreatedAt)
-                   .HasDefaultValueSql("GETUTCDATE()");
-
+                       .IsRequired();
 
             builder.HasOne(p => p.Category)
                    .WithMany(c => c.Products)

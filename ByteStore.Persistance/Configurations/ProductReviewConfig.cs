@@ -22,7 +22,7 @@ namespace ByteStore.Persistance.Configurations
                    .IsRequired();
 
             builder.Property(r => r.CreatedOn)
-                   .HasDefaultValueSql("GETUTCDATE()");
+                       .IsRequired();
 
             builder.HasOne(r => r.Product)
                    .WithMany(p => p.Reviews)

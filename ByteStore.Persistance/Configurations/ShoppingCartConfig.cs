@@ -12,9 +12,9 @@ namespace ByteStore.Persistance.Configurations
         builder.HasKey(sc => sc.Id);
 
         builder.Property(sc => sc.CreatedAt)
-               .HasDefaultValueSql("GETUTCDATE()");
+                        .IsRequired();
 
-        builder.HasOne(sc => sc.Customer)
+            builder.HasOne(sc => sc.Customer)
                .WithOne(c => c.ShoppingCart)
                .HasForeignKey<ShoppingCart>(sc => sc.CustomerId)
                .OnDelete(DeleteBehavior.Cascade);

@@ -1,10 +1,13 @@
 using ByteStore.Api.Extenstions;
+using ByteStore.Persistance.Database;
+using ByteStore.Persistance.Seeders;
+using System.Threading.Tasks;
 
 namespace ByteStore.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,13 @@ namespace ByteStore.Api
 
             app.MapControllers();
 
+
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            //    await  new CategorySeeder(dbContext).SeedAsync();
+            //    await new BrandSeeder(dbContext).SeedAsync();;
+            //}
             app.Run();
         }
     }

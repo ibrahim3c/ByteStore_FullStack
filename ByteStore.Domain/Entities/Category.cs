@@ -10,6 +10,6 @@
 
         public Category? ParentCategory { get; set; }
         public ICollection<Category> SubCategories { get; set; } // One-to-many self-reference
-        public ICollection<Product> Products { get; set; } // One Category has many Products
+        public ICollection<Product> Products { get; set; } 
     }
 }
