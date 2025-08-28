@@ -30,9 +30,6 @@ namespace ByteStore.Persistance.Configurations
             builder.Property(p => p.StockQuantity)
                    .IsRequired();
 
-            builder.Property(p => p.IsActive)
-                   .HasDefaultValue(true);
-
             builder.Property(p => p.CreatedAt)
                        .IsRequired();
 

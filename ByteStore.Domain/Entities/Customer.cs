@@ -13,5 +13,6 @@
         public ICollection<ProductReview> Reviews { get; set; }
 
         // TODO: add relation with IdentityUser
+        public string fullName => $"{FirstName} {LastName}";
     }
 }

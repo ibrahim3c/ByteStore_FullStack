@@ -11,10 +11,7 @@ namespace ByteStore.Persistance.Configurations
             builder.ToTable("ProductReviews");
             builder.HasKey(r => r.Id);
 
-            builder.Property(r => r.Title)
-                   .HasMaxLength(200);
-
-            builder.Property(r => r.Content)
+            builder.Property(r => r.Comment)
                    .IsRequired()
                    .HasMaxLength(2000);
 

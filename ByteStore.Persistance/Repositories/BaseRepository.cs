@@ -2,7 +2,6 @@
 using ByteStore.Domain.Repositories;
 using ByteStore.Persistance.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
 namespace ByteStore.Persistance.Repositories
@@ -161,13 +160,58 @@ namespace ByteStore.Persistance.Repositories
 
             return await query.ToListAsync();
         }
-        public IEnumerable<T> Paginate(int take, int skip)
+        public IEnumerable<T> Paginate(
+            int pageNumber,
+            int pageSize,
+            Expression<Func<T, bool>> criteria = null,
+            string[] includes = null)
         {
-            return _context.Set<T>().Skip(skip).Take(take).ToList();
+            IQueryable<T> query = _context.Set<T>();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                    query = query.Include(include);
+            }
+
+            if (criteria != null)
+                query = query.Where(criteria);
+
+            // مش هتحتاج await هنا
+            var totalCount = query.Count();
+
+            var items = query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return items;
         }
-        public async Task<IEnumerable<T>> PaginateAsync(int take, int skip)
+
+        public async Task<IEnumerable<T>> PaginateAsync(
+            int pageNumber,
+            int pageSize,
+            Expression<Func<T, bool>> criteria = null,
+            string[] includes = null)
         {
-            return await _context.Set<T>().Skip(skip).Take(take).ToListAsync();
+            IQueryable<T> query = _context.Set<T>();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                    query = query.Include(include);
+            }
+
+            if (criteria != null)
+                query = query.Where(criteria);
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            return items;
         }
 
         public T Add(T entity)

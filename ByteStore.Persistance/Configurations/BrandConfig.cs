@@ -19,8 +19,8 @@ namespace ByteStore.Persistance.Configurations
             builder.Property(b => b.Description)
                    .HasMaxLength(500);
 
-            builder.Property(b => b.LogoUrl)
-                   .HasMaxLength(250);
+            //builder.Property(b => b.LogoUrl)
+            //       .HasMaxLength(250);
         }
     }
 }

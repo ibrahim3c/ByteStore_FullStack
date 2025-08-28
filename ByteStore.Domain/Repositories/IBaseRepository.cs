@@ -25,8 +25,16 @@ namespace ByteStore.Domain.Repositories
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, int? skip, int? take,
             Expression<Func<T, object>> orderBy = null, string orderByDirection = OrderBy.Ascending);
 
-        IEnumerable<T> Paginate(int take, int skip);
-        Task<IEnumerable<T>> PaginateAsync(int take, int skip);
+        IEnumerable<T> Paginate(
+                   int pageNumber,
+                   int pageSize,
+                   Expression<Func<T, bool>> criteria = null,
+                   string[] includes = null);
+        Task<IEnumerable<T>> PaginateAsync(
+                    int pageNumber,
+                    int pageSize,
+                    Expression<Func<T, bool>> criteria = null,
+                    string[] includes = null);
 
         T Add(T entity);
         Task<T> AddAsync(T entity);

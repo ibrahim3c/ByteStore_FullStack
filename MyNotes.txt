@@ -111,7 +111,7 @@ ByteStore backend is a modular eCommerce API with a clean domain model, split by
 
 * Soft-delete via `IsDeleted` + global query filters.
 * Decimal precision for Money fields.
-* Indexes: `Product(slug)`, `Product(categoryId, brandId)`, `Order(orderNo)`.
+* Indexes: `Product(categoryId, brandId)`, `Order(orderNo)`.
 
 **Unit of Work**
 
@@ -142,8 +142,6 @@ ByteStore backend is a modular eCommerce API with a clean domain model, split by
 * `AdminService`: CRUD products, categories, brands, inventory movements.
 
 **Validation** with FluentValidation on DTOs.
-
-**Mapping** DTOs ⇄ Entities via AutoMapper/Mapster.
 
 ---
 
@@ -273,7 +271,8 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     but OrderStatus has many values and might change in the future, so storing them as int is better for performance and flexibility
 
 
-// TODO: 
-    product, category, image services
+// TODO:
+    product, image services
+    delete category image prop 
     add relation with IdentityUser
     solve the path of brand and category image
