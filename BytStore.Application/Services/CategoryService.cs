@@ -2,6 +2,8 @@
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs;
+using MyResult = ByteStore.Domain.Abstractions.Result;
+
 
 namespace BytStore.Application.Services
 {
@@ -37,7 +39,7 @@ namespace BytStore.Application.Services
             };
             return Result<CategoryDto>.Success(categoryDto);
         }
-        public async Task<Result> CreateCategoryAsync(CategoryDto categoryDto)
+        public async Task<MyResult> CreateCategoryAsync(CategoryDto categoryDto)
         {
             var category = new Category
             {
@@ -46,28 +48,28 @@ namespace BytStore.Application.Services
             };
             await unitOfWork.CategoryRepository.AddAsync(category);
             await unitOfWork.SaveChangesAsync();
-            return Result.Success();
+            return MyResult.Success();
         }
-        public async Task<Result> UpdateCategoryAsync(int categoryId, CategoryDto categoryDto)
+        public async Task<MyResult> UpdateCategoryAsync(int categoryId, CategoryDto categoryDto)
         {
             var category = await unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
             if (category == null)
-                return Result.Failure(["Category not found"]);
+                return MyResult.Failure(["Category not found"]);
             category.Name = categoryDto.Name;
             category.Description = categoryDto.Description;
             unitOfWork.CategoryRepository.Update(category);
             await unitOfWork.SaveChangesAsync();
-            return Result.Success();
+            return MyResult.Success();
         }
 
-        public async Task<Result> DeleteCategoryAsync(int categoryId)
+        public async Task<MyResult> DeleteCategoryAsync(int categoryId)
         {
             var category = await unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
             if (category == null)
-                return Result.Failure(["Category not found"]);
+                return MyResult.Failure(["Category not found"]);
             unitOfWork.CategoryRepository.Delete(category);
             await unitOfWork.SaveChangesAsync();
-            return Result.Success();
+            return MyResult.Success();
         }
 
     }

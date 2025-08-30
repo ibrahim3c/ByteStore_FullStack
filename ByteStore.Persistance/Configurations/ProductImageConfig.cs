@@ -11,12 +11,15 @@ namespace ByteStore.Persistance.Configurations
             builder.ToTable("ProductImages");
             builder.HasKey(pi => pi.id);
 
+            builder.Property(pi => pi.FileId)
+                    .IsRequired();
+
             builder.Property(pi => pi.ImageUrl)
                    .IsRequired()
                    .HasMaxLength(500);
 
-            builder.Property(pi => pi.Title)
-                   .HasMaxLength(200);
+            //builder.Property(pi => pi.Title)
+            //       .HasMaxLength(200);
 
             builder.Property(pi => pi.IsPrimary)
                    .HasDefaultValue(false);

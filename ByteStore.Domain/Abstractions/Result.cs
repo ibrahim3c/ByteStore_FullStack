@@ -21,7 +21,6 @@ namespace ByteStore.Domain.Abstractions
         // Factory Method for Failure (No need to pass a value)
         public static Result<T> Failure(List<string> errors) => new Result<T>(default, false, errors);
     }
-
     public class Result
     {
         public bool IsSuccess { get; }

@@ -249,7 +249,7 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 7. Reviews & Wishlist.
 8. Caching & Performance.
 
-
+** To store Image we use ImageKit.Io service **
 
 
 /// my notes
@@ -270,9 +270,13 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     because AddressTypeEnum has only 2 values and they rarely change, so storing them as string is fine and makes the db more readable
     but OrderStatus has many values and might change in the future, so storing them as int is better for performance and flexibility
 
+* to solve the problem of services.Configure<ImageKitOptions>(configuration.GetSection("ImageKit")); it tells u serivice does not have configure method 
+    u just need to install Microsoft.Extensions.Options.ConfigurationExtensions package
+
 
 // TODO:
-    product, image services
-    delete category image prop 
+    Validate Dtos in product services 
+    look for does i use Interfaces with services or not
     add relation with IdentityUser
     solve the path of brand and category image
+
