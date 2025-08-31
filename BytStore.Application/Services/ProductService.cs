@@ -2,8 +2,7 @@
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Product;
-using ByteStore.Domain.Abstractions;
-
+using myResult = ByteStore.Domain.Abstractions.Result;
 namespace BytStore.Application.Services
 {
     public class ProductService
@@ -151,12 +150,12 @@ namespace BytStore.Application.Services
             await unitOfWork.SaveChangesAsync();
             return Result<int>.Success(product.Id);
         }
-        public async Task<ByteStore.Domain.Abstractions.Result> UpdateProductAsync(int productId, ProductUpdateDto productUpdateDto)
+        public async Task<myResult> UpdateProductAsync(int productId, ProductUpdateDto productUpdateDto)
         {
             // TODO: validate dto
             var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
             if (product == null)
-                return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "Product not found." });
+                return myResult.Failure(new List<string> { "Product not found." });
             product.Name = productUpdateDto.Name;
             product.Description = productUpdateDto.Description;
             product.Price = productUpdateDto.Price;
@@ -167,24 +166,48 @@ namespace BytStore.Application.Services
 
             unitOfWork.ProductRepository.Update(product);
             await unitOfWork.SaveChangesAsync();
-            return ByteStore.Domain.Abstractions.Result.Success();
+            return myResult.Success();
         }
-
-        public async Task<ByteStore.Domain.Abstractions.Result> DeleteProductAsync(int productId)
+        public async Task<myResult> DeleteProductAsync(int productId)
         {
             var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
             if (product == null)
-                return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "Product not found." });
+                return myResult.Failure(new List<string> { "Product not found." });
             unitOfWork.ProductRepository.Delete(product);
 
-            // delete all product images from imagekit
+            // delete related images from ImageKit and database
+            var productImages = await unitOfWork.GetRepository<ProductImage>().FindAllAsync(pi => pi.ProductId == productId);
+            foreach (var pi in productImages)
+            {
+                var deleteResult = await imageService.DeleteAsync(pi.FileId);
+                if (!deleteResult.IsSuccess)
+                {
+                    return myResult.Failure(deleteResult.Errors);
+                }
+                unitOfWork.GetRepository<ProductImage>().Delete(pi);
+            }
 
             await unitOfWork.SaveChangesAsync();
-            return ByteStore.Domain.Abstractions.Result.Success();
+            return myResult.Success();
         }
 
 
         // product image operations
+        public async Task<Result<IEnumerable<ProductImageDto>>> GetProductImagesAsync(int productId)
+        {
+            var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
+            if (product == null)
+                return Result<IEnumerable<ProductImageDto>>.Failure(new List<string> { "Product not found." });
+
+            var productImages = await unitOfWork.GetRepository<ProductImage>().FindAllAsync(pi => pi.ProductId == productId);
+            var productImagesDto = productImages.Select(pi => new ProductImageDto
+            {
+                Id = pi.id,
+                ImageUrl = pi.ImageUrl,
+                IsPrimary = pi.IsPrimary
+            });
+            return Result<IEnumerable<ProductImageDto>>.Success(productImagesDto);
+        }
         public async Task<Result<int>> AddProductImagesAsync(int productId,List<ProductImageCreateDto> productImageCreateDtos)
         {
             var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
@@ -211,40 +234,88 @@ namespace BytStore.Application.Services
             return Result<int>.Success(productId);
 
         }
-        
-        public async Task<ByteStore.Domain.Abstractions.Result> DeleteProductImageAsync(int productImageId)
+        public async Task<myResult> DeleteProductImageAsync(int productImageId)
         {
             var productImage = await unitOfWork.GetRepository<ProductImage>().GetByIdAsync(productImageId);
             if (productImage == null)
-                return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "Product image not found." });
+                return myResult.Failure(new List<string> { "Product image not found." });
             var deleteResult = await imageService.DeleteAsync(productImage.FileId);
             if (!deleteResult.IsSuccess)
             {
-                return ByteStore.Domain.Abstractions.Result.Failure(deleteResult.Errors);
+                return myResult.Failure(deleteResult.Errors);
             }
+
+            if (productImage.IsPrimary)
+            {
+                var otherImage = (await unitOfWork.GetRepository<ProductImage>().GetAllAsync())
+                    .Where(img => img.ProductId == productImage.ProductId && img.id != productImage.id)
+                    .FirstOrDefault();
+                if (otherImage != null)
+                {
+                    otherImage.IsPrimary = true;
+                    unitOfWork.GetRepository<ProductImage>().Update(otherImage);
+                }
+            }
+
+
             unitOfWork.GetRepository<ProductImage>().Delete(productImage);
             await unitOfWork.SaveChangesAsync();
-            return ByteStore.Domain.Abstractions.Result.Success();
+            return myResult.Success();
         }
-        public async Task<ByteStore.Domain.Abstractions.Result> SetPrimaryProductImageAsync( int productImageId)
+        public async Task<myResult> SetPrimaryProductImageAsync( int productImageId)
         {
             var productImage = await unitOfWork.GetRepository<ProductImage>().GetByIdAsync(productImageId);
             if (productImage == null)
-                return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "Product image not found." });
+                return myResult.Failure(new List<string> { "Product image not found." });
 
             var productImages = await unitOfWork.GetRepository<ProductImage>().FindAllAsync(pi => pi.ProductId == productImage.ProductId);
             foreach (var img in productImages)
             {
-                //img.IsPrimary = img.Id == productImageId;
-                //unitOfWork.GetRepository<ProductImage>().Update(img);
+                if(img.id == productImageId)
+                    img.IsPrimary = true;
+                else
+                    img.IsPrimary = false;
             }
             await unitOfWork.SaveChangesAsync();
-            return ByteStore.Domain.Abstractions.Result.Success();
+            return myResult.Success();
         }
 
         // product review operations
-        // add review
-        // update review
-        // delete review
+        public async Task<Result<int>> AddProductReviewAsync(int productId, ProductReviewCreateDto productReviewCreateDto)
+        {
+            var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
+            if (product == null)
+                return Result<int>.Failure(new List<string> { "Product not found." });
+            var review = new ProductReview
+            {
+                ProductId = productId,
+                CustomerId = productReviewCreateDto.CustomerId,
+                Rating = productReviewCreateDto.Rating,
+                Comment = productReviewCreateDto.Comment,
+                CreatedOn = DateTime.UtcNow
+            };
+            await unitOfWork.GetRepository<ProductReview>().AddAsync(review);
+            await unitOfWork.SaveChangesAsync();
+            return Result<int>.Success(review.Id);
+        }
+        public async Task<myResult> UpdateProductReviewAsync(int reviewId, ProductReviewUpdateDto productReviewUpdateDto)
+        {
+            var review = await unitOfWork.GetRepository<ProductReview>().GetByIdAsync(reviewId);
+            if (review == null)
+                return myResult.Failure(new List<string> { "Review not found." });
+            review.Rating = productReviewUpdateDto.Rating;
+            review.Comment = productReviewUpdateDto.Comment;
+            await unitOfWork.SaveChangesAsync();
+            return myResult.Success();
+        }
+        public async Task<myResult> DeleteProductReviewAsync(int reviewId)
+        {
+            var review = await unitOfWork.GetRepository<ProductReview>().GetByIdAsync(reviewId);
+            if (review == null)
+                return myResult.Failure(new List<string> { "Review not found." });
+            unitOfWork.GetRepository<ProductReview>().Delete(review);
+            await unitOfWork.SaveChangesAsync();
+            return myResult.Success();
+        }
     }
 }

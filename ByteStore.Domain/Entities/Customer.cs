@@ -6,7 +6,6 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
-
         public ICollection<Order> Orders { get; set; }
         public ICollection<Address> Addresses { get; set; }
         public ShoppingCart ShoppingCart { get; set; }

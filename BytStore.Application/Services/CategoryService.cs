@@ -1,7 +1,7 @@
 ﻿using ByteStore.Domain.Abstractions;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
-using BytStore.Application.DTOs;
+using BytStore.Application.DTOs.Category;
 using MyResult = ByteStore.Domain.Abstractions.Result;
 
 

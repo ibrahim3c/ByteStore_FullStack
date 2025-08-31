@@ -15,12 +15,13 @@ namespace ByteStore.Persistance.Repositories
             CategoryRepository = new CategoryRepository(appDbContext);
             OrderRepository = new OrderRepository(appDbContext);
             ShoppingCartRepository = new ShoppingCartRepository(appDbContext);
+            CustomerRepository = new CustomerRepository(appDbContext);
         }
         public IProductRepository ProductRepository { get; }
         public ICategoryRepository CategoryRepository { get; }
         public IOrderRepository OrderRepository { get; }
         public IShoppingCartRepository ShoppingCartRepository { get; }
-
+        public ICustomerRepository CustomerRepository { get; }
 
         public void Dispose()
         {

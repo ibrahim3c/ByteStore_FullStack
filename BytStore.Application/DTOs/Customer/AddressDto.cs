@@ -1,8 +1,8 @@
 ﻿using ByteStore.Domain.Abstractions.Enums;
 
-namespace ByteStore.Domain.Entities
+namespace BytStore.Application.DTOs.Customer
 {
-    public class Address
+    public class AddressDto
     {
         public int Id { get; set; }
         public string Street { get; set; }
@@ -11,11 +11,7 @@ namespace ByteStore.Domain.Entities
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public bool IsPrimary { get; set; }
-        public AddressType AddressType { get; set; } // "Shipping" or "Billing"
-
-        // Foreign Key
-        public int CustomerId { get; set; }
-        // Navigation Property
-        public Customer Customer { get; set; }
+        public string AddressType { get; set; } // "Shipping" or "Billing"
+        public string CustomerName {  get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using ByteStore.Domain.Abstractions;
-using BytStore.Application.DTOs;
+using BytStore.Application.DTOs.Product;
 using BytStore.Application.Helpers;
 using Imagekit.Sdk;
 using Microsoft.AspNetCore.Http;

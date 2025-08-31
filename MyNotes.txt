@@ -275,7 +275,7 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 
 
 // TODO:
-    Validate Dtos in product services 
+    Validate Dtos in all services 
     look for does i use Interfaces with services or not
     add relation with IdentityUser
     solve the path of brand and category image

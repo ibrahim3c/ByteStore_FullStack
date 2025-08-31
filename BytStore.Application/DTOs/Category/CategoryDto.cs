@@ -1,4 +1,4 @@
-﻿namespace BytStore.Application.DTOs
+﻿namespace BytStore.Application.DTOs.Category
 {
     public class CategoryDto
     {

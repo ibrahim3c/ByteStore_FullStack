@@ -6,6 +6,7 @@
         ICategoryRepository CategoryRepository { get; }
         IOrderRepository OrderRepository { get; }
         IShoppingCartRepository ShoppingCartRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
 
         IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
 
