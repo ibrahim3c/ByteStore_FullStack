@@ -1,13 +1,14 @@
 ﻿using ByteStore.Domain.Abstractions;
 using BytStore.Application.DTOs.Product;
 using BytStore.Application.Helpers;
+using BytStore.Application.IServices;
 using Imagekit.Sdk;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace BytStore.Application.Services
+namespace ByteStore.Persistance.Services
 {
-    public class ImageService
+    internal class ImageService : IImageService
     {
         private readonly ImagekitClient _ik;
         private readonly ImageKitOptions _opt;
@@ -18,7 +19,7 @@ namespace BytStore.Application.Services
             _ik = new ImagekitClient(_opt.PublicKey, _opt.PrivateKey, _opt.UrlEndpoint);
         }
 
-        public async Task<Result<ImageUploadDto>> UploadAsync(IFormFile file,string folder="/", CancellationToken ct = default)
+        public async Task<Result<ImageUploadDto>> UploadAsync(IFormFile file, string folder = "/", CancellationToken ct = default)
         {
             if (file == null || file.Length == 0)
                 return Result<ImageUploadDto>.Failure(new List<string> { "File is empty." });
@@ -32,9 +33,9 @@ namespace BytStore.Application.Services
 
             var uploadRequest = new FileCreateRequest
             {
-                file = fileBytes,                    
+                file = fileBytes,
                 fileName = file.FileName,
-                folder = $"/{folder}"     
+                folder = $"/{folder}"
             };
 
             var response = await _ik.UploadAsync(uploadRequest);
@@ -44,7 +45,7 @@ namespace BytStore.Application.Services
         public async Task<ByteStore.Domain.Abstractions.Result> DeleteAsync(string fileId, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(fileId))
-            return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "fileId is required." });
+                return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "fileId is required." });
             await _ik.DeleteFileAsync(fileId);
             return ByteStore.Domain.Abstractions.Result.Success();
         }

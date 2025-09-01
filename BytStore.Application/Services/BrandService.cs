@@ -2,11 +2,12 @@
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Brand;
+using BytStore.Application.IServices;
 using MyResult = ByteStore.Domain.Abstractions.Result;
 
 namespace BytStore.Application.Services
 {
-    public class BrandService
+    public class BrandService:IBrandService
     {
         private readonly IUnitOfWork unitOfWork;
         public BrandService(IUnitOfWork unitOfWork)
@@ -62,7 +63,7 @@ namespace BytStore.Application.Services
             await unitOfWork.SaveChangesAsync();
             return MyResult.Success();
         }
-        public async Task<MyResult> DeleteCategoryAsync(int brandId)
+        public async Task<MyResult> DeleteBrandAsync(int brandId)
         {
             var brand = await unitOfWork.GetRepository<Brand>().GetByIdAsync(brandId);
             if (brand == null)

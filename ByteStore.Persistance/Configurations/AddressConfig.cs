@@ -38,7 +38,7 @@ namespace ByteStore.Persistance.Configurations
                    .HasConversion<string>()
                    .IsRequired();
 
-            builder.HasOne(a => a.customer)
+            builder.HasOne(a => a.Customer)
                    .WithMany(c => c.Addresses)
                    .HasForeignKey(a => a.CustomerId)
                    .OnDelete(DeleteBehavior.Cascade);

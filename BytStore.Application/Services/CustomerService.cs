@@ -3,24 +3,88 @@ using ByteStore.Domain.Abstractions.Enums;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Customer;
+using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Identity;
 using MyResult = ByteStore.Domain.Abstractions.Result;
 
 
 namespace BytStore.Application.Services
 {
-    public class CustomerService
+    public class CustomerService:ICustomerService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly UserManager<AppUser> userManager;
 
-        public CustomerService(IUnitOfWork unitOfWork)
+        public CustomerService(IUnitOfWork unitOfWork,UserManager<AppUser> userManager)
         {
             this.unitOfWork = unitOfWork;
+            this.userManager = userManager;
         }
         // Customer Operation
-        // get CustomerProfileById
-        // get all CustomerProfile
-        // update CustomerProfile
+        public async Task<Result<CustomerDto>> GetCustomerProfileByIdAsync(int customerId)
+        { 
+            var customer=await unitOfWork.CustomerRepository.FindAsync(c => c.Id == customerId, ["AppUser"]);
+            if (customer == null)
+                return Result<CustomerDto>.Failure(["No Customer Found"]);
+            if(customer.AppUser ==null)
+                return Result<CustomerDto>.Failure(["No User Found"]);
+            var customerDto = new CustomerDto
+            {
+                Id = customer.Id,
+                DateOfBirth = customer.DateOfBirth,
+                Email = customer.AppUser.Email,
+                FirstName = customer.fullName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.AppUser.PhoneNumber
+            };
+            return Result<CustomerDto>.Success(customerDto);
+        }
+        public async Task<Result<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync()
+        {
+            var customers = await unitOfWork.CustomerRepository.GetAllAsync(["AppUser"]);
+
+            var customerDtos = customers.Select(customer => new CustomerDto
+            {
+                DateOfBirth = customer.DateOfBirth,
+                Email = customer.AppUser?.Email, // safe navigation
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.AppUser?.PhoneNumber
+            }).ToList();
+
+            return Result<IEnumerable<CustomerDto>>.Success(customerDtos);
+        }
+        public async Task<MyResult>UpdateCustomerProfileAsync(int customerId, CustomerUpdateDto customerDto)
+        {
+            var customer = await unitOfWork.CustomerRepository.FindAsync(c => c.Id == customerId, ["AppUser"]);
+            if (customer == null)
+                return MyResult.Failure(["No Customer Found"]);
+            if (customer.AppUser == null)
+                return MyResult.Failure(["No User Found"]);
+
+            customer.DateOfBirth = customerDto.DateOfBirth;
+            customer.FirstName=customerDto.FirstName;
+            customer.LastName=customerDto.LastName;
+            customer.AppUser.PhoneNumber = customerDto.PhoneNumber;
+
+            unitOfWork.CustomerRepository.Update(customer);
+            await unitOfWork.SaveChangesAsync();
+            return MyResult.Success();
+        }
         // Delete CustomerProfile => softDelete
+        public async Task<MyResult>DeleteCustomerAsync(int customerId)
+        {
+            var customer = await unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+            if (customer == null)
+                return MyResult.Failure(["No Customer Found"]);
+
+            customer.IsDeleted = true;
+
+            unitOfWork.CustomerRepository.Update(customer);
+            await unitOfWork.SaveChangesAsync();
+            return MyResult.Success();
+        }
+
 
         // address operations
         public async Task<Result<IEnumerable<AddressDto>>> GetCustomerAddressesAsync(int customerId)

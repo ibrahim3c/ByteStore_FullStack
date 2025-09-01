@@ -1,6 +1,8 @@
-﻿namespace ByteStore.Domain.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace ByteStore.Domain.Entities
 {
-    public class AppRole
+    public class AppRole:IdentityRole
     {
     }
 }
