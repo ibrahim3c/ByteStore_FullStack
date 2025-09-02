@@ -36,7 +36,6 @@
           DependencyInjection.cs
   /deploy
     docker-compose.yml
-    k8s/ (optional)
   /docs
     ERD.png / API.postman_collection.json
 ```
@@ -233,7 +232,6 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 
 * Naming: `PascalCase` for types, `camelCase` for locals.
 * Controllers/Endpoints thin; logic in services.
-* DTOs versioned under `Contracts/V1`.
 * Use async/await everywhere.
 
 ---
@@ -275,9 +273,22 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 * to solve the problem of services.Configure<ImageKitOptions>(configuration.GetSection("ImageKit")); it tells u serivice does not have configure method 
     u just need to install Microsoft.Extensions.Options.ConfigurationExtensions package
 
+* i used service manager just as wrapper used to collect all service in one place so u just inject one service in the controller 
+    but still u need to register all services not just service manager
+
+* for api documentation i used scalar
+
+* We create ByteStore.PresentationLayer because:
+    It separates controllers from the main API project.
+    It forces controllers to depend only on service contracts (not database/infrastructure).
+    It keeps the project clean, maintainable, and flexible for future (REST, gRPC, etc).
+    👉 Main API = startup & config.
+    👉 Presentation = controllers & HTTP entry point.
+
 
 // TODO:
     check onion arch
+    Review allowed only if customer purchased the product.
     make email service
     Validate Dtos in all services 
     look for does i use Interfaces with services or not

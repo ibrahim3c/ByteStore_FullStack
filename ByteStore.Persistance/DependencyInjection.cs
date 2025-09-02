@@ -2,7 +2,9 @@
 using ByteStore.Domain.Repositories;
 using ByteStore.Persistance.Database;
 using ByteStore.Persistance.Repositories;
+using ByteStore.Persistance.Services;
 using BytStore.Application.Helpers;
+using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,10 +27,13 @@ namespace ByteStore.Persistance
             {
                 options.UseNpgsql(connectionString);
             });
+            // shortcut
+            //services.AddNpgsql<AppDbContext>((configuration.GetConnectionString("DefaultConnection")));
             #endregion
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IImageService, ImageService>();
             #region JWTConfigs
             //(1)
             // identity ===> i spend one day to find out that you are the problem => it should be above JWTConfigs :(

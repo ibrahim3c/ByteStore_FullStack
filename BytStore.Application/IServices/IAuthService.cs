@@ -4,7 +4,7 @@ using MyResult = ByteStore.Domain.Abstractions.Result;
 
 namespace BytStore.Application.IServices
 {
-    internal interface IAuthService
+    public interface IAuthService
     {
         Task<MyResult> RegisterAsync(UserRegisterDto userRegisterDto, string scheme, string host);
         Task<MyResult> VerifyEmailAsync(string userId, string code);

@@ -1,7 +1,5 @@
 using ByteStore.Api.Extenstions;
-using ByteStore.Persistance.Database;
-using ByteStore.Persistance.Seeders;
-using System.Threading.Tasks;
+using Scalar.AspNetCore;
 
 namespace ByteStore.Api
 {
@@ -13,7 +11,7 @@ namespace ByteStore.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddApplicationPart(assembly: typeof(Presentation.AssemblyReference).Assembly);
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -29,6 +27,7 @@ namespace ByteStore.Api
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference();
             }
 
             app.UseHttpsRedirection();
