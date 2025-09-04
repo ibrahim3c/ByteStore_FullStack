@@ -1,4 +1,4 @@
-﻿using ByteStore.Domain.Abstractions;
+﻿using ByteStore.Domain.Abstractions.Result;
 using BytStore.Application.DTOs.Product;
 using BytStore.Application.Helpers;
 using BytStore.Application.IServices;
@@ -42,12 +42,12 @@ namespace ByteStore.Persistance.Services
             return Result<ImageUploadDto>.Success(new ImageUploadDto(response.url, response.fileId, response.name));
         }
 
-        public async Task<ByteStore.Domain.Abstractions.Result> DeleteAsync(string fileId, CancellationToken ct = default)
+        public async Task<Domain.Abstractions.Result.Result> DeleteAsync(string fileId, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(fileId))
-                return ByteStore.Domain.Abstractions.Result.Failure(new List<string> { "fileId is required." });
+                return Domain.Abstractions.Result.Result.Failure(new List<string> { "fileId is required." });
             await _ik.DeleteFileAsync(fileId);
-            return ByteStore.Domain.Abstractions.Result.Success();
+            return Domain.Abstractions.Result.Result.Success();
         }
 
         public async Task<Result<string>> UpdateImageAsync(string fileId, IFormFile newFile, string folder = "/")

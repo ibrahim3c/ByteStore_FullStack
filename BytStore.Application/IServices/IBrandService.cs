@@ -1,6 +1,6 @@
-﻿using ByteStore.Domain.Abstractions;
+﻿using ByteStore.Domain.Abstractions.Result;
 using BytStore.Application.DTOs.Brand;
-using MyResult = ByteStore.Domain.Abstractions.Result;
+using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 namespace BytStore.Application.IServices
 {

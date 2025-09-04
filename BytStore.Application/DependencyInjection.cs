@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using BytStore.Application.Helpers;
+﻿using BytStore.Application.Helpers;
 using BytStore.Application.IServices;
 using BytStore.Application.Services;
+using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 namespace BytStore.Application
 {
     public static class DependencyInjection
@@ -18,7 +19,12 @@ namespace BytStore.Application
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IServiceManager, ServiceManager>();
+
+            //  Register all FluentValidation validators
+            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+
             return services;
         }
     }

@@ -1,5 +1,5 @@
-﻿using ByteStore.Domain.Abstractions;
-using ByteStore.Domain.Abstractions.Constants;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Auth;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Data;
-using MyResult = ByteStore.Domain.Abstractions.Result;
+using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 namespace BytStore.Application.Services
 {

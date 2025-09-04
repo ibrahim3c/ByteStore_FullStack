@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ByteStore.Persistance\ByteStore.Persistance.csproj" />
     <ProjectReference Include="..\ByteStore.PresentationLayer\ByteStore.Presentation.csproj" />
     <ProjectReference Include="..\BytStore.Application\BytStore.Application.csproj" />

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ByteStore.Domain.Abstractions
+namespace ByteStore.Domain.Abstractions.Result
 {
     public class Result<T>
     {
@@ -41,6 +41,45 @@ namespace ByteStore.Domain.Abstractions
             => new Result(false, errors);
 
     }
+
+
+    public class Result2
+    {
+        protected Result2(bool isSuccess, Error error)
+        {
+            if (isSuccess && error != Error.None ||
+                !isSuccess && error == Error.None)
+            {
+                throw new ArgumentException("Invalid error state", nameof(error));
+            }
+
+            IsSuccess = isSuccess;
+            Error = error;
+        }
+
+        public bool IsSuccess { get; }
+        public bool IsFailure => !IsSuccess;
+        public Error Error { get; }
+
+        public static Result2 Success() => new(true, Error.None);
+        public static Result2 Failure(Error error) => new(false, error);
+    }
+    public class Result2<T> : Result2
+    {
+        private Result2(T value, bool isSuccess, Error error)
+            : base(isSuccess, error)
+        {
+            Value = value;
+        }
+
+        public T? Value { get; }
+
+        public static Result2<T> Success(T value) => new(value, true, Error.None);
+
+        public static new Result2<T> Failure(Error error) => new(default!, false, error);
+    }
+
+
     public class AuthResult
     {
         public List<string>? Messages { get; set; }

@@ -1,9 +1,9 @@
-﻿using ByteStore.Domain.Abstractions;
+﻿using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Category;
 using BytStore.Application.IServices;
-using MyResult = ByteStore.Domain.Abstractions.Result;
+using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 
 namespace BytStore.Application.Services

@@ -1,0 +1,69 @@
+﻿namespace ByteStore.Domain.Abstractions.Result
+{
+    public sealed record Error(string Code, string? Description = null)
+    {
+        public static Error None = new(string.Empty, string.Empty);
+    }
+    public static class CategoryErrors
+    {
+        public static readonly Error CategoryNotFound = new("Category.NotFound", "The Category not found");
+    }
+    public static class AddressErrors
+    {
+        public static readonly Error NotFound =
+            new("Address.NotFound", "The address was not found");
+
+        public static readonly Error InvalidType =
+            new("Address.InvalidType", "The provided address type is invalid");
+    }
+    public static class CustomerErrors
+    {
+        public static readonly Error NotFound =
+            new("Customer.NotFound", "The customer was not found");
+    }
+    public static class UserErrors
+    {
+        public static readonly Error NotFound =
+            new("User.NotFound", "The User was not found");
+    }
+    public static class ProductErrors
+    {
+        public static readonly Error NotFound =
+            new("Product.NotFound", "The product was not found");
+
+        public static readonly Error ImageNotFound =
+            new("ProductImage.NotFound", "The product image was not found");
+
+        public static readonly Error ReviewNotFound =
+            new("ProductReview.NotFound", "The review not found");
+
+        public static readonly Error InvalidCategory =
+            new("Product.InvalidCategory", "The provided category is invalid");
+
+        public static readonly Error InvalidBrand =
+            new("Product.InvalidBrand", "The provided brand is invalid");
+    }
+    public static class AuthErrors
+    {
+        public static readonly Error InvalidCredentials =
+            new("Auth.InvalidCredentials", "Email or password is incorrect");
+
+        public static readonly Error EmailNotConfirmed =
+            new("Auth.EmailNotConfirmed", "Email needs to be confirmed before login");
+
+        public static readonly Error UserNotFound =
+            new("Auth.UserNotFound", "The specified user was not found");
+
+        public static readonly Error InvalidToken =
+            new("Auth.InvalidToken", "The provided token is invalid");
+
+        public static readonly Error EmailConfirmationFailed =
+            new("Auth.EmailConfirmationFailed", "Email confirmation failed");
+
+        public static readonly Error PasswordResetFailed =
+            new("Auth.PasswordResetFailed", "Error resetting password");
+
+        public static readonly Error InvalidResetRequest =
+            new("Auth.InvalidResetRequest", "UserId and code are required");
+    }
+}

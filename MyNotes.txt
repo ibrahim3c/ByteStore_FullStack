@@ -285,6 +285,24 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     👉 Main API = startup & config.
     👉 Presentation = controllers & HTTP entry point.
 
+* Rules for Naming our routes
+    Use nouns, not verbs, in your API URIs to represent resources (e.g., /api/companies, not /api/getCompanies).
+    For dependent resources (like employees of a company), structure the URI hierarchically: /api/companies/{companyId}/employees.
+    This clear naming convention ensures consistency and understandability before implementing specific "GET" requests.
+
+
+* Handling Errors and exception
+    Error → An expected problem, such as “User not found” or “Password is too short”.
+        Best handled with the Result pattern, returning success or failure without breaking program flow.
+
+    Exception → An unexpected problem, such as database crash, null reference, or invalid state.
+        Handled with a Global Exception Handler (middleware) to log and return a consistent error response.
+
+    Validation in FluentValidation → Even though invalid input is an expected problem, FluentValidation throws a ValidationException.
+        That’s why we typically handle it inside the Global Exception Handler, so the API returns proper error messages.
+
+
+
 
 // TODO:
     check onion arch

@@ -7,6 +7,7 @@
         ICategoryService CategoryService { get; }
         IProductService ProductService { get; }
         IOrderService OrderService { get; }
+        ICustomerService CustomerService { get; }
 
     }
 }

@@ -7,7 +7,7 @@ namespace ByteStore.PresentationLayer.Controllers
     [Route("api/[controller]")]
     public class BaseController:ControllerBase
     {
-        private readonly IServiceManager serviceManager;
+        protected readonly IServiceManager serviceManager;
 
         public BaseController(IServiceManager serviceManager)
         {

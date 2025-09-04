@@ -1,4 +1,5 @@
 using ByteStore.Api.Extenstions;
+using ByteStore.Api.Middlewares;
 using Scalar.AspNetCore;
 
 namespace ByteStore.Api
@@ -22,6 +23,9 @@ namespace ByteStore.Api
 
             #endregion
             var app = builder.Build();
+
+            // global exception hanlder
+            //app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
