@@ -5,9 +5,11 @@ using BytStore.Application.DTOs.Auth;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [EnableRateLimiting("token")]
     public class AccountsController : BaseController
     {
         public AccountsController(IServiceManager serviceManager) : base(serviceManager)

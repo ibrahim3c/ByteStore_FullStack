@@ -20,6 +20,7 @@ namespace ByteStore.Api
 
             builder.Configuration.AddJsonFile("Secret.json", optional: false, reloadOnChange: true);
             builder.Services.AddDependencyInjectionService(builder.Configuration);
+            builder.Services.AddRateLimiting();
 
             #endregion
             var app = builder.Build();
@@ -34,6 +35,7 @@ namespace ByteStore.Api
                 app.MapScalarApiReference();
             }
 
+            app.UseRateLimiter();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

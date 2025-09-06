@@ -251,6 +251,8 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 
 ** for Auth we use JWT with refresh token with email verification **
 
+** i am using ratelimiting ** 
+
 
 /// my notes
 * PK 
@@ -301,6 +303,15 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     Validation in FluentValidation → Even though invalid input is an expected problem, FluentValidation throws a ValidationException.
         That’s why we typically handle it inside the Global Exception Handler, so the API returns proper error messages.
 
+* Where to apply Rate Limiting?
+    ✅ Must have:
+        Auth (Login/Register) → prevent brute force.
+        Checkout/Payment → prevent spam/fraud.
+        Public APIs (e.g., product search, catalog).
+    ❌ Usually not needed:
+        Admin APIs (unless external admins).
+        Internal services (microservices, backend-to-backend).
+        Static content (images, CSS, JS → usually via CDN).
 
 
 

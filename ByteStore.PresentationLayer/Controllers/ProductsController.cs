@@ -1,8 +1,8 @@
 ﻿using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Product;
 using BytStore.Application.IServices;
-using BytStore.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ByteStore.Presentation.Controllers
 {
@@ -56,6 +56,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         // GET: api/products/search?query=laptop
+        [EnableRateLimiting("sliding")]
         [HttpGet("search")]
         public async Task<IActionResult> SearchProducts([FromQuery] string query)
         {
