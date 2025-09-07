@@ -23,7 +23,7 @@
       /External
         /Api (ASP.NET Core host)
           /Controllers
-          /Extensions (DI, Auth, Swagger, HealthChecks)
+          /Extensions (DI, HealthChecks)
           appsettings.json
           Program.cs
           secret.json
@@ -97,11 +97,9 @@ ByteStore backend is a modular eCommerce API with a clean domain model, split by
 * Product, Order, Cart.
 
 **Invariants & Rules Examples**
-
 * Cannot add to cart if `stockQuantity < requestedQty`.
 * Order totals = Σ(items) − discounts + shipping + tax.
 * Review allowed only if customer purchased the product.
-
 ---
 
 ## 5) Persistence & Data Modeling
@@ -253,6 +251,8 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 
 ** i am using ratelimiting ** 
 
+** for health check i used normal endpoint /health just return json response and Health Check UI
+    and its configuration in extensions and program.cs
 
 /// my notes
 * PK 

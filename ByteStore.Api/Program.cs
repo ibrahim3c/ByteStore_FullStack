@@ -1,5 +1,8 @@
 using ByteStore.Api.Extenstions;
 using ByteStore.Api.Middlewares;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 
 namespace ByteStore.Api
@@ -21,6 +24,7 @@ namespace ByteStore.Api
             builder.Configuration.AddJsonFile("Secret.json", optional: false, reloadOnChange: true);
             builder.Services.AddDependencyInjectionService(builder.Configuration);
             builder.Services.AddRateLimiting();
+            builder.Services.AddHealthCheck(builder.Configuration);
 
             #endregion
             var app = builder.Build();
@@ -50,6 +54,24 @@ namespace ByteStore.Api
             //    await  new CategorySeeder(dbContext).SeedAsync();
             //    await new BrandSeeder(dbContext).SeedAsync();;
             //}
+
+            // it cause problem of more than dbContext was found
+            //  Map Health Checks JSON Endpoint => normal health check just api return json response
+            app.MapHealthChecks("/health", new HealthCheckOptions
+            {
+                Predicate = _ => true,
+                //This formats the response in a special JSON format that the HealthCheckUI dashboard understands.
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            // Map HealthCheck UI Dashboard
+            app.MapHealthChecksUI(options =>
+            {
+                options.UIPath = "/health-ui"; // Dashboard path
+                options.ApiPath = "/health-ui-api"; // API used by the UI
+            });
+
+
             app.Run();
         }
     }
