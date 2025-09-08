@@ -1,13 +1,31 @@
 ﻿using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
-using ByteStore.Persistance.Database;
+using StackExchange.Redis;
 
 namespace ByteStore.Persistance.Repositories
 {
-    internal class ShoppingCartRepository:BaseRepository<ShoppingCart>, IShoppingCartRepository
+    internal class ShoppingCartRepository: IShoppingCartRepository
     {
-        public ShoppingCartRepository(AppDbContext appDbContext) : base(appDbContext)
+        private readonly IDatabase _db;
+
+        public ShoppingCartRepository(IConnectionMultiplexer connectionMultiplexer)
         {
+            this._db = connectionMultiplexer.GetDatabase();
+        }
+
+        public Task DeleteShoppingCartAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ShoppingCart> GetShoppingCartAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateShippingCartAsync(int id, ShoppingCart shippingCart)
+        {
+            throw new NotImplementedException();
         }
     }
 }

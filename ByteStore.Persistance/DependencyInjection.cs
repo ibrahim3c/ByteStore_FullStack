@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 
 namespace ByteStore.Persistance
@@ -29,6 +30,15 @@ namespace ByteStore.Persistance
             });
             // shortcut
             //services.AddNpgsql<AppDbContext>((configuration.GetConnectionString("DefaultConnection")));
+            #endregion
+
+            #region Redis
+            var redisConnection = configuration.GetConnectionString("Redis")
+                 ?? throw new ArgumentNullException(nameof(configuration));
+            services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+            {
+                return ConnectionMultiplexer.Connect(redisConnection);
+            });
             #endregion
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

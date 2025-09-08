@@ -2,7 +2,10 @@
 
 namespace ByteStore.Domain.Repositories
 {
-    public interface IShoppingCartRepository: IBaseRepository<ShoppingCart>
+    public interface IShoppingCartRepository
     {
+        Task<ShoppingCart> GetShoppingCartAsync(int id);
+        Task DeleteShoppingCartAsync(int id);
+        Task UpdateShippingCartAsync(int id,ShoppingCart shippingCart);
     }
 }

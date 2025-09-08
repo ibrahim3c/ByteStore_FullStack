@@ -1,20 +1,23 @@
 ﻿using ByteStore.Domain.Repositories;
 using ByteStore.Persistance.Database;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace ByteStore.Persistance.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext appDbContext;
+        private readonly IConnectionMultiplexer connectionMultiplexer;
 
-        public UnitOfWork(AppDbContext appDbContext)
+        public UnitOfWork(AppDbContext appDbContext,IConnectionMultiplexer connectionMultiplexer)
         {
             this.appDbContext = appDbContext;
+            this.connectionMultiplexer = connectionMultiplexer;
             ProductRepository = new ProductRepository(appDbContext);
             CategoryRepository = new CategoryRepository(appDbContext);
             OrderRepository = new OrderRepository(appDbContext);
-            ShoppingCartRepository = new ShoppingCartRepository(appDbContext);
+            ShoppingCartRepository = new ShoppingCartRepository(connectionMultiplexer);
             CustomerRepository = new CustomerRepository(appDbContext);
         }
         public IProductRepository ProductRepository { get; }

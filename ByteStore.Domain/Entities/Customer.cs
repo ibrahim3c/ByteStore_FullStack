@@ -10,7 +10,6 @@
         public bool IsDeleted { get; set; }=false;
         public ICollection<Order> Orders { get; set; }
         public ICollection<Address> Addresses { get; set; }
-        public ShoppingCart ShoppingCart { get; set; }
         public ICollection<ProductReview> Reviews { get; set; }
         public AppUser AppUser { get; private set; }
 

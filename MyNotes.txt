@@ -254,6 +254,17 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 ** for health check i used normal endpoint /health just return json response and Health Check UI
     and its configuration in extensions and program.cs
 
+
+** NOTE: after adding HealthCheck when u do migration will give error tells u
+    "More than one DbContext was found. Specify which one to use. Use the '-Context' parameter for PowerShell commands and the '--context' parameter for dotnet commands."
+    so u should specifiy the AppDbContext when u add command like 
+        Add-Migration removeCartShopping -Context AppDbContext
+        Update-Database -Context AppDbContext
+    and that problem because after you added HealthChecks, your project now has more than one DbContext:
+        Your main AppDbContext
+        Another internal DbContext created by HealthChecks (if you’re using database storage for them)
+    So EF Core doesn’t know which one you want when running Add-Migration or Update-Database.
+
 /// my notes
 * PK 
     User, Product, Category, Brand → int (كفاية).

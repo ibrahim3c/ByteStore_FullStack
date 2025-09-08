@@ -9,11 +9,12 @@ namespace ByteStore.Api.Extenstions
             // health check
             var connectionString = configuration.GetConnectionString("DefaultConnection")
                ?? throw new ArgumentNullException(nameof(configuration));
+            var redisConnection = configuration.GetConnectionString("Redis")
+               ?? throw new ArgumentNullException(nameof(configuration));
+
             services.AddHealthChecks()
                 .AddNpgSql(connectionString, name: "postgresql", tags: new[] { "db", "sql" }) // Postgres
-                //.AddRedis(configuration.GetConnectionString("RedisConnection"), name: "redis", tags: new[] { "cache", "nosql" })  // Redis
-                ;
-
+                .AddRedis(redisConnection, name: "redis", tags: new[] { "cache", "nosql" });  // Redis
 
             // it cause problem of more than dbContext was found
             ////health check with Dashboard
