@@ -77,7 +77,6 @@ ByteStore backend is a modular eCommerce API with a clean domain model, split by
 
     Address – id,street, city, state, postalCode, country, isPrimary, addressType, userId → (FK to Customer).
     Brand – id, name, description, logoUrl, products (list of Product).
-    CartItem – id, quantity, shoppingCartId (FK), productId (FK), shoppingCart (ref), product (ref).
     Category – id, name, description, imageUrl, parentCategoryId (nullable), parentCategory (ref), subCategories (list of Category), products (list of Product).
     Customer – firstName, lastName, dateOfBirth, orders (list of Order), addresses (list of Address), shoppingCart (ref), reviews (list of ProductReview).
     Order – orderDate, totalAmount, status (Pending, Processing, Shipped, Delivered, Cancelled), userId, shippingAddressId, billingAddressId, user (ref Customer), shippingAddress (ref Address), billingAddress (ref Address), orderItems (list of OrderItem).
@@ -85,10 +84,12 @@ ByteStore backend is a modular eCommerce API with a clean domain model, split by
     Product – id, name, description, price, stockQuantity, isActive, createdAt, updatedAt, categoryId, brandId, category (ref Category), brand (ref Brand), specifications (list of ProductSpecification), orderItems (list of OrderItem), cartItems (list of CartItem), reviews (list of ProductReview), images (list of ProductImage).
     ProductImage – id, imageUrl, isPrimary, title, productId, product (ref Product).
     ProductReview – id, title, content, rating, createdOn, productId, userId, product (ref Product), customer (ref Customer).
-    ProductSpecification – id, key, value, productId, product (ref Product).
-    ShoppingCart – id, createdAt, updatedAt, customerId, customer (ref Customer), cartItems (list of CartItem).
-    AppRole
-    AppUser
+    Identity:
+        AppRole
+        AppUser
+    Redis:
+        ShoppingCart – CustomerId, cartItems (list of CartItem).
+        CartItem – productId, quantity, name , brand,category,price,imageUrl
 
 
 
@@ -324,6 +325,9 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
         Internal services (microservices, backend-to-backend).
         Static content (images, CSS, JS → usually via CDN).
 
+* when you use redis for caching ShoppintCart u will ask your self why the key of record is cumstomerId 
+    can not the customer make multiple ShoppingCart and the answer when u add new shoppingCart and there another one in the db with same key
+    the new will overriwe the old one ok?
 
 
 // TODO:

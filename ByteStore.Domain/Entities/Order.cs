@@ -10,7 +10,7 @@ namespace ByteStore.Domain.Entities
         public OrderStatus Status { get; set; } // e.g., "Pending", "Processing", "Shipped", "Delivered", "Cancelled"
 
         // Foreign Keys
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
 

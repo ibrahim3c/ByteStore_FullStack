@@ -1,6 +1,7 @@
 ﻿using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using StackExchange.Redis;
+using System.Text.Json;
 
 namespace ByteStore.Persistance.Repositories
 {
@@ -8,24 +9,23 @@ namespace ByteStore.Persistance.Repositories
     {
         private readonly IDatabase _db;
 
-        public ShoppingCartRepository(IConnectionMultiplexer connectionMultiplexer)
+        public async Task<bool> ClearCartAsync(string customerId)
         {
-            this._db = connectionMultiplexer.GetDatabase();
+            return await _db.KeyDeleteAsync(GetCartKey(customerId));
         }
 
-        public Task DeleteShoppingCartAsync(int id)
+        public async Task<ShoppingCart?> GetCartAsync(string customerId)
         {
-            throw new NotImplementedException();
+            var cart = await _db.StringGetAsync(customerId);
+            return cart.IsNullOrEmpty? null:JsonSerializer.Deserialize<ShoppingCart>(cart);
         }
 
-        public Task<ShoppingCart> GetShoppingCartAsync(int id)
+        public async Task<bool> SaveCartAsync(ShoppingCart cart)
         {
-            throw new NotImplementedException();
+            var cartJson = JsonSerializer.Serialize(cart);
+            return await _db.StringSetAsync(GetCartKey(cart.CustomerId), cartJson, TimeSpan.FromDays(30));
         }
+        private string GetCartKey(string customerId) => $"cart:{customerId}";
 
-        public Task UpdateShippingCartAsync(int id, ShoppingCart shippingCart)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

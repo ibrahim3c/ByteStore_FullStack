@@ -42,6 +42,7 @@ namespace ByteStore.Persistance
             #endregion
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IImageService, ImageService>();
             #region JWTConfigs

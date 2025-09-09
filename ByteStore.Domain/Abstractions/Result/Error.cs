@@ -66,4 +66,25 @@
         public static readonly Error InvalidResetRequest =
             new("Auth.InvalidResetRequest", "UserId and code are required");
     }
+    public static class CartErrors
+    {
+        public static readonly Error NotFound =
+            new("Cart.NotFound", "The shopping cart was not found");
+
+        public static readonly Error ItemNotFound =
+            new("Cart.ItemNotFound", "The cart item was not found");
+
+        public static readonly Error AlreadyExists =
+            new("Cart.AlreadyExists", "The shopping cart already exists");
+
+        public static readonly Error InvalidCustomer =
+            new("Cart.InvalidCustomer", "The customer for this cart is invalid");
+
+        public static readonly Error SaveFailed =
+            new("Cart.SaveFailed", "Failed to save the shopping cart");
+
+        public static readonly Error ClearFailed =
+            new("Cart.ClearFailed", "Failed to clear the shopping cart");
+    }
+
 }

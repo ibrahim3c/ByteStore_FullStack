@@ -8,6 +8,7 @@
         IProductService ProductService { get; }
         IOrderService OrderService { get; }
         ICustomerService CustomerService { get; }
+        IShoppingCartService ShoppingCartService { get; }
 
     }
 }

@@ -10,6 +10,7 @@ namespace BytStore.Application.Services
         private readonly Lazy<IProductService> _productService;
         private readonly Lazy<IOrderService> _orderService;
         private readonly Lazy<ICustomerService> _customerService;
+        private readonly Lazy<IShoppingCartService> _shoppingCartService;
 
         // someone said using lazy loading
 
@@ -19,14 +20,16 @@ namespace BytStore.Application.Services
             ICategoryService categoryService,
             IProductService productService,
             IOrderService orderService,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            Lazy<IShoppingCartService> shoppingCartService)
         {
             _authService = new Lazy<IAuthService>(() => authService);
             _brandService = new Lazy<IBrandService>(() => brandService);
             _categoryService = new Lazy<ICategoryService>(() => categoryService);
             _productService = new Lazy<IProductService>(() => productService);
             _orderService = new Lazy<IOrderService>(() => orderService);
-            _customerService= new Lazy<ICustomerService>(() => customerService);
+            _customerService = new Lazy<ICustomerService>(() => customerService);
+            _shoppingCartService = shoppingCartService;
         }
 
         public IAuthService AuthService => _authService.Value;
@@ -35,5 +38,6 @@ namespace BytStore.Application.Services
         public IProductService ProductService => _productService.Value;
         public IOrderService OrderService => _orderService.Value;
         public ICustomerService CustomerService => _customerService.Value;
+        public IShoppingCartService ShoppingCartService => _shoppingCartService.Value;
     }
 }
