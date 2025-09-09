@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using BytStore.Application.DTOs.ShoppingCart;
+using FluentValidation;
 
 namespace BytStore.Application.Validators.ShoppingCart
 {
-    public class ShoppingCartValidator : AbstractValidator<ByteStore.Domain.Entities.ShoppingCart>
+    public class ShoppingCartValidator : AbstractValidator<ShoppingCartDto>
     {
         public ShoppingCartValidator()
         {

@@ -1,9 +1,9 @@
-﻿using ByteStore.Domain.Entities;
+﻿using BytStore.Application.DTOs.ShoppingCart;
 using FluentValidation;
 namespace BytStore.Application.Validators.ShoppingCart
 {
 
-    public class CartItemValidator : AbstractValidator<CartItem>
+    public class CartItemValidator : AbstractValidator<CartItemDto>
     {
         public CartItemValidator()
         {
