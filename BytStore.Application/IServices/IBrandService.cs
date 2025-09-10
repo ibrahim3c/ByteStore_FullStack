@@ -6,10 +6,10 @@ namespace BytStore.Application.IServices
 {
     public interface IBrandService
     {
-        Task<Result<IEnumerable<BrandDto>>> GetAllBrandsAsync();
-        Task<Result<BrandDto>> GetBrandByIdAsync(int brandId);
-        Task<MyResult> CreateBrandAsync(BrandDto brandDto);
-        Task<MyResult> UpdateBrandAsync(int brandId, BrandDto brandDto);
-        Task<MyResult> DeleteBrandAsync(int brandId);
+        Task<Result2<IEnumerable<BrandDto>>> GetAllBrandsAsync();
+        Task<Result2<BrandDto>> GetBrandByIdAsync(int brandId);
+        Task<Result2> CreateBrandAsync(BrandDto brandDto);
+        Task<Result2> UpdateBrandAsync(int brandId, BrandDto brandDto);
+        Task<Result2> DeleteBrandAsync(int brandId);
     }
 }

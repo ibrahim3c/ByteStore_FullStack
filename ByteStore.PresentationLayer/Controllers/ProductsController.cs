@@ -22,12 +22,12 @@ namespace ByteStore.Presentation.Controllers
             if (pageNumber > 0 || pageSize > 0)
             {
                 var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(pageNumber, pageSize);
-                return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Errors);
+                return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
             }
             else
             {
                 var result = await serviceManager.ProductService.GetAllProductsAsync();
-                return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+                return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
             }
         }
 
@@ -44,7 +44,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetProductsByCategory(int categoryId)
         {
             var result = await serviceManager.ProductService.GetProductsByCategoryIdAsync(categoryId);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/products/brand/3
@@ -52,7 +52,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetProductsByBrand(int brandId)
         {
             var result = await serviceManager.ProductService.GetProductsByBrandIdAsync(brandId);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/products/search?query=laptop
@@ -61,7 +61,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> SearchProducts([FromQuery] string query)
         {
             var result = await serviceManager.ProductService.SearchProductsAsync(query);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // POST: api/products
@@ -71,7 +71,7 @@ namespace ByteStore.Presentation.Controllers
             var result = await serviceManager.ProductService.AddProductAsync(productCreateDto);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(GetProductById), new { id = result.Value }, null)
-                : BadRequest(result.Errors);
+                : BadRequest(result.Error);
         }
 
         // PUT: api/products/5
@@ -79,7 +79,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateDto productUpdateDto)
         {
             var result = await serviceManager.ProductService.UpdateProductAsync(id, productUpdateDto);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/products/5
@@ -87,7 +87,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var result = await serviceManager.ProductService.DeleteProductAsync(id);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
 
@@ -98,7 +98,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetProductImages(int productId)
         {
             var result = await serviceManager.ProductService.GetProductImagesAsync(productId);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // POST: api/products/5/images
@@ -106,7 +106,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> AddProductImages(int productId, [FromForm] List<ProductImageCreateDto> imageDtos)
         {
             var result = await serviceManager.ProductService.AddProductImagesAsync(productId, imageDtos);
-            return result.IsSuccess ? StatusCode(201) : BadRequest(result.Errors); // 201 Created
+            return result.IsSuccess ? StatusCode(201) : BadRequest(result.Error); // 201 Created
         }
 
         // PUT: api/products/images/15/set-primary
@@ -114,7 +114,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> SetPrimaryImage(int imageId)
         {
             var result = await serviceManager.ProductService.SetPrimaryProductImageAsync(imageId);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/products/images/15
@@ -122,7 +122,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> DeleteProductImage(int imageId)
         {
             var result = await serviceManager.ProductService.DeleteProductImageAsync(imageId);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
 
@@ -135,7 +135,7 @@ namespace ByteStore.Presentation.Controllers
             var result = await serviceManager.ProductService.AddProductReviewAsync(productId, reviewDto);
             return result.IsSuccess
                 ? CreatedAtAction(nameof(GetProductById), new { id = productId }, null)
-                : BadRequest(result.Errors);
+                : BadRequest(result.Error);
         }
 
         // PUT: api/products/reviews/8
@@ -143,7 +143,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> UpdateProductReview(int reviewId, [FromBody] ProductReviewUpdateDto reviewDto)
         {
             var result = await serviceManager.ProductService.UpdateProductReviewAsync(reviewId, reviewDto);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/products/reviews/8
@@ -151,7 +151,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> DeleteProductReview(int reviewId)
         {
             var result = await serviceManager.ProductService.DeleteProductReviewAsync(reviewId);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
     }

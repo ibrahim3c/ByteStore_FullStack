@@ -16,7 +16,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetAllBrands()
         {
             var result = await serviceManager.BrandService.GetAllBrandsAsync();
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/brands/5
@@ -24,7 +24,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetBrandById(int id)
         {
             var result = await serviceManager.BrandService.GetBrandByIdAsync(id);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // POST: api/brands
@@ -32,7 +32,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> CreateBrand([FromBody] BrandDto brandDto)
         {
             var result = await serviceManager.BrandService.CreateBrandAsync(brandDto);
-            return result.IsSuccess ? CreatedAtAction(nameof(GetBrandById), new { id = brandDto.Id }, brandDto) : BadRequest(result.Errors);
+            return result.IsSuccess ? CreatedAtAction(nameof(GetBrandById), new { id = brandDto.Id }, brandDto) : BadRequest(result.Error);
         }
 
         // PUT: api/brands/5
@@ -40,7 +40,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> UpdateBrand(int id, [FromBody] BrandDto brandDto)
         {
             var result = await serviceManager.BrandService.UpdateBrandAsync(id, brandDto);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/brands/5
@@ -48,7 +48,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> DeleteBrand(int id)
         {
             var result = await serviceManager.BrandService.DeleteBrandAsync(id);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
     }

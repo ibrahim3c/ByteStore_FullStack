@@ -1,5 +1,5 @@
-﻿using ByteStore.Domain.Entities;
-using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.PresentationLayer.Controllers;
+using BytStore.Application.DTOs.ShoppingCart;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +25,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/shoppingcarts
         [HttpPost]
-        public async Task<IActionResult> SaveCart([FromBody] ShoppingCart cart)
+        public async Task<IActionResult> SaveCart([FromBody] ShoppingCartDto cart)
         {
             var result = await serviceManager.ShoppingCartService.SaveCartAsync(cart);
 

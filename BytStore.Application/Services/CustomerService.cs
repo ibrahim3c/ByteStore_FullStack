@@ -5,7 +5,6 @@ using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Customer;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Identity;
-using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 
 namespace BytStore.Application.Services
@@ -13,21 +12,18 @@ namespace BytStore.Application.Services
     public class CustomerService:ICustomerService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly UserManager<AppUser> userManager;
-
-        public CustomerService(IUnitOfWork unitOfWork,UserManager<AppUser> userManager)
+        public CustomerService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            this.userManager = userManager;
         }
         // Customer Operation
-        public async Task<Result<CustomerDto>> GetCustomerProfileByIdAsync(int customerId)
+        public async Task<Result2<CustomerDto>> GetCustomerProfileByIdAsync(Guid customerId)
         { 
             var customer=await unitOfWork.CustomerRepository.FindAsync(c => c.Id == customerId, ["AppUser"]);
             if (customer == null)
-                return Result<CustomerDto>.Failure(["No Customer Found"]);
+                return Result2<CustomerDto>.Failure(CustomerErrors.NotFound);
             if(customer.AppUser ==null)
-                return Result<CustomerDto>.Failure(["No User Found"]);
+                return Result2<CustomerDto>.Failure(UserErrors.NotFound);
             var customerDto = new CustomerDto
             {
                 Id = customer.Id,
@@ -37,9 +33,9 @@ namespace BytStore.Application.Services
                 LastName = customer.LastName,
                 PhoneNumber = customer.AppUser.PhoneNumber
             };
-            return Result<CustomerDto>.Success(customerDto);
+            return Result2<CustomerDto>.Success(customerDto);
         }
-        public async Task<Result<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync()
+        public async Task<Result2<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync()
         {
             var customers = await unitOfWork.CustomerRepository.GetAllAsync(["AppUser"]);
 
@@ -52,15 +48,15 @@ namespace BytStore.Application.Services
                 PhoneNumber = customer.AppUser?.PhoneNumber
             }).ToList();
 
-            return Result<IEnumerable<CustomerDto>>.Success(customerDtos);
+            return Result2<IEnumerable<CustomerDto>>.Success(customerDtos);
         }
-        public async Task<MyResult>UpdateCustomerProfileAsync(int customerId, CustomerUpdateDto customerDto)
+        public async Task<Result2> UpdateCustomerProfileAsync(Guid customerId, CustomerUpdateDto customerDto)
         {
             var customer = await unitOfWork.CustomerRepository.FindAsync(c => c.Id == customerId, ["AppUser"]);
             if (customer == null)
-                return MyResult.Failure(["No Customer Found"]);
+                return Result2.Failure(CustomerErrors.NotFound);
             if (customer.AppUser == null)
-                return MyResult.Failure(["No User Found"]);
+                return Result2.Failure(UserErrors.NotFound);
 
             customer.DateOfBirth = customerDto.DateOfBirth;
             customer.FirstName=customerDto.FirstName;
@@ -69,29 +65,29 @@ namespace BytStore.Application.Services
 
             unitOfWork.CustomerRepository.Update(customer);
             await unitOfWork.SaveChangesAsync();
-            return MyResult.Success();
+            return Result2.Success();
         }
         // Delete CustomerProfile => softDelete
-        public async Task<MyResult>DeleteCustomerAsync(int customerId)
+        public async Task<Result2> DeleteCustomerAsync(Guid customerId)
         {
-            var customer = await unitOfWork.CustomerRepository.GetByIdAsync(customerId);
+            var customer = await unitOfWork.CustomerRepository.FindAsync(c=>c.Id==customerId);
             if (customer == null)
-                return MyResult.Failure(["No Customer Found"]);
+                return Result2.Failure(CustomerErrors.NotFound);
 
             customer.IsDeleted = true;
 
             unitOfWork.CustomerRepository.Update(customer);
             await unitOfWork.SaveChangesAsync();
-            return MyResult.Success();
+            return Result2.Success();
         }
 
 
         // address operations
-        public async Task<Result<IEnumerable<AddressDto>>> GetCustomerAddressesAsync(int customerId)
+        public async Task<Result2<IEnumerable<AddressDto>>> GetCustomerAddressesAsync(Guid customerId)
         {
             var customer = await unitOfWork.CustomerRepository.FindAsync(c => c.Id == customerId, ["Addresses"]);
             if (customer == null)
-                return Result<IEnumerable<AddressDto>>.Failure(["No Customer Found."]);
+                return Result2<IEnumerable<AddressDto>>.Failure(CustomerErrors.NotFound);
             var addressesDto = customer.Addresses.Select(a => new AddressDto
             {
                 City = a.City,
@@ -104,13 +100,13 @@ namespace BytStore.Application.Services
                 AddressType = a.AddressType.ToString(),
                 CustomerName=customer.fullName
             });
-            return  Result<IEnumerable<AddressDto>>.Success(addressesDto);
+            return Result2<IEnumerable<AddressDto>>.Success(addressesDto);
         }
-        public async Task<Result<AddressDto>>GetAddressByIdAsync(int addressId)
+        public async Task<Result2<AddressDto>>GetAddressByIdAsync(int addressId)
         {
             var address = await unitOfWork.GetRepository<Address>().FindAsync(a => a.Id == addressId, ["Customer"]);
             if (address == null)
-                return Result<AddressDto>.Failure(["No Address Found."]);
+                return Result2<AddressDto>.Failure(AddressErrors.NotFound);
             var addressDto = new AddressDto
             {
                 City = address.City,
@@ -124,9 +120,9 @@ namespace BytStore.Application.Services
                 CustomerName=address.Customer.fullName
             };
             
-            return Result<AddressDto>.Success(addressDto);
+            return Result2<AddressDto>.Success(addressDto);
         }
-        public async Task<Result<IEnumerable<AddressDto>>> GetAllAddresses()
+        public async Task<Result2<IEnumerable<AddressDto>>> GetAllAddresses()
         {
             var addresses = await unitOfWork.GetRepository<Address>().GetAllAsync(["Customer"]);
             var addressesDto = addresses.Select(a => new AddressDto
@@ -141,14 +137,14 @@ namespace BytStore.Application.Services
                 AddressType = a.AddressType.ToString(),
                 CustomerName=a.Customer.fullName
             });
-            return Result<IEnumerable<AddressDto>>.Success(addressesDto);
+            return Result2<IEnumerable<AddressDto>>.Success(addressesDto);
         }
-        public async Task<MyResult> AddAddressAsync(int customerId,AddressDto addressDto)
+        public async Task<Result2> AddAddressAsync(Guid customerId,AddressDto addressDto)
         {
             // validate dto
             if (!Enum.TryParse<AddressType>(addressDto.AddressType, true, out var addressType))
             {
-                return MyResult.Failure(new List<string> { "Invalid address type." });
+                return Result2.Failure(AddressErrors.InvalidType);
             }
 
             var address = new Address
@@ -165,19 +161,19 @@ namespace BytStore.Application.Services
             await unitOfWork.GetRepository<Address>().AddAsync(address);
             await unitOfWork.SaveChangesAsync();
 
-            return MyResult.Success();
+            return Result2.Success();
         }
         // Update Address
-        public async Task<MyResult> UpdateAddressId(int addressId, AddressDto addressDto)
+        public async Task<Result2> UpdateAddressId(int addressId, AddressDto addressDto)
         {
             var address = await unitOfWork.GetRepository<Address>().GetByIdAsync(addressId);
             if (address == null)
-                return MyResult.Failure(["No Address Found"]);
+                return Result2.Failure(AddressErrors.NotFound);
             
             // validate dto
             if (!Enum.TryParse<AddressType>(addressDto.AddressType, true, out var addressType))
             {
-                return MyResult.Failure(new List<string> { "Invalid address type." });
+                return Result2.Failure(AddressErrors.InvalidType);
             }
             address.City = addressDto.City;
             address.State = addressDto.State;
@@ -190,18 +186,18 @@ namespace BytStore.Application.Services
             await unitOfWork.GetRepository<Address>().AddAsync(address);
             await unitOfWork.SaveChangesAsync();
 
-            return MyResult.Success();
+            return Result2.Success();
         }
-        public async Task<MyResult>DeleteAddressAsync(int addressId)
+        public async Task<Result2> DeleteAddressAsync(int addressId)
         {
          
             var address = await unitOfWork.GetRepository<Address>().GetByIdAsync(addressId);
             if (address == null)
-                return MyResult.Failure(["No Address Found"]);
+                return Result2.Failure(AddressErrors.NotFound);
 
             unitOfWork.GetRepository<Address>().Delete(address);
             await unitOfWork.SaveChangesAsync();
-            return MyResult.Success();
+            return Result2.Success();
         }
 
     }

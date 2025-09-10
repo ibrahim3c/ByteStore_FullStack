@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ByteStore.Persistance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250901115012_addIdentity")]
-    partial class addIdentity
+    [Migration("20250910121744_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,8 +47,8 @@ namespace ByteStore.Persistance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean");
@@ -187,32 +187,6 @@ namespace ByteStore.Persistance.Migrations
                     b.ToTable("Brands", (string)null);
                 });
 
-            modelBuilder.Entity("ByteStore.Domain.Entities.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.ToTable("CartItems", (string)null);
-                });
-
             modelBuilder.Entity("ByteStore.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -242,11 +216,9 @@ namespace ByteStore.Persistance.Migrations
 
             modelBuilder.Entity("ByteStore.Domain.Entities.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("AppUserId")
                         .IsRequired()
@@ -285,8 +257,8 @@ namespace ByteStore.Persistance.Migrations
                     b.Property<int>("BillingAddressId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp with time zone");
@@ -433,8 +405,8 @@ namespace ByteStore.Persistance.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -449,31 +421,6 @@ namespace ByteStore.Persistance.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductReviews", (string)null);
-                });
-
-            modelBuilder.Entity("ByteStore.Domain.Entities.ShoppingCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
-
-                    b.ToTable("ShoppingCarts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -630,25 +577,6 @@ namespace ByteStore.Persistance.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("ByteStore.Domain.Entities.CartItem", b =>
-                {
-                    b.HasOne("ByteStore.Domain.Entities.Product", "Product")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ByteStore.Domain.Entities.ShoppingCart", "ShoppingCart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ShoppingCart");
-                });
-
             modelBuilder.Entity("ByteStore.Domain.Entities.Category", b =>
                 {
                     b.HasOne("ByteStore.Domain.Entities.Category", "ParentCategory")
@@ -765,17 +693,6 @@ namespace ByteStore.Persistance.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ByteStore.Domain.Entities.ShoppingCart", b =>
-                {
-                    b.HasOne("ByteStore.Domain.Entities.Customer", "Customer")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("ByteStore.Domain.Entities.ShoppingCart", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("ByteStore.Domain.Entities.AppRole", null)
@@ -846,9 +763,6 @@ namespace ByteStore.Persistance.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("ShoppingCart")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ByteStore.Domain.Entities.Order", b =>
@@ -858,18 +772,11 @@ namespace ByteStore.Persistance.Migrations
 
             modelBuilder.Entity("ByteStore.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("Images");
 
                     b.Navigation("OrderItems");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("ByteStore.Domain.Entities.ShoppingCart", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,7 +10,7 @@ namespace BytStore.Application.DTOs.Order
         public decimal TotalAmount { get; set; }
         public OrderStatus Status { get; set; }
 
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
 

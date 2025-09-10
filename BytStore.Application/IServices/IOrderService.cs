@@ -7,16 +7,16 @@ namespace BytStore.Application.IServices
 {
     public interface IOrderService
     {
-        Task<Result> PlaceOrderAsync(PlaceOrderDto dto, string userId);
-        Task<Result<IEnumerable<OrderDto>>> GetCustomerOrdersAsync(string userId);
-        Task<Result<OrderDto>> GetOrderByIdAsync(Guid orderId, string userId);
-        Task<Result> CancelOrderAsync(Guid orderId, string userId);
+        Task<Result2> PlaceOrderAsync(PlaceOrderDto dto, string userId);
+        Task<Result2<IEnumerable<OrderDto>>> GetCustomerOrdersAsync(string userId);
+        Task<Result2<OrderDto>> GetOrderByIdAsync(Guid orderId, string userId);
+        Task<Result2> CancelOrderAsync(Guid orderId, string userId);
 
         // Admin
-        Task<Result<IEnumerable<OrderDto>>> GetAllOrdersAsync();
-        Task<Result<PagedDto<OrderDto>>> GetAllOrderstsAsync(int pageNumber, int pageSize);
-        Task<OrderDto> GetOrderByIdAsync(Guid orderId);
-        Task<Result<IEnumerable<OrderDto>>> SearchOrdersAsync(string query);
-        Task<Result> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus);
+        Task<Result2<IEnumerable<OrderDto>>> GetAllOrdersAsync();
+        Task<Result2<PagedDto<OrderDto>>> GetAllOrderstsAsync(int pageNumber, int pageSize);
+        Task<Result2> GetOrderByIdAsync(Guid orderId);
+        Task<Result2<IEnumerable<OrderDto>>> SearchOrdersAsync(string query);
+        Task<Result2> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus);
     }
 }

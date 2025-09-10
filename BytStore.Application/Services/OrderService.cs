@@ -8,47 +8,47 @@ namespace BytStore.Application.Services
 {
     internal class OrderService : IOrderService
     {
-        public Task<Result> CancelOrderAsync(Guid orderId, string userId)
+        public Task<Result2> CancelOrderAsync(Guid orderId, string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<IEnumerable<OrderDto>>> GetAllOrdersAsync()
+        public Task<Result2<IEnumerable<OrderDto>>> GetAllOrdersAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<PagedDto<OrderDto>>> GetAllOrderstsAsync(int pageNumber, int pageSize)
+        public Task<Result2<PagedDto<OrderDto>>> GetAllOrderstsAsync(int pageNumber, int pageSize)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<IEnumerable<OrderDto>>> GetCustomerOrdersAsync(string userId)
+        public Task<Result2<IEnumerable<OrderDto>>> GetCustomerOrdersAsync(string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<OrderDto>> GetOrderByIdAsync(Guid orderId, string userId)
+        public Task<Result2<OrderDto>> GetOrderByIdAsync(Guid orderId, string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OrderDto> GetOrderByIdAsync(Guid orderId)
+        public Task<Result2> GetOrderByIdAsync(Guid orderId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> PlaceOrderAsync(PlaceOrderDto dto, string userId)
+        public Task<Result2> PlaceOrderAsync(PlaceOrderDto dto, string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<IEnumerable<OrderDto>>> SearchOrdersAsync(string query)
+        public Task<Result2<IEnumerable<OrderDto>>> SearchOrdersAsync(string query)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
+        public Task<Result2> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
         {
             throw new NotImplementedException();
         }

@@ -16,7 +16,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetAllCategories()
         {
             var result = await serviceManager.CategoryService.GetAllCategoriesAsync();
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/categories/5
@@ -24,7 +24,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetCategoryById(int id)
         {
             var result = await serviceManager.CategoryService.GetCategoryByIdAsync(id);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // POST: api/categories
@@ -37,7 +37,7 @@ namespace ByteStore.Presentation.Controllers
             // we can't use CreatedAtAction. A simple Ok or Created is used instead.
             return result.IsSuccess
                 ? StatusCode(201) // Returns 201 Created
-                : BadRequest(result.Errors);
+                : BadRequest(result.Error);
         }
 
         // PUT: api/categories/5
@@ -45,7 +45,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
         {
             var result = await serviceManager.CategoryService.UpdateCategoryAsync(id, categoryDto);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/categories/5
@@ -53,7 +53,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var result = await serviceManager.CategoryService.DeleteCategoryAsync(id);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
     }

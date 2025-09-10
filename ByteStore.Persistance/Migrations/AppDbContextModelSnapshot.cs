@@ -44,8 +44,8 @@ namespace ByteStore.Persistance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean");
@@ -213,11 +213,9 @@ namespace ByteStore.Persistance.Migrations
 
             modelBuilder.Entity("ByteStore.Domain.Entities.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("AppUserId")
                         .IsRequired()
@@ -256,8 +254,8 @@ namespace ByteStore.Persistance.Migrations
                     b.Property<int>("BillingAddressId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp with time zone");
@@ -404,8 +402,8 @@ namespace ByteStore.Persistance.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");

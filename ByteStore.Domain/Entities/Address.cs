@@ -14,7 +14,7 @@ namespace ByteStore.Domain.Entities
         public AddressType AddressType { get; set; } // "Shipping" or "Billing"
 
         // Foreign Key
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         // Navigation Property
         public Customer Customer { get; set; }
     }

@@ -16,31 +16,31 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetAllCustomers()
         {
             var result = await serviceManager.CustomerService.GetAllCustomerProfilesAsync();
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/customers/5
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetCustomerById(int customerId)
+        public async Task<IActionResult> GetCustomerById(Guid customerId)
         {
             var result = await serviceManager.CustomerService.GetCustomerProfileByIdAsync(customerId);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // PUT: api/customers/5
         [HttpPut("{customerId}")]
-        public async Task<IActionResult> UpdateCustomer(int customerId, [FromBody] CustomerUpdateDto customerDto)
+        public async Task<IActionResult> UpdateCustomer(Guid customerId, [FromBody] CustomerUpdateDto customerDto)
         {
             var result = await serviceManager.CustomerService.UpdateCustomerProfileAsync(customerId, customerDto);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/customers/5 (Soft Delete)
         [HttpDelete("{customerId}")]
-        public async Task<IActionResult> DeleteCustomer(int customerId)
+        public async Task<IActionResult> DeleteCustomer(Guid customerId)
         {
             var result = await serviceManager.CustomerService.DeleteCustomerAsync(customerId);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
         // --- Address Operations (Dependent Resource) ---
@@ -48,15 +48,15 @@ namespace ByteStore.Presentation.Controllers
 
         // GET: api/customers/5/addresses
         [HttpGet("{customerId}/addresses")]
-        public async Task<IActionResult> GetCustomerAddresses(int customerId)
+        public async Task<IActionResult> GetCustomerAddresses(Guid customerId)
         {
             var result = await serviceManager.CustomerService.GetCustomerAddressesAsync(customerId);
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/customers/5/addresses/3
         [HttpGet("{customerId}/addresses/{addressId}")]
-        public async Task<IActionResult> GetCustomerAddressById(int customerId, int addressId)
+        public async Task<IActionResult> GetCustomerAddressById(Guid customerId, int addressId)
         {
             // This endpoint uses the service method that finds an address by its ID.
             // The customerId in the route ensures the address belongs to the correct customer.
@@ -64,31 +64,31 @@ namespace ByteStore.Presentation.Controllers
 
             // Optional: Add a check to ensure the found address belongs to the customerId in the route
             // This would require a service method change or an extra check here.
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // POST: api/customers/5/addresses
         [HttpPost("{customerId}/addresses")]
-        public async Task<IActionResult> AddAddress(int customerId, [FromBody] AddressDto addressDto)
+        public async Task<IActionResult> AddAddress(Guid customerId, [FromBody] AddressDto addressDto)
         {
             var result = await serviceManager.CustomerService.AddAddressAsync(customerId, addressDto);
-            return result.IsSuccess ? StatusCode(201) : BadRequest(result.Errors); // 201 Created
+            return result.IsSuccess ? StatusCode(201) : BadRequest(result.Error); // 201 Created
         }
 
         // PUT: api/customers/5/addresses/3
         [HttpPut("{customerId}/addresses/{addressId}")]
-        public async Task<IActionResult> UpdateAddress(int customerId, int addressId, [FromBody] AddressDto addressDto)
+        public async Task<IActionResult> UpdateAddress(Guid customerId, int addressId, [FromBody] AddressDto addressDto)
         {
             var result = await serviceManager.CustomerService.UpdateAddressId(addressId, addressDto);
-            return result.IsSuccess ? NoContent() : BadRequest(result.Errors);
+            return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
         // DELETE: api/customers/5/addresses/3
         [HttpDelete("{customerId}/addresses/{addressId}")]
-        public async Task<IActionResult> DeleteAddress(int customerId, int addressId)
+        public async Task<IActionResult> DeleteAddress(Guid customerId, int addressId)
         {
             var result = await serviceManager.CustomerService.DeleteAddressAsync(addressId);
-            return result.IsSuccess ? NoContent() : NotFound(result.Errors);
+            return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
 
@@ -98,7 +98,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetAllAddresses()
         {
             var result = await serviceManager.CustomerService.GetAllAddresses();
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Errors);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
     }

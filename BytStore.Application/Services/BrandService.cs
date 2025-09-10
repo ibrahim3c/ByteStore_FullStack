@@ -15,7 +15,7 @@ namespace BytStore.Application.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<BrandDto>>> GetAllBrandsAsync()
+        public async Task<Result2<IEnumerable<BrandDto>>> GetAllBrandsAsync()
         {
             var brands = await unitOfWork.GetRepository<Brand>().GetAllAsync();
             var brandsDto = brands.Select(c => new BrandDto
@@ -24,22 +24,22 @@ namespace BytStore.Application.Services
                 Name = c.Name,
                 Description = c.Description
             });
-            return Result<IEnumerable<BrandDto>>.Success(brandsDto);
+            return Result2<IEnumerable<BrandDto>>.Success(brandsDto);
         }
-        public async Task<Result<BrandDto>> GetBrandByIdAsync(int brandId)
+        public async Task<Result2<BrandDto>> GetBrandByIdAsync(int brandId)
         {
             var category = await unitOfWork.GetRepository<Brand>().GetByIdAsync(brandId);
             if (category == null)
-                return Result<BrandDto>.Failure(["Brand not found"]);
+                return Result2<BrandDto>.Failure(BrandErrors.BrandNotFound);
             var categoryDto = new BrandDto
             {
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description
             };
-            return Result<BrandDto>.Success(categoryDto);
+            return Result2<BrandDto>.Success(categoryDto);
         }
-        public async Task<MyResult> CreateBrandAsync(BrandDto brandDto)
+        public async Task<Result2> CreateBrandAsync(BrandDto brandDto)
         {
             // validate dto
             var brand = new Brand
@@ -49,28 +49,28 @@ namespace BytStore.Application.Services
             };
             await unitOfWork.GetRepository<Brand>().AddAsync(brand);
             await unitOfWork.SaveChangesAsync();
-            return MyResult.Success();
+            return Result2.Success();
         }
-        public async Task<MyResult> UpdateBrandAsync(int brandId, BrandDto brandDto)
+        public async Task<Result2> UpdateBrandAsync(int brandId, BrandDto brandDto)
         {
             // validate dto
             var brand = await unitOfWork.GetRepository<Brand>().GetByIdAsync(brandId);
             if (brand == null)
-                return MyResult.Failure(["brand not found"]);
+                return Result2.Failure(BrandErrors.BrandNotFound);
             brand.Name = brandDto.Name;
             brand.Description = brandDto.Description;
             unitOfWork.GetRepository<Brand>().Update(brand);
             await unitOfWork.SaveChangesAsync();
-            return MyResult.Success();
+            return Result2.Success();
         }
-        public async Task<MyResult> DeleteBrandAsync(int brandId)
+        public async Task<Result2> DeleteBrandAsync(int brandId)
         {
             var brand = await unitOfWork.GetRepository<Brand>().GetByIdAsync(brandId);
             if (brand == null)
-                return MyResult.Failure(["Brand not found"]);
+                return Result2.Failure(BrandErrors.BrandNotFound);
             unitOfWork.GetRepository<Brand>().Delete(brand);
             await unitOfWork.SaveChangesAsync();
-            return MyResult.Success();
+            return Result2.Success();
         }
 
 

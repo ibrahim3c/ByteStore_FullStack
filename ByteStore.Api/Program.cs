@@ -1,5 +1,7 @@
 using ByteStore.Api.Extenstions;
 using ByteStore.Api.Middlewares;
+using ByteStore.Persistance.Database;
+using ByteStore.Persistance.Seeders;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -48,12 +50,12 @@ namespace ByteStore.Api
             app.MapControllers();
 
 
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            //    await  new CategorySeeder(dbContext).SeedAsync();
-            //    await new BrandSeeder(dbContext).SeedAsync();;
-            //}
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await new CategorySeeder(dbContext).SeedAsync();
+                await new BrandSeeder(dbContext).SeedAsync(); ;
+            }
 
             // it cause problem of more than dbContext was found
             //  Map Health Checks JSON Endpoint => normal health check just api return json response

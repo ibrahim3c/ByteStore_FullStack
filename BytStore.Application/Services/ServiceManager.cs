@@ -21,7 +21,7 @@ namespace BytStore.Application.Services
             IProductService productService,
             IOrderService orderService,
             ICustomerService customerService,
-            Lazy<IShoppingCartService> shoppingCartService)
+            IShoppingCartService shoppingCartService)
         {
             _authService = new Lazy<IAuthService>(() => authService);
             _brandService = new Lazy<IBrandService>(() => brandService);
@@ -29,8 +29,9 @@ namespace BytStore.Application.Services
             _productService = new Lazy<IProductService>(() => productService);
             _orderService = new Lazy<IOrderService>(() => orderService);
             _customerService = new Lazy<ICustomerService>(() => customerService);
-            _shoppingCartService = shoppingCartService;
+            _shoppingCartService = new Lazy<IShoppingCartService>(() => shoppingCartService);
         }
+
 
         public IAuthService AuthService => _authService.Value;
         public IBrandService BrandService => _brandService.Value;

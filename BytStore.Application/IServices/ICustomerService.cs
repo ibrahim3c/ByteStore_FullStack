@@ -8,17 +8,17 @@ namespace BytStore.Application.IServices
     public interface ICustomerService
     {
         // Customer Profile
-        Task<Result<CustomerDto>> GetCustomerProfileByIdAsync(int customerId);
-        Task<Result<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync();
-        Task<MyResult> UpdateCustomerProfileAsync(int customerId, CustomerUpdateDto customerDto);
-        Task<MyResult> DeleteCustomerAsync(int customerId);
+        Task<Result2<CustomerDto>> GetCustomerProfileByIdAsync(Guid customerId);
+        Task<Result2<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync();
+        Task<Result2> UpdateCustomerProfileAsync(Guid customerId, CustomerUpdateDto customerDto);
+        Task<Result2> DeleteCustomerAsync(Guid customerId);
 
         // Addresses
-        Task<Result<IEnumerable<AddressDto>>> GetCustomerAddressesAsync(int customerId);
-        Task<Result<AddressDto>> GetAddressByIdAsync(int addressId);
-        Task<Result<IEnumerable<AddressDto>>> GetAllAddresses();
-        Task<MyResult> AddAddressAsync(int customerId, AddressDto addressDto);
-        Task<MyResult> UpdateAddressId(int addressId, AddressDto addressDto);
-        Task<MyResult> DeleteAddressAsync(int addressId);
+        Task<Result2<IEnumerable<AddressDto>>> GetCustomerAddressesAsync(Guid customerId);
+        Task<Result2<AddressDto>> GetAddressByIdAsync(int addressId);
+        Task<Result2<IEnumerable<AddressDto>>> GetAllAddresses();
+        Task<Result2> AddAddressAsync(Guid customerId, AddressDto addressDto);
+        Task<Result2> UpdateAddressId(int addressId, AddressDto addressDto);
+        Task<Result2> DeleteAddressAsync(int addressId);
     }
 }

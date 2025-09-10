@@ -8,6 +8,10 @@
     {
         public static readonly Error CategoryNotFound = new("Category.NotFound", "The Category not found");
     }
+    public static class BrandErrors
+    {
+        public static readonly Error BrandNotFound = new("Brand.NotFound", "The Brand not found");
+    }
     public static class AddressErrors
     {
         public static readonly Error NotFound =
@@ -25,6 +29,17 @@
     {
         public static readonly Error NotFound =
             new("User.NotFound", "The User was not found");
+    }
+    public static class FileErrors
+    {
+        public static readonly Error Empty =
+            new("File.Empty", "The file is empty.");
+
+        public static readonly Error OnlyImage =
+            new("File.OnlyImage", "Only image files allowed.");
+
+        public static readonly Error FileIdNotFound =
+            new("File.FileIdNotFound", "FileId not found");
     }
     public static class ProductErrors
     {
@@ -86,5 +101,4 @@
         public static readonly Error ClearFailed =
             new("Cart.ClearFailed", "Failed to clear the shopping cart");
     }
-
 }

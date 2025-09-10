@@ -5,10 +5,10 @@ namespace BytStore.Application.IServices
 {
     public interface ICategoryService
     {
-        Task<Result<IEnumerable<CategoryDto>>> GetAllCategoriesAsync();
-        Task<Result<CategoryDto>> GetCategoryByIdAsync(int categoryId);
-        Task<MyResult> CreateCategoryAsync(CategoryDto categoryDto);
-        Task<MyResult> UpdateCategoryAsync(int categoryId, CategoryDto categoryDto);
-        Task<MyResult> DeleteCategoryAsync(int categoryId);
+        Task<Result2<IEnumerable<CategoryDto>>> GetAllCategoriesAsync();
+        Task<Result2<CategoryDto>> GetCategoryByIdAsync(int categoryId);
+        Task<Result2> CreateCategoryAsync(CategoryDto categoryDto);
+        Task<Result2> UpdateCategoryAsync(int categoryId, CategoryDto categoryDto);
+        Task<Result2> DeleteCategoryAsync(int categoryId);
     }
 }

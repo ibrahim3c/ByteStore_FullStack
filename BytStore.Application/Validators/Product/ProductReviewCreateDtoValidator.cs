@@ -8,7 +8,7 @@ namespace BytStore.Application.Validators.Product
         public ProductReviewCreateDtoValidator()
         {
             RuleFor(x => x.CustomerId)
-                .GreaterThan(0).WithMessage("CustomerId must be greater than 0.");
+                .NotEmpty().WithMessage("CustomerId Required.");
 
             RuleFor(x => x.Rating)
                 .InclusiveBetween(1, 5).WithMessage("Rating must be between 1 and 5.");
