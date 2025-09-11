@@ -101,4 +101,24 @@
         public static readonly Error ClearFailed =
             new("Cart.ClearFailed", "Failed to clear the shopping cart");
     }
+    public static class OrderErrors
+    {
+        public static readonly Error NotFound =
+            new("Order.NotFound", "The order was not found");
+
+        public static readonly Error InvalidStatus =
+            new("Order.InvalidStatus", "The provided order status is invalid");
+
+        public static readonly Error SaveFailed =
+            new("Order.SaveFailed", "Failed to save the order");
+
+        public static readonly Error ItemNotFound =
+            new("Order.ItemNotFound", "The order item was not found");
+
+        public static readonly Error InvalidCustomer =
+            new("Order.InvalidCustomer", "The customer for this order is invalid");
+
+        public static readonly Error AddressNotFound =
+            new("Order.AddressNotFound", "The shipping or billing address was not found");
+    }
 }

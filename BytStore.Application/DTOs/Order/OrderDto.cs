@@ -1,5 +1,5 @@
 ﻿using ByteStore.Domain.Abstractions.Enums;
-using ByteStore.Domain.Entities;
+using BytStore.Application.DTOs.Customer;
 
 namespace BytStore.Application.DTOs.Order
 {
@@ -11,8 +11,11 @@ namespace BytStore.Application.DTOs.Order
         public OrderStatus Status { get; set; }
 
         public Guid CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public int ShippingAddressId { get; set; }
+        public OrderAddressDto ShippingAddress { get; set; }
         public int BillingAddressId { get; set; }
+        public OrderAddressDto BillingAddress { get; set; }
 
         public ICollection<GetOrderItemDto> OrderItems { get; set; }
     }

@@ -331,9 +331,14 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
 
  * “The ServiceManager does not replace registering services in the Dependency Injection (DI) container.”
 
+ * Shipping Address: عنوان الشحن
+    المكان اللي هييجي له المنتج اللي اشتريته
+    مثال: أنا بطلب لابتوب وعايزه يوصل البيت: 123 شارع التحرير، القاهرة
+* Billing Address: عنوان الفاتورة/الدفع
+    العنوان اللي مربوط بالبطاقة البنكية أو طريقة الدفع
+    البطاقة بتاعتي مسجلة في شغلي: 456 شارع الأعمال، القاهرة
+
 // TODO:
     check this endpoint in Customer Controller => GetCustomerAddressById
-    do migration for address
     Image Service
-    Review allowed only if customer purchased the product.
     Golbal query filter for customer and appUser

@@ -7,7 +7,7 @@ namespace ByteStore.Domain.Entities
         public Guid Id { get; set; }= Guid.NewGuid();
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
         public decimal TotalAmount { get; set; }
-        public OrderStatus Status { get; set; } // e.g., "Pending", "Processing", "Shipped", "Delivered", "Cancelled"
+        public OrderStatus Status { get; set; } = OrderStatus.Pending; // e.g., "Pending", "Processing", "Shipped", "Delivered", "Cancelled"
 
         // Foreign Keys
         public Guid CustomerId { get; set; }

@@ -1,15 +1,13 @@
-﻿namespace BytStore.Application.DTOs.Customer
+﻿namespace BytStore.Application.DTOs.Order
 {
-    public class AddressDto
+    public class OrderAddressDto
     {
-        public int Id { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public bool IsPrimary { get; set; }
-        public string AddressType { get; set; } // "Shipping" or "Billing"
-        public string CustomerName {  get; set; }
+
     }
 }
