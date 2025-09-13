@@ -9,6 +9,8 @@
         public string ImageUrl { get; set; } = string.Empty;
         public string? BrandName { get; set; } = string.Empty; // optional
         public string CategoryName { get; set; } = string.Empty; // i don't know 
+        public decimal TotalPrice => Quantity * Price;
+
     }
 
 }

@@ -118,7 +118,15 @@
         public static readonly Error InvalidCustomer =
             new("Order.InvalidCustomer", "The customer for this order is invalid");
 
-        public static readonly Error AddressNotFound =
-            new("Order.AddressNotFound", "The shipping or billing address was not found");
+        public static readonly Error InsufficientStock =
+       new("Order.InsufficientStock", "Not enough stock for one or more items");
+
+        public static readonly Error InvalidCustomerId =
+        new("Order.InvalidCustomerId", "The provided customer ID is not valid.");
+        public static readonly Error BillingAddressNotFound =
+      new("Order.BillingAddressNotFound", "The billing address was not found.");
+
+        public static readonly Error ShippingAddressNotFound =
+            new("Order.ShippingAddressNotFound", "The shipping address was not found.");
     }
 }

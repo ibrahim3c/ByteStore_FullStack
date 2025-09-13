@@ -1,21 +1,23 @@
-﻿using ByteStore.Domain.Abstractions.Constants;
-using ByteStore.Domain.Abstractions.Enums;
+﻿using ByteStore.Domain.Abstractions.Enums;
 using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Order;
 using BytStore.Application.DTOs.Product;
 using BytStore.Application.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace BytStore.Application.Services
 {
     internal class OrderService : IOrderService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IShoppingCartRepository shoppingCartRepository;
 
-        public OrderService(IUnitOfWork unitOfWork )
+        public OrderService(IUnitOfWork unitOfWork,IShoppingCartRepository shoppingCartRepository )
         {
             this.unitOfWork = unitOfWork;
+            this.shoppingCartRepository = shoppingCartRepository;
         }
         public async Task<Result2<IEnumerable<OrderDto>>> GetAllOrdersAsync()
         {
@@ -208,13 +210,75 @@ namespace BytStore.Application.Services
 
             return Result2<OrderDto>.Success(orderDto);
         }
-
-        public Task<Result2> PlaceOrderAsync(PlaceOrderDto dto, string userId)
+        public async Task<Result2> PlaceOrderAsync(PlaceOrderDto dto)
         {
-            throw new NotImplementedException();
+            var cart = await shoppingCartRepository.GetCartAsync(dto.CustomerId);
+            if (cart is null)
+                return Result2.Failure(CartErrors.NotFound);
+
+            if (!Guid.TryParse(dto.CustomerId, out var customerId))
+                return Result2.Failure(OrderErrors.InvalidCustomerId);
+
+            var billingAddress = await unitOfWork.GetRepository<Address>().AnyAsync(a=>a.CustomerId==customerId && a.AddressType==AddressType.Billing);
+            if (billingAddress)
+                return Result2.Failure(OrderErrors.BillingAddressNotFound);
+
+            var shippingAddress = await unitOfWork.GetRepository<Address>().AnyAsync(a => a.CustomerId == customerId && a.AddressType == AddressType.Shipping);
+            if (shippingAddress)
+                return Result2.Failure(OrderErrors.ShippingAddressNotFound);
+
+            var order = new Order
+            {
+                BillingAddressId = dto.BillingAddressId,
+                // guid               string
+                CustomerId = customerId,
+                ShippingAddressId = dto.ShippingAddressId
+            };
+            decimal totalAmount = 0;
+            foreach (var item in cart.CartItems)
+            {
+                var product=await unitOfWork.ProductRepository.GetByIdAsync(item.ProductId);
+                if(product == null)
+                    return Result2.Failure(OrderErrors.ItemNotFound);
+
+                if(product.StockQuantity <item.Quantity)
+                    // give me proper error 
+                    return Result2.Failure(OrderErrors.InsufficientStock);
+
+                var orderItem = new OrderItem
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitPrice = product.Price,
+                    OrderId=order.Id
+                };
+
+                totalAmount += item.TotalPrice;
+                order.OrderItems.Add(orderItem);
+
+            // Update product stock
+            product.StockQuantity -= item.Quantity;
+            unitOfWork.ProductRepository.Update(product);
+            }
+
+            order.TotalAmount = totalAmount;
+
+            // Save order
+            await unitOfWork.OrderRepository.AddAsync(order);
+            await unitOfWork.SaveChangesAsync();
+
+            // Clear shopping cart
+            await shoppingCartRepository.ClearCartAsync(dto.CustomerId);
+
+            return Result2.Success();
         }
         public async Task<Result2> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
         {
+            // check if newStatus is valid in OrderStatus enum
+            if (!Enum.IsDefined(typeof(OrderStatus), newStatus))
+            {
+                return Result2.Failure(OrderErrors.InvalidStatus);
+            };
             var order = await unitOfWork.OrderRepository.FindAsync(o => o.Id == orderId);
             if (order is null)
                 return Result2.Failure(OrderErrors.NotFound);

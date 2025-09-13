@@ -7,7 +7,7 @@ namespace BytStore.Application.IServices
 {
     public interface IOrderService
     {
-        Task<Result2> PlaceOrderAsync(PlaceOrderDto dto, string userId);
+        Task<Result2> PlaceOrderAsync(PlaceOrderDto dto);
         Task<Result2<IEnumerable<OrderDto>>> GetCustomerOrdersAsync(Guid customerId);
         Task<Result2<OrderDto>> GetOrderByIdAsync(Guid orderId);
 
