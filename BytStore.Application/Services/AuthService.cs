@@ -20,16 +20,14 @@ namespace BytStore.Application.Services
         private readonly IUnitOfWork uow;
         private readonly IOptionsMonitor<JWT> JWTConfigs;
         private readonly ITokenGenerator tokenGenerator;
-        //private readonly IMailingService mailingService;
-        //private readonly IValidator<UserRegisterDto> userRegistValidator;
+        private readonly IEmailService emailService;
 
         public AuthService(UserManager<AppUser> userManager
             , RoleManager<AppRole> roleManager
             , IUnitOfWork uow
             , IOptionsMonitor<JWT> JWTConfigs
             , ITokenGenerator tokenGenerator
-            //, IMailingService mailingService
-            //, IValidator<UserRegisterDto> userRegisterValidator
+            ,IEmailService emailService
 )
         {
             this.userManager = userManager;
@@ -37,19 +35,12 @@ namespace BytStore.Application.Services
             this.uow = uow;
             this.JWTConfigs = JWTConfigs;
             this.tokenGenerator = tokenGenerator;
-            //this.mailingService = mailingService;
-            //this.userRegistValidator = userRegisterValidator;
+            this.emailService = emailService;
         }
 
         // JWT Token With Email Verification With RefreshToken
         public async Task<MyResult> RegisterAsync(UserRegisterDto userRegisterDto, string scheme, string host)
         {
-            //var validationResult = userRegistValidator.Validate(userRegisterDto);
-
-            //if (!validationResult.IsValid)
-            //{
-            //    return MyResult.Failure(validationResult.Errors.Select(e => e.ErrorMessage).ToList());
-            //}
 
             //  Create a new user
             var user = new AppUser
@@ -193,7 +184,7 @@ namespace BytStore.Application.Services
             var emailBody = $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>Confirm Email</a>";
 
             // send Email
-            //await mailingService.SendMailBySendGridAsync(user.Email!, "Email Confirmation", emailBody);
+            await emailService.SendMailByBrevoAsync(user.Email!, "Email Confirmation", emailBody);
 
         }
 
@@ -305,8 +296,8 @@ namespace BytStore.Application.Services
             // Construct the reset link
             var callbackUrl = $"https://full-stack-website-react-asp-net-eight.vercel.app/reset-password?userId={user.Id}&code={Uri.EscapeDataString(code)}";
             // Send email with the reset link
-            //await mailingService.SendMailBySendGridAsync(user.Email, "Reset Your Password",
-            //    $"Please reset your password by clicking this link: <a href='{callbackUrl}'>Reset Password</a>");
+            await emailService.SendMailByBrevoAsync(user.Email, "Reset Your Password",
+                $"Please reset your password by clicking this link: <a href='{callbackUrl}'>Reset Password</a>");
         }
         public async Task<Result<string>> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {

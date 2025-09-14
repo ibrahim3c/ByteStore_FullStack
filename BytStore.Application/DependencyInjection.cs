@@ -13,6 +13,9 @@ namespace BytStore.Application
             // Configure ImageKitOptions using the "ImageKit" section from configuration
             services.Configure<ImageKitOptions>(configuration.GetSection("ImageKitOptions"));
 
+            // Configure ImageKitOptions using the "ImageKit" section from configuration
+            services.Configure<Brevo>(configuration.GetSection("Brevo"));
+
             // register the services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBrandService, BrandService>();

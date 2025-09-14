@@ -338,6 +338,8 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     العنوان اللي مربوط بالبطاقة البنكية أو طريقة الدفع
     البطاقة بتاعتي مسجلة في شغلي: 456 شارع الأعمال، القاهرة
 
+* i use Brevo email provider in email Service
+
 // TODO:
     don't forget payment Methods
     check this endpoint in Customer Controller => GetCustomerAddressById

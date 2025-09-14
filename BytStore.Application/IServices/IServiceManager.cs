@@ -9,6 +9,8 @@
         IOrderService OrderService { get; }
         ICustomerService CustomerService { get; }
         IShoppingCartService ShoppingCartService { get; }
+        IEmailService EmailService { get; }
+        IImageService ImageService { get; }
 
     }
 }
