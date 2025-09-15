@@ -11,6 +11,8 @@
         IShoppingCartService ShoppingCartService { get; }
         IEmailService EmailService { get; }
         IImageService ImageService { get; }
+        IRolesService RoleService { get; }
+        IUserService UserService { get; }
 
     }
 }

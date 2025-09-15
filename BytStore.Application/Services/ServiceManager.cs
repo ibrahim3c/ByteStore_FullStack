@@ -14,6 +14,8 @@ namespace BytStore.Application.Services
 
         private readonly Lazy<IEmailService> _emailService;
         private readonly Lazy<IImageService> _imageService;
+        private readonly Lazy<IRolesService> _roleService;
+        private readonly Lazy<IUserService> _userService;
 
         // someone said using lazy loading
 
@@ -26,7 +28,9 @@ namespace BytStore.Application.Services
             ICustomerService customerService,
             IShoppingCartService shoppingCartService,
             IEmailService emailService,
-            IImageService imageService)
+            IImageService imageService,
+            IUserService userService,
+            IRolesService roleService)
         {   
             _authService = new Lazy<IAuthService>(() => authService);
             _brandService = new Lazy<IBrandService>(() => brandService);
@@ -37,6 +41,8 @@ namespace BytStore.Application.Services
             _shoppingCartService = new Lazy<IShoppingCartService>(() => shoppingCartService);
             _emailService = new Lazy<IEmailService>(() => emailService);
             _imageService = new Lazy<IImageService>(() => imageService);
+            _roleService = new Lazy<IRolesService>(() => roleService);
+            _userService = new Lazy<IUserService>(() => userService);
         }
 
 
@@ -49,5 +55,7 @@ namespace BytStore.Application.Services
         public IShoppingCartService ShoppingCartService => _shoppingCartService.Value;
         public IEmailService EmailService => _emailService.Value;
         public IImageService ImageService => _imageService.Value;
+        public IRolesService RoleService => _roleService.Value;
+        public IUserService UserService => _userService.Value;
     }
 }

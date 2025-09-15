@@ -25,6 +25,8 @@ namespace BytStore.Application
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IRolesService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
 
             //  Register all FluentValidation validators
             services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);

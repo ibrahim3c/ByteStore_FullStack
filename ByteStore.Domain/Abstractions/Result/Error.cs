@@ -29,6 +29,15 @@
     {
         public static readonly Error NotFound =
             new("User.NotFound", "The User was not found");
+        public static readonly Error UpdateFailed =
+            new("User.UpdateFailed", "Failed to update the user");
+        public static readonly Error AddFailed =
+    new("User.AddFailed", "Failed to add the user");
+        public static readonly Error DeleteFailed =
+            new("User.DeleteFailed", "Failed to delete the user");
+        public static readonly Error RequiredEmail =
+    new("User.RequiredEmail", "The Email is required");
+
     }
     public static class FileErrors
     {
@@ -128,5 +137,25 @@
 
         public static readonly Error ShippingAddressNotFound =
             new("Order.ShippingAddressNotFound", "The shipping address was not found.");
+    }
+    public static class RoleErrors
+    {
+        public static readonly Error NotFound =
+            new("Role.NotFound", "The role was not found");
+
+        public static readonly Error AlreadyExists =
+            new("Role.AlreadyExists", "The role already exists");
+
+        public static readonly Error CreateFailed =
+            new("Role.CreateFailed", "Failed to create the role");
+
+        public static readonly Error UpdateFailed =
+            new("Role.UpdateFailed", "Failed to update the role");
+
+        public static readonly Error DeleteFailed =
+            new("Role.DeleteFailed", "Failed to delete the role");
+
+        public static readonly Error InvalidRoleName =
+            new("Role.InvalidRoleName", "The role name is invalid");
     }
 }
