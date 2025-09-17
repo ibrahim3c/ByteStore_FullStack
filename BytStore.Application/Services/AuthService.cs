@@ -16,24 +16,17 @@ namespace BytStore.Application.Services
     public sealed class AuthService:IAuthService 
     {
         private readonly UserManager<AppUser> userManager;
-        private readonly RoleManager<AppRole> roleManager;
         private readonly IUnitOfWork uow;
-        private readonly IOptionsMonitor<JWT> JWTConfigs;
         private readonly ITokenGenerator tokenGenerator;
         private readonly IEmailService emailService;
 
         public AuthService(UserManager<AppUser> userManager
-            , RoleManager<AppRole> roleManager
             , IUnitOfWork uow
-            , IOptionsMonitor<JWT> JWTConfigs
             , ITokenGenerator tokenGenerator
-            ,IEmailService emailService
-)
+            ,IEmailService emailService)
         {
             this.userManager = userManager;
-            this.roleManager = roleManager;
             this.uow = uow;
-            this.JWTConfigs = JWTConfigs;
             this.tokenGenerator = tokenGenerator;
             this.emailService = emailService;
         }

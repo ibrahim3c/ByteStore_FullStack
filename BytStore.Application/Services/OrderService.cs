@@ -230,7 +230,6 @@ namespace BytStore.Application.Services
             var order = new Order
             {
                 BillingAddressId = dto.BillingAddressId,
-                // guid               string
                 CustomerId = customerId,
                 ShippingAddressId = dto.ShippingAddressId
             };
@@ -242,7 +241,6 @@ namespace BytStore.Application.Services
                     return Result2.Failure(OrderErrors.ItemNotFound);
 
                 if(product.StockQuantity <item.Quantity)
-                    // give me proper error 
                     return Result2.Failure(OrderErrors.InsufficientStock);
 
                 var orderItem = new OrderItem

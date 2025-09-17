@@ -14,6 +14,9 @@ namespace ByteStore.Domain.Entities
         public int ShippingAddressId { get; set; }
         public int BillingAddressId { get; set; }
 
+        public string PaymentIntentId { get; set; }  //for stripe
+
+
         // Navigation Properties
         public Customer Customer { get; set; }
         public Address ShippingAddress { get; set; }

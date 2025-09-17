@@ -3,6 +3,8 @@
     public class ShoppingCart
     {
         public string CustomerId { get; set; }
+        public string PaymentIntentId { get; set; }  // stored in order
+        public string ClientSecret { get; set; }      //  send it to front
         public List<CartItem> CartItems { get; set; } = new();
     }
 }

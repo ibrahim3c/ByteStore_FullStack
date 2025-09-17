@@ -12,9 +12,9 @@ namespace ByteStore.Persistance.Services
         private readonly Brevo _brevo;
         private readonly TransactionalEmailsApi _apiInstance;
 
-        public EmailService(IOptions<Brevo> brevo)
+        public EmailService(IOptionsMonitor<Brevo> brevo)
         {
-            _brevo = brevo.Value;
+            _brevo = brevo.CurrentValue;
 
             // Validate required configuration
             if (string.IsNullOrEmpty(_brevo.ApiKey))

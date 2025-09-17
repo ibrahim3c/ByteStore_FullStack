@@ -16,6 +16,7 @@ namespace BytStore.Application.Services
         private readonly Lazy<IImageService> _imageService;
         private readonly Lazy<IRolesService> _roleService;
         private readonly Lazy<IUserService> _userService;
+        private readonly Lazy<IPaymentService> _paymentService;
 
         // someone said using lazy loading
 
@@ -30,7 +31,8 @@ namespace BytStore.Application.Services
             IEmailService emailService,
             IImageService imageService,
             IUserService userService,
-            IRolesService roleService)
+            IRolesService roleService,
+            IPaymentService paymentService)
         {   
             _authService = new Lazy<IAuthService>(() => authService);
             _brandService = new Lazy<IBrandService>(() => brandService);
@@ -43,6 +45,7 @@ namespace BytStore.Application.Services
             _imageService = new Lazy<IImageService>(() => imageService);
             _roleService = new Lazy<IRolesService>(() => roleService);
             _userService = new Lazy<IUserService>(() => userService);
+            _paymentService = new Lazy<IPaymentService>(() => paymentService);
         }
 
 
@@ -57,5 +60,6 @@ namespace BytStore.Application.Services
         public IImageService ImageService => _imageService.Value;
         public IRolesService RoleService => _roleService.Value;
         public IUserService UserService => _userService.Value;
+        public IPaymentService PaymentService => _paymentService.Value;
     }
 }

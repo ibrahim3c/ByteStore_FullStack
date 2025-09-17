@@ -13,6 +13,7 @@
         IImageService ImageService { get; }
         IRolesService RoleService { get; }
         IUserService UserService { get; }
+        IPaymentService PaymentService { get; }
 
     }
 }

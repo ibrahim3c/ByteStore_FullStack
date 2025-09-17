@@ -13,8 +13,10 @@ namespace BytStore.Application
             // Configure ImageKitOptions using the "ImageKit" section from configuration
             services.Configure<ImageKitOptions>(configuration.GetSection("ImageKitOptions"));
 
-            // Configure ImageKitOptions using the "ImageKit" section from configuration
+            // Configure brevo for email 
             services.Configure<Brevo>(configuration.GetSection("Brevo"));
+            // configure stripe for payment
+            services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
 
             // register the services
             services.AddScoped<IAuthService, AuthService>();

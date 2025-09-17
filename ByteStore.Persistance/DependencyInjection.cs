@@ -46,6 +46,7 @@ namespace ByteStore.Persistance
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             #region JWTConfigs
             //(1)
             // identity ===> i spend one day to find out that you are the problem => it should be above JWTConfigs :(
