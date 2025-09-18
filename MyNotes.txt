@@ -351,6 +351,8 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
         then total = subtotal + shoppingPricee
         use PaymentIntentService to create or update intent 
         and then return intentDto with ClientSecret (to frontend) and PaymentIntentId (stored in order)
+    u need to go to order service in place order method and add couple of codes to when u place order u need to store paymentIntentId in order too
+    and u will solve promblem of duplicate of order too 
 
 * Understand PaymentIntendId and ClientSecret 
     * Stripe Payment Flow
@@ -383,6 +385,11 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     Order = If payment succeeded → create Order + link PaymentIntentId.
     Delivery = Ship based on DeliveryMethod.
     Status Updates = Pending → Paid → Shipped → Delivered.
+
+* Authorization: 
+    Use [Authorize] → for both Admin & User.
+    Use [Authorize(Roles = Roles.AdminRole)] → for Admin-only.
+    Use [Authorize(Roles = Roles.UserRole)] → for User-only.
 
 // TODO:
     check this endpoint in Customer Controller => GetCustomerAddressById

@@ -3,6 +3,7 @@ using ByteStore.Domain.Abstractions.Result;
 using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Auth;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -17,6 +18,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
             
@@ -25,6 +27,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpGet("verify-email")]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyEmail([FromQuery] string userId, [FromQuery] string code)
         {
             var result = await serviceManager.AuthService.VerifyEmailAsync(userId, code);
@@ -32,6 +35,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResult>> Login([FromBody] UserLoginDto dto)
         {
             var result = await serviceManager.AuthService.LoginAsync(dto);
@@ -39,6 +43,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResult>> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var result = await serviceManager.AuthService.RefreshTokenAsync(request.RefreshToken);
@@ -53,6 +58,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpPost("revoke-token")]
+        [Authorize]
         public async Task<IActionResult> RevokeToken([FromBody] RefreshTokenRequest request)
             {
             string token = request.RefreshToken ?? HttpContext.Request.Cookies[Keys.RefreshTokenKey];
@@ -64,6 +70,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpPost("forgot-password")]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
             var result = await serviceManager.AuthService.ForgotPasswordAsync(dto, Request.Scheme, Request.Host.Value);
@@ -71,6 +78,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         [HttpPost("reset-password")]
+        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
             var result = await serviceManager.AuthService.ResetPasswordAsync(dto);

@@ -1,10 +1,12 @@
 ﻿using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.ShoppingCart;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize]
     public class ShoppingCartsController : BaseController
     {
         public ShoppingCartsController(IServiceManager serviceManager) : base(serviceManager)

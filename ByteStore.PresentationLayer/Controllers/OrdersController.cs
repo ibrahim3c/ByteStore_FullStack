@@ -1,11 +1,14 @@
-﻿using ByteStore.Domain.Abstractions.Enums;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.Domain.Abstractions.Enums;
 using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Order;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize]
     public class OrdersController : BaseController
     {
         public OrdersController(IServiceManager serviceManager) : base(serviceManager)
@@ -15,6 +18,7 @@ namespace ByteStore.Presentation.Controllers
 
         // GET: api/orders
         [HttpGet]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetAllOrders()
         {
             var result = await serviceManager.OrderService.GetAllOrdersAsync();
@@ -26,6 +30,7 @@ namespace ByteStore.Presentation.Controllers
 
         // GET: api/orders/paged?pageNumber=1&pageSize=10
         [HttpGet("paged")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetAllOrdersPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var result = await serviceManager.OrderService.GetAllOrderstsAsync(pageNumber, pageSize);
@@ -59,6 +64,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/orders
         [HttpPost]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderDto dto)
         {
             var result = await serviceManager.OrderService.PlaceOrderAsync(dto);
@@ -70,6 +76,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/orders/{orderId}/status
         [HttpPut("{orderId:guid}/status")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromBody] OrderStatus newStatus)
         {
             var result = await serviceManager.OrderService.UpdateOrderStatusAsync(orderId, newStatus);

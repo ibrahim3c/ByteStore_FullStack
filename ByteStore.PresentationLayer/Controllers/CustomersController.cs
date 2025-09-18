@@ -1,10 +1,13 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Customer;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize]
     public class CustomersController : BaseController
     {
         public CustomersController(IServiceManager serviceManager) : base(serviceManager)
@@ -13,6 +16,7 @@ namespace ByteStore.Presentation.Controllers
         }
         // GET: api/customers
         [HttpGet]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetAllCustomers()
         {
             var result = await serviceManager.CustomerService.GetAllCustomerProfilesAsync();
@@ -37,6 +41,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/customers/5 (Soft Delete)
         [HttpDelete("{customerId}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteCustomer(Guid customerId)
         {
             var result = await serviceManager.CustomerService.DeleteCustomerAsync(customerId);
@@ -95,6 +100,7 @@ namespace ByteStore.Presentation.Controllers
         // --- Global Address Lookup (if needed, often for admin purposes) ---
         // GET: api/addresses
         [HttpGet("/api/addresses")] // Absolute path, outside of customer hierarchy
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetAllAddresses()
         {
             var result = await serviceManager.CustomerService.GetAllAddresses();

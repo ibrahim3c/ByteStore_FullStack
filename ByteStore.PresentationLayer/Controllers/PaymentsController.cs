@@ -1,9 +1,12 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize(Roles = Roles.UserRole)]
     public class PaymentsController : BaseController
     {
         public PaymentsController(IServiceManager serviceManager) : base(serviceManager)

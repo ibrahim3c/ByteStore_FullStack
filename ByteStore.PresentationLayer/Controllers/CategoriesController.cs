@@ -1,10 +1,13 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Category;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize]
     public class CategoriesController:BaseController
     {
         public CategoriesController(IServiceManager serviceManager) : base(serviceManager)
@@ -29,6 +32,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/categories
         [HttpPost]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryDto categoryDto)
         {
             var result = await serviceManager.CategoryService.CreateCategoryAsync(categoryDto);
@@ -42,6 +46,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/categories/5
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
         {
             var result = await serviceManager.CategoryService.UpdateCategoryAsync(id, categoryDto);
@@ -50,6 +55,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/categories/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var result = await serviceManager.CategoryService.DeleteCategoryAsync(id);

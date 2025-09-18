@@ -1,10 +1,13 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Identity;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize(Roles = Roles.AdminRole)]
     public class RolesController : BaseController
     {
         public RolesController(IServiceManager serviceManager) : base(serviceManager)

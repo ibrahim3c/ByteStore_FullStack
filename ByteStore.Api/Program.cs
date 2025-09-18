@@ -1,10 +1,12 @@
 using ByteStore.Api.Extenstions;
 using ByteStore.Api.Middlewares;
+using ByteStore.Domain.Entities;
 using ByteStore.Persistance.Database;
 using ByteStore.Persistance.Seeders;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
 
 namespace ByteStore.Api
@@ -54,7 +56,10 @@ namespace ByteStore.Api
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 await new CategorySeeder(dbContext).SeedAsync();
-                await new BrandSeeder(dbContext).SeedAsync(); ;
+                await new BrandSeeder(dbContext).SeedAsync();
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
+                await new RoleSeeder(roleManager).SeedAsync();
             }
 
             // it cause problem of more than dbContext was found

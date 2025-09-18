@@ -13,11 +13,13 @@ namespace BytStore.Application.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IShoppingCartRepository shoppingCartRepository;
+        private readonly IPaymentService paymentService;
 
-        public OrderService(IUnitOfWork unitOfWork,IShoppingCartRepository shoppingCartRepository )
+        public OrderService(IUnitOfWork unitOfWork,IShoppingCartRepository shoppingCartRepository ,IPaymentService paymentService)
         {
             this.unitOfWork = unitOfWork;
             this.shoppingCartRepository = shoppingCartRepository;
+            this.paymentService = paymentService;
         }
         public async Task<Result2<IEnumerable<OrderDto>>> GetAllOrdersAsync()
         {
@@ -227,12 +229,51 @@ namespace BytStore.Application.Services
             if (shippingAddress)
                 return Result2.Failure(OrderErrors.ShippingAddressNotFound);
 
+
+            /*
+            The Scenario 🎬
+                A user wants to buy products.
+                When they click Checkout, your backend creates a PaymentIntent in Stripe (this is like a transaction ID).
+                You also need to create an Order in your database linked to that same PaymentIntentId.
+            The Problem 🚨
+                The user might accidentally checkout twice (e.g., double-click button, close browser, come back and retry).
+                In that case:
+                    Stripe will return the same PaymentIntentId (not a new one).
+                    But if you just insert an order every time → you’ll end up with duplicate orders for the same payment.
+            What the Code Does ✅
+                Before creating a new order, it checks:“Do we already have an Order in the DB with this PaymentIntentId?”
+                If it finds an existing order →
+                    Deletes that old order (to avoid duplicates).
+                    Updates the Stripe PaymentIntent (in case prices, delivery method, etc. changed).
+                If no order exists → Just creates the new order using the PaymentIntentId.
+             */
+
+            var existingOrder = await unitOfWork.OrderRepository.FindAsync(
+                m => m.PaymentIntentId == cart.PaymentIntentId);
+            string paymentIntentId;
+            if (existingOrder is not null)
+            {
+                // delete old order
+                unitOfWork.OrderRepository.Delete(existingOrder);
+                var result = await paymentService.CreateOrUpdatePaymentIntentAsync(cart.CustomerId);
+                if (!result.IsSuccess)
+                    return Result2.Failure(result.Error);
+                paymentIntentId = result.Value.PaymentIntentId;
+            }
+            else
+            {
+                // reuse basket payment intent
+                paymentIntentId = cart.PaymentIntentId;
+            }
+            // now create the order
             var order = new Order
             {
                 BillingAddressId = dto.BillingAddressId,
                 CustomerId = customerId,
-                ShippingAddressId = dto.ShippingAddressId
+                ShippingAddressId = dto.ShippingAddressId,
+                PaymentIntentId = paymentIntentId
             };
+
             decimal totalAmount = 0;
             foreach (var item in cart.CartItems)
             {

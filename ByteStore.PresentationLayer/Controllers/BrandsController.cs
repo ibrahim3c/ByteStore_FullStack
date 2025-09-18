@@ -1,10 +1,13 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Brand;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
+    [Authorize]
     public class BrandsController:BaseController
     {
         public BrandsController(IServiceManager serviceManager) : base(serviceManager)
@@ -29,6 +32,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/brands
         [HttpPost]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> CreateBrand([FromBody] BrandDto brandDto)
         {
             var result = await serviceManager.BrandService.CreateBrandAsync(brandDto);
@@ -37,6 +41,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/brands/5
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> UpdateBrand(int id, [FromBody] BrandDto brandDto)
         {
             var result = await serviceManager.BrandService.UpdateBrandAsync(id, brandDto);
@@ -45,6 +50,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/brands/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteBrand(int id)
         {
             var result = await serviceManager.BrandService.DeleteBrandAsync(id);

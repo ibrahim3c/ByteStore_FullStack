@@ -4,5 +4,6 @@
     {
         public const string AdminRole = "Admin";
         public const string UserRole = "User";
+        public static readonly string[] AllRoles = { AdminRole, UserRole };
     }
 }

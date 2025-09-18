@@ -1,6 +1,8 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Product;
 using BytStore.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -15,6 +17,7 @@ namespace ByteStore.Presentation.Controllers
         // --- Product Operations ---
 
         // GET: api/products
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
@@ -32,6 +35,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         // GET: api/products/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
@@ -40,6 +44,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         // GET: api/products/category/5
+        [AllowAnonymous]
         [HttpGet("category/{categoryId}")]
         public async Task<IActionResult> GetProductsByCategory(int categoryId)
         {
@@ -48,6 +53,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         // GET: api/products/brand/3
+        [AllowAnonymous]
         [HttpGet("brand/{brandId}")]
         public async Task<IActionResult> GetProductsByBrand(int brandId)
         {
@@ -56,6 +62,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
         // GET: api/products/search?query=laptop
+        [AllowAnonymous]
         [EnableRateLimiting("sliding")]
         [HttpGet("search")]
         public async Task<IActionResult> SearchProducts([FromQuery] string query)
@@ -66,6 +73,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/products
         [HttpPost]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto productCreateDto)
         {
             var result = await serviceManager.ProductService.AddProductAsync(productCreateDto);
@@ -76,6 +84,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/products/5
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateDto productUpdateDto)
         {
             var result = await serviceManager.ProductService.UpdateProductAsync(id, productUpdateDto);
@@ -84,6 +93,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/products/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var result = await serviceManager.ProductService.DeleteProductAsync(id);
@@ -95,6 +105,7 @@ namespace ByteStore.Presentation.Controllers
 
         // GET: api/products/5/images
         [HttpGet("{productId}/images")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetProductImages(int productId)
         {
             var result = await serviceManager.ProductService.GetProductImagesAsync(productId);
@@ -103,6 +114,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/products/5/images
         [HttpPost("{productId}/images")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> AddProductImages(int productId, [FromForm] List<ProductImageCreateDto> imageDtos)
         {
             var result = await serviceManager.ProductService.AddProductImagesAsync(productId, imageDtos);
@@ -111,6 +123,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/products/images/15/set-primary
         [HttpPut("images/{imageId}/set-primary")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> SetPrimaryImage(int imageId)
         {
             var result = await serviceManager.ProductService.SetPrimaryProductImageAsync(imageId);
@@ -119,6 +132,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/products/images/15
         [HttpDelete("images/{imageId}")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteProductImage(int imageId)
         {
             var result = await serviceManager.ProductService.DeleteProductImageAsync(imageId);
@@ -130,6 +144,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/products/5/reviews
         [HttpPost("{productId}/reviews")]
+        [Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> AddProductReview(int productId, [FromBody] ProductReviewCreateDto reviewDto)
         {
             var result = await serviceManager.ProductService.AddProductReviewAsync(productId, reviewDto);
@@ -140,6 +155,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/products/reviews/8
         [HttpPut("reviews/{reviewId}")]
+        [Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> UpdateProductReview(int reviewId, [FromBody] ProductReviewUpdateDto reviewDto)
         {
             var result = await serviceManager.ProductService.UpdateProductReviewAsync(reviewId, reviewDto);
@@ -148,6 +164,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/products/reviews/8
         [HttpDelete("reviews/{reviewId}")]
+        [Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> DeleteProductReview(int reviewId)
         {
             var result = await serviceManager.ProductService.DeleteProductReviewAsync(reviewId);
