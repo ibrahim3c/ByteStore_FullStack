@@ -73,4 +73,12 @@ namespace ByteStore.Api.Middlewares
             string Detail,
             IEnumerable<object>? Errors);
     }
+
+    public static class GlobalExceptionHandlerExtensions
+    {
+        public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<ExceptionHandlingMiddleware>();
+        }
+    }
 }

@@ -46,6 +46,10 @@ namespace ByteStore.Api
             app.UseRateLimiter();
             app.UseHttpsRedirection();
 
+            // custom middlewares
+            app.UseGlobalExceptionHandler();
+            app.UseCustomCors();
+
             app.UseAuthorization();
 
 

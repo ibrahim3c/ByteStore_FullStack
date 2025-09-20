@@ -391,6 +391,54 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     Use [Authorize(Roles = Roles.AdminRole)] → for Admin-only.
     Use [Authorize(Roles = Roles.UserRole)] → for User-only.
 
+
+* Problem:
+    You applied a Global Query Filter on Customer so deleted customers are hidden.
+    But since Customer is related to other entities (Orders, Reviews, Addresses), you need a best practice for handling these relations without breaking historical data.
+
+* Why not delete related data?
+    If you soft-delete a customer and their orders/reviews:
+        Sales reports break (suddenly lower totals).
+        Analytics become inaccurate.
+        Historical data is lost (orders are legal/financial records).
+    So: Never delete related data like orders/reviews.
+
+* Best Practices
+
+1- Do nothing (most common) ✅
+    Keep orders/reviews linked to the deleted customer.
+    Because of the query filter, order.Customer may return null.
+    In UI, handle this by showing “Deleted User” or just stored info.
+2-Denormalization (recommended for Orders) 💡
+    Copy customer details (name, email) into the Order at the moment it’s created:
+    public class Order
+    {
+        public Guid CustomerId { get; set; }
+        public string CustomerFirstName { get; set; }
+        public string CustomerLastName { get; set; }
+        public string CustomerEmail { get; set; }
+    }
+    Benefits:
+    Orders remain complete even if customer is deleted.
+    No need for joins with Customer table.
+    Better performance.
+3- Nullable foreign keys (not recommended) 👎
+    Setting CustomerId to null after deletion breaks the link.
+    You lose important business data (who made the order).
+
+* Recommendations for Your Project
+    Orders → use Denormalization (copy customer info at order creation).
+    Addresses → use Do nothing (address tied to deleted customer is fine).
+    ProductReviews → use Do nothing (show “Deleted User” if needed).
+    This way:
+        Query filter hides deleted customers.
+        Orders keep accurate historical data.
+        Analytics and reports remain correct.
+
+👉 For Products, use IsActive instead of IsDeleted:
+    IsActive = true: product visible in catalog.
+    IsActive = false: hidden from catalog but still referenced in past orders.
+    Always denormalize product info into OrderItem (name, price, image) at purchase time.
+
 // TODO:
-    check this endpoint in Customer Controller => GetCustomerAddressById
-    Golbal query filter for customer and appUser
+    test all things
