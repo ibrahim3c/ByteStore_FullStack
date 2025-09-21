@@ -17,13 +17,14 @@
         /Services
         /DTOs
         /Validators
-        /Mappings
+        /IServices
+        /Helpers
         /Exceptions
         DependencyInjection.cs
       /External
         /Api (ASP.NET Core host)
-          /Controllers
-          /Extensions (DI, HealthChecks)
+          /Extensions (DI, HealthChecks,..)
+          /Middlewares (global handler , cors)
           appsettings.json
           Program.cs
           secret.json
@@ -32,8 +33,13 @@
           /Migrations
           /Repositories
           /Seeders
-          /Integration (Payment, Email)
+          /Integration (Payment, Email,..)
           DependencyInjection.cs
+        /Presentation (apis)
+            /Controllers (DbContext, Configurations)
+            AssymblylReference.cs
+    /test
+
   /deploy
     docker-compose.yml
   /docs
@@ -439,6 +445,16 @@ dotnet runDocker Compose (/deploy/docker-compose.yml)
     IsActive = true: product visible in catalog.
     IsActive = false: hidden from catalog but still referenced in past orders.
     Always denormalize product info into OrderItem (name, price, image) at purchase time.
+
+For unit tests i am using xunit, fluent assertion , moq
+    don't forget to add application refrence from unit tests to application layer
+    and don't forget to add this code to access internal 
+        <ItemGroup>
+		    <AssymblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			    <_Parameter1>ByteStore.Application.UnitTests</_Parameter1>
+		    </AssymblyAttribute>
+	    </ItemGroup>
+	
 
 // TODO:
     test all things

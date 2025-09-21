@@ -24,6 +24,11 @@ namespace ByteStore.Persistance.Services
                 throw new ArgumentNullException(nameof(_brevo.SenderEmail), "Brevo Sender Email is not configured.");
 
             // Configure Brevo API client
+            // In your EmailService constructor
+            if (!string.IsNullOrEmpty(_brevo.ApiKey))
+            {
+                _brevo.ApiKey = _brevo.ApiKey.Trim();
+            }
             var config = new brevo_csharp.Client.Configuration();
             config.ApiKey.Add("api-key", _brevo.ApiKey);
 
@@ -65,16 +70,21 @@ namespace ByteStore.Persistance.Services
                     }
                 }
 
-                // 4. Create the email object for Brevo API
+                // 4. Create the base email object without attachments first
                 var sendSmtpEmail = new SendSmtpEmail(
                     sender: sender,
                     to: to,
                     htmlContent: body,
-                    subject: subject,
-                    attachment: attachments
+                    subject: subject
                 );
 
-                // 5. Send the email
+                // 5. Conditionally add the attachment list ONLY if it's not empty
+                if (attachments.Any())
+                {
+                    sendSmtpEmail.Attachment = attachments;
+                }
+
+                // 6. Send the email
                 var result = await _apiInstance.SendTransacEmailAsync(sendSmtpEmail);
             }
             catch (Exception ex)

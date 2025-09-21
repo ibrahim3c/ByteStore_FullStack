@@ -3,11 +3,9 @@ using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Auth;
-using BytStore.Application.Helpers;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Data;
 using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
@@ -34,7 +32,6 @@ namespace BytStore.Application.Services
         // JWT Token With Email Verification With RefreshToken
         public async Task<MyResult> RegisterAsync(UserRegisterDto userRegisterDto, string scheme, string host)
         {
-
             //  Create a new user
             var user = new AppUser
             {
@@ -66,7 +63,7 @@ namespace BytStore.Application.Services
             // send confirmation token to user 
             await SendConfirmationEmailAsync(user, scheme, host);
 
-            return MyResult.Success(); //Please verify your email, through the verification email we have just send
+            return MyResult.Success(); 
 
         }
 
@@ -171,7 +168,7 @@ namespace BytStore.Application.Services
         {
             var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            // Generate the URL =>https://localhost:8080/api/Account/VerifyEmail?userId=dkl&code=ioerw
+            // Generate the URL =>https://localhost:7030/api/Accounts/VerifyEmail?userId=dkl&code=ioerw
             var callbackUrl = $"{scheme}://{host}/api/Account/VerifyEmail?userId={user.Id}&code={Uri.EscapeDataString(code)}";
 
             var emailBody = $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>Confirm Email</a>";
