@@ -23,8 +23,8 @@ namespace ByteStore.Api
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            #region MyConfigs
 
+            #region MyConfigs
             builder.Configuration.AddJsonFile("Secret.json", optional: false, reloadOnChange: true);
             builder.Services.AddDependencyInjectionService(builder.Configuration);
             builder.Services.AddRateLimiting();
@@ -74,6 +74,7 @@ namespace ByteStore.Api
                 //This formats the response in a special JSON format that the HealthCheckUI dashboard understands.
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
+
 
             // Map HealthCheck UI Dashboard
             app.MapHealthChecksUI(options =>

@@ -8,7 +8,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Xunit;
 
 namespace ByteStore.Application.UnitTests.Services
 {
@@ -75,7 +74,7 @@ namespace ByteStore.Application.UnitTests.Services
             _mockCustomerRepository.Verify(cr => cr.AddAsync(It.IsAny<Customer>()), Times.Once);
             _mockUow.Verify(uow => uow.SaveChangesAsync(), Times.Once);
             // u should add value for optional parameter cuz moq does not understand it
-            _mockEmailService.Verify(es => es.SendMailByBrevoAsync(userRegisterDto.Email, "Email Confirmation", It.IsAny<string>(),null), Times.Once);
+            _mockEmailService.Verify(es => es.SendMailByBrevoAsync(userRegisterDto.Email, "Email Confirmation", It.IsAny<string>(), null), Times.Once);
         }
 
         [Fact]

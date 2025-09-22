@@ -3,7 +3,6 @@ using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Brand;
 using BytStore.Application.IServices;
-using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 namespace BytStore.Application.Services
 {
