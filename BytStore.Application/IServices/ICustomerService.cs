@@ -15,10 +15,10 @@ namespace BytStore.Application.IServices
 
         // Addresses
         Task<Result2<IEnumerable<AddressDto>>> GetCustomerAddressesAsync(Guid customerId);
-        Task<Result2<AddressDto>> GetAddressByIdAsync(int addressId);
+        Task<Result2<AddressDto>> GetAddressAsync(Guid customerId, int addressId);
         Task<Result2<IEnumerable<AddressDto>>> GetAllAddresses();
         Task<Result2> AddAddressAsync(Guid customerId, AddressDto addressDto);
-        Task<Result2> UpdateAddressId(int addressId, AddressDto addressDto);
-        Task<Result2> DeleteAddressAsync(int addressId);
+        Task<Result2> UpdateAddressAsync(Guid customerId, int addressId, AddressDto addressDto);
+        Task<Result2> DeleteAddressAsync(Guid customerId, int addressId);
     }
 }

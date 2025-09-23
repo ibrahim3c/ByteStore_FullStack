@@ -33,9 +33,6 @@ namespace ByteStore.Api
             #endregion
             var app = builder.Build();
 
-            // global exception hanlder
-            //app.UseMiddleware<ExceptionHandlingMiddleware>();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -56,15 +53,16 @@ namespace ByteStore.Api
             app.MapControllers();
 
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                await new CategorySeeder(dbContext).SeedAsync();
-                await new BrandSeeder(dbContext).SeedAsync();
+            //// seeding
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
-                await new RoleSeeder(roleManager).SeedAsync();
-            }
+            //    await CategorySeeder.SeedAsync(services);
+            //    await BrandSeeder.SeedAsync(services);
+            //    await RoleSeeder.SeedAsync(services);
+            //    await AdminSeeder.SeedAsync(services); 
+            //}
 
             // it cause problem of more than dbContext was found
             //  Map Health Checks JSON Endpoint => normal health check just api return json response

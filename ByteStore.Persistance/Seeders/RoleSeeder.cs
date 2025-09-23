@@ -1,19 +1,16 @@
 ﻿using ByteStore.Domain.Abstractions.Constants;
 using ByteStore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ByteStore.Persistance.Seeders
 {
     public class RoleSeeder
     {
-        private readonly RoleManager<AppRole> roleManager;
+        public static  async Task SeedAsync(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
 
-        public RoleSeeder(RoleManager<AppRole> roleManager)
-        {
-            this.roleManager = roleManager;
-        }
-        public async Task SeedAsync()
-        {
             foreach (var roleName in Roles.AllRoles)
             {
                 if (!await roleManager.RoleExistsAsync(roleName))

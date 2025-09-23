@@ -14,6 +14,8 @@ namespace ByteStore.Presentation.Controllers
         {
             
         }
+
+        // customer
         // GET: api/customers
         [HttpGet]
         [Authorize(Roles = Roles.AdminRole)]
@@ -48,9 +50,8 @@ namespace ByteStore.Presentation.Controllers
             return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
-        // --- Address Operations (Dependent Resource) ---
-        // Hierarchy: /api/customers/{customerId}/addresses
 
+        // address
         // GET: api/customers/5/addresses
         [HttpGet("{customerId}/addresses")]
         public async Task<IActionResult> GetCustomerAddresses(Guid customerId)
@@ -63,12 +64,7 @@ namespace ByteStore.Presentation.Controllers
         [HttpGet("{customerId}/addresses/{addressId}")]
         public async Task<IActionResult> GetCustomerAddressById(Guid customerId, int addressId)
         {
-            // This endpoint uses the service method that finds an address by its ID.
-            // The customerId in the route ensures the address belongs to the correct customer.
-            var result = await serviceManager.CustomerService.GetAddressByIdAsync(addressId);
-
-            // Optional: Add a check to ensure the found address belongs to the customerId in the route
-            // This would require a service method change or an extra check here.
+            var result = await serviceManager.CustomerService.GetAddressAsync(customerId,addressId);
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
@@ -84,7 +80,7 @@ namespace ByteStore.Presentation.Controllers
         [HttpPut("{customerId}/addresses/{addressId}")]
         public async Task<IActionResult> UpdateAddress(Guid customerId, int addressId, [FromBody] AddressDto addressDto)
         {
-            var result = await serviceManager.CustomerService.UpdateAddressId(addressId, addressDto);
+            var result = await serviceManager.CustomerService.UpdateAddressAsync(customerId,addressId, addressDto);
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);
         }
 
@@ -92,14 +88,13 @@ namespace ByteStore.Presentation.Controllers
         [HttpDelete("{customerId}/addresses/{addressId}")]
         public async Task<IActionResult> DeleteAddress(Guid customerId, int addressId)
         {
-            var result = await serviceManager.CustomerService.DeleteAddressAsync(addressId);
+            var result = await serviceManager.CustomerService.DeleteAddressAsync(customerId,addressId);
             return result.IsSuccess ? NoContent() : NotFound(result.Error);
         }
 
 
-        // --- Global Address Lookup (if needed, often for admin purposes) ---
         // GET: api/addresses
-        [HttpGet("/api/addresses")] // Absolute path, outside of customer hierarchy
+        [HttpGet("/api/addresses")]
         [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetAllAddresses()
         {

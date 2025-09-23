@@ -1,20 +1,15 @@
 ﻿using ByteStore.Domain.Entities;
 using ByteStore.Persistance.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ByteStore.Persistance.Seeders
 {
     public class BrandSeeder
     {
-        private readonly AppDbContext _appDbContext;
-
-        public BrandSeeder(AppDbContext appDbContext)
+        public static async Task SeedAsync(IServiceProvider serviceProvider)
         {
-            _appDbContext = appDbContext;
-        }
-
-        public async Task SeedAsync()
-        {
+            var _appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
             if (!await _appDbContext.Set<Brand>().AnyAsync())
             {
                 var brands = new List<Brand>

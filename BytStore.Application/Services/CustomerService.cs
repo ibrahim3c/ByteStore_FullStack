@@ -4,8 +4,6 @@ using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Customer;
 using BytStore.Application.IServices;
-using Microsoft.AspNetCore.Identity;
-
 
 namespace BytStore.Application.Services
 {
@@ -41,6 +39,7 @@ namespace BytStore.Application.Services
 
             var customerDtos = customers.Select(customer => new CustomerDto
             {
+                Id=customer.Id,
                 DateOfBirth = customer.DateOfBirth,
                 Email = customer.AppUser?.Email, // safe navigation
                 FirstName = customer.FirstName,
@@ -102,9 +101,10 @@ namespace BytStore.Application.Services
             });
             return Result2<IEnumerable<AddressDto>>.Success(addressesDto);
         }
-        public async Task<Result2<AddressDto>>GetAddressByIdAsync(int addressId)
+        public async Task<Result2<AddressDto>>GetAddressAsync(Guid customerId,int addressId)
         {
-            var address = await unitOfWork.GetRepository<Address>().FindAsync(a => a.Id == addressId, ["Customer"]);
+            var address = await unitOfWork.GetRepository<Address>().FindAsync(a => a.Id == addressId && a.CustomerId == customerId, ["Customer"]);
+
             if (address == null)
                 return Result2<AddressDto>.Failure(AddressErrors.NotFound);
             var addressDto = new AddressDto
@@ -163,10 +163,9 @@ namespace BytStore.Application.Services
 
             return Result2.Success();
         }
-        // Update Address
-        public async Task<Result2> UpdateAddressId(int addressId, AddressDto addressDto)
+        public async Task<Result2> UpdateAddressAsync(Guid customerId, int addressId, AddressDto addressDto)
         {
-            var address = await unitOfWork.GetRepository<Address>().GetByIdAsync(addressId);
+            var address = await unitOfWork.GetRepository<Address>().FindAsync(a => a.Id == addressId && a.CustomerId == customerId);
             if (address == null)
                 return Result2.Failure(AddressErrors.NotFound);
             
@@ -183,15 +182,14 @@ namespace BytStore.Application.Services
             address.Street = addressDto.Street;
             address.AddressType = addressType;
 
-            await unitOfWork.GetRepository<Address>().AddAsync(address);
+            unitOfWork.GetRepository<Address>().Update(address);
             await unitOfWork.SaveChangesAsync();
 
             return Result2.Success();
         }
-        public async Task<Result2> DeleteAddressAsync(int addressId)
+        public async Task<Result2> DeleteAddressAsync(Guid customerId,int addressId)
         {
-         
-            var address = await unitOfWork.GetRepository<Address>().GetByIdAsync(addressId);
+            var address = await unitOfWork.GetRepository<Address>().FindAsync(a => a.Id == addressId && a.CustomerId == customerId);
             if (address == null)
                 return Result2.Failure(AddressErrors.NotFound);
 

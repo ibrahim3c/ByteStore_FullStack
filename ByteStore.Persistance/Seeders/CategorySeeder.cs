@@ -1,20 +1,16 @@
 ﻿using ByteStore.Domain.Entities;
 using ByteStore.Persistance.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ByteStore.Persistance.Seeders
 {
     public class CategorySeeder
     {
-        private readonly AppDbContext _appDbContext;
-
-        public CategorySeeder(AppDbContext appDbContext)
+        public static async Task SeedAsync(IServiceProvider serviceProvider)
         {
-            _appDbContext = appDbContext;
-        }
+            var _appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
-        public async Task SeedAsync()
-        {
             if (!await _appDbContext.Set<Category>().AnyAsync())
             {
                 var categories = new List<Category>
