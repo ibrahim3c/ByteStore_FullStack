@@ -6,7 +6,6 @@ using BytStore.Application.IServices;
 using BytStore.Application.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace ByteStore.Application.UnitTests.Services
@@ -172,9 +171,9 @@ namespace ByteStore.Application.UnitTests.Services
 
             // Mocking the user retrieval (note: LoginAsync uses a direct EF Core query, so we mock the Users property)
             var users = new List<AppUser> { user }.AsQueryable();
-            var mockUserSet = new Mock<DbSet<AppUser>>().SetupData(users);
-            _mockUserManager.Setup(um => um.Users).Returns(mockUserSet.Object);
+            var asyncUsers = new TestAsyncEnumerable<AppUser>(users);
 
+            _mockUserManager.Setup(um => um.Users).Returns(asyncUsers);
             _mockUserManager.Setup(um => um.CheckPasswordAsync(user, userLoginDto.Password)).ReturnsAsync(true);
             _mockTokenGenerator.Setup(tg => tg.GenerateJwtTokenAsync(user)).ReturnsAsync("new_jwt_token");
             _mockTokenGenerator.Setup(tg => tg.GenereteRefreshToken()).Returns(newRefreshToken);
@@ -198,8 +197,9 @@ namespace ByteStore.Application.UnitTests.Services
             var userLoginDto = new UserLoginDto { Email = "nonexistent@example.com", Password = "Password123!" };
 
             var users = new List<AppUser>().AsQueryable(); // Empty list
-            var mockUserSet = new Mock<DbSet<AppUser>>().SetupData(users);
-            _mockUserManager.Setup(um => um.Users).Returns(mockUserSet.Object);
+            var asyncUsers = new TestAsyncEnumerable<AppUser>(users);
+
+            _mockUserManager.Setup(um => um.Users).Returns(asyncUsers);
 
             // Act
             var result = await _authService.LoginAsync(userLoginDto);
@@ -217,8 +217,9 @@ namespace ByteStore.Application.UnitTests.Services
             var user = new AppUser { Email = userLoginDto.Email, EmailConfirmed = false };
 
             var users = new List<AppUser> { user }.AsQueryable();
-            var mockUserSet = new Mock<DbSet<AppUser>>().SetupData(users);
-            _mockUserManager.Setup(um => um.Users).Returns(mockUserSet.Object);
+            var asyncUsers = new TestAsyncEnumerable<AppUser>(users);
+
+            _mockUserManager.Setup(um => um.Users).Returns(asyncUsers);
 
             // Act
             var result = await _authService.LoginAsync(userLoginDto);
@@ -236,8 +237,9 @@ namespace ByteStore.Application.UnitTests.Services
             var user = new AppUser { Email = userLoginDto.Email, EmailConfirmed = true };
 
             var users = new List<AppUser> { user }.AsQueryable();
-            var mockUserSet = new Mock<DbSet<AppUser>>().SetupData(users);
-            _mockUserManager.Setup(um => um.Users).Returns(mockUserSet.Object);
+            var asyncUsers = new TestAsyncEnumerable<AppUser>(users);
+
+            _mockUserManager.Setup(um => um.Users).Returns(asyncUsers);
             _mockUserManager.Setup(um => um.CheckPasswordAsync(user, userLoginDto.Password)).ReturnsAsync(false);
 
             // Act
@@ -252,16 +254,5 @@ namespace ByteStore.Application.UnitTests.Services
 
     }
 
-    // You might need a helper class like this to mock the IQueryable Users property on UserManager
-    public static class MockDbSetExtensions
-    {
-        public static Mock<DbSet<T>> SetupData<T>(this Mock<DbSet<T>> mockSet, IQueryable<T> data) where T : class
-        {
-            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-            return mockSet;
-        }
-    }
+
 }

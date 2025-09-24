@@ -454,6 +454,22 @@ For unit tests i am using xunit, fluent assertion , moq
 			    <_Parameter1>ByteStore.Application.UnitTests</_Parameter1>
 		    </AssymblyAttribute>
 	    </ItemGroup>
+
+* problem when using role manager , user manager when i use async 
+    When testing services that use EF Core async LINQ methods (like ToListAsync or FirstOrDefaultAsync), 
+    you get an error: "The provider for the source 'IQueryable' doesn't implement IAsyncQueryProvider."
+    Reason:
+        In tests you usually use List<T>.AsQueryable(). That creates a normal IQueryable,
+        but it doesn’t support async queries. EF Core async methods need an IAsyncQueryProvider.
+    Solutions:
+        1-Change ToListAsync to ToList in your service (easy but less realistic).
+        2-Use a repository abstraction that returns plain lists (more boilerplate).
+        3-Use EF InMemory database for tests (realistic, async works, but heavier).
+        4-Use a helper that simulates EF async queries (best for unit tests) 
+            => that was i use it u can see a helper method in testing proj
+            Keep service code unchanged with ToListAsync / FirstOrDefaultAsync. In tests,
+            instead of using List<T>.AsQueryable(), wrap your data with TestAsyncEnumerable<T>.
+            This provides IAsyncQueryProvider, so async LINQ works in tests just like in production.
 	
 
 // TODO:

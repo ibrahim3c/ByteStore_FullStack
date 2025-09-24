@@ -41,7 +41,10 @@ namespace ByteStore.Application.UnitTests.Services
                 Id = customerId,
                 FirstName = "John",
                 LastName = "Doe",
-                AppUserId = "dkdkll43"
+                AppUser=new AppUser
+                {
+                    Email="customer@gmail.com"
+                }
             };
             _mockCustomerRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Customer, bool>>>(), It.IsAny<string[]>()))
                                  .ReturnsAsync(customer);
@@ -81,7 +84,10 @@ namespace ByteStore.Application.UnitTests.Services
                 Id = customerId,
                 FirstName = "Old",
                 LastName = "Name",
-                AppUserId = "dkdkll43"
+                AppUser = new AppUser
+                {
+                    Email = "customer@gmail.com"
+                }
             };
             var updateDto = new CustomerUpdateDto
             {

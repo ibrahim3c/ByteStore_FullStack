@@ -27,7 +27,7 @@ namespace BytStore.Application.Services
                 Id = customer.Id,
                 DateOfBirth = customer.DateOfBirth,
                 Email = customer.AppUser.Email,
-                FirstName = customer.fullName,
+                FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 PhoneNumber = customer.AppUser.PhoneNumber
             };

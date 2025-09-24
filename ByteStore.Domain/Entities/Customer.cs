@@ -11,7 +11,7 @@
         public ICollection<Order> Orders { get; set; }
         public ICollection<Address> Addresses { get; set; }
         public ICollection<ProductReview> Reviews { get; set; }
-        public AppUser AppUser { get; private set; }
+        public AppUser AppUser { get;  set; }
 
         public string fullName => $"{FirstName} {LastName}";
     }
