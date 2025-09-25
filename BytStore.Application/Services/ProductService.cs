@@ -2,8 +2,8 @@
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Product;
+using BytStore.Application.DTOs.Shared;
 using BytStore.Application.IServices;
-using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 namespace BytStore.Application.Services
 {
     public class ProductService:IProductService
@@ -19,7 +19,7 @@ namespace BytStore.Application.Services
         // product operations
         public async Task<Result2<IEnumerable<ProductListDto>>> GetAllProductsAsync()
         {
-            var products = await unitOfWork.ProductRepository.GetAllAsync(["Category", "", "Brand", "Images"]);
+            var products = await unitOfWork.ProductRepository.GetAllAsync(["Category", "Brand", "Images"]);
 
             var productsDto= products.Select(p => new ProductListDto
             {
@@ -32,36 +32,26 @@ namespace BytStore.Application.Services
             });
             return Result2<IEnumerable<ProductListDto>>.Success(productsDto);
         }
-        public async Task<Result2<PagedDto<ProductListDto>>> GetAllProductsAsync(int pageNumber, int pageSize)
-        {
-            // Validate input parameters
-            if (pageNumber < 1) pageNumber = 1;
-            if (pageSize < 1) pageSize = 10;
-            if (pageSize > 100) pageSize = 100; // Prevent excessive page sizes
 
-            var products = await unitOfWork.ProductRepository.PaginateAsync(pageNumber, pageSize, null, ["Category","", "Brand", "Images"]);
-            var productsListDto= products.Select(p => new ProductListDto
+        public async Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(RequestParameters parameters)
+        {
+            var products = await unitOfWork.ProductRepository.PaginateAsync(parameters.PageNumber, parameters.PageSize, null, ["Category", "Brand", "Images"]);
+            var productsListDto = products.Select(p => new ProductListDto
             {
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
                 CategoryName = p.Category.Name,
                 BrandName = p.Brand.Name,
-                ThumbnailUrl= p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl
-            });
+                ThumbnailUrl = p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl
+            }).ToList();
 
             var totalCount = await unitOfWork.ProductRepository.CountAsync();
-            var pagedDto=new PagedDto<ProductListDto>
-            {
-                Items = productsListDto.ToList(),
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalCount = totalCount,
-                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
-            };
-            
-            return Result2<PagedDto<ProductListDto>>.Success(pagedDto);
+
+            var PagedList=new PagedList<ProductListDto>(productsListDto, totalCount,parameters.PageNumber,parameters.PageSize);
+            return Result2<PagedList<ProductListDto>>.Success(PagedList);
         }
+
         public async Task<Result2<ProductDetailsDto>> GetProductByIdAsync(int productId)
         {
             var product = await unitOfWork.ProductRepository.FindAsync(p=>p.Id==productId, new string[] { "Category", "Brand", "Images", "Reviews.Customer" });
@@ -93,7 +83,7 @@ namespace BytStore.Application.Services
         }
         public async Task<Result2<IEnumerable<ProductListDto>>> GetProductsByCategoryIdAsync(int categoryId)
         {
-            var products = await unitOfWork.ProductRepository.FindAllAsync(p=>p.CategoryId==categoryId,["Category", "", "Brand", "Images"]);
+            var products = await unitOfWork.ProductRepository.FindAllAsync(p=>p.CategoryId==categoryId,["Category", "Brand", "Images"]);
 
             var productsDto = products.Select(p => new ProductListDto
             {
@@ -108,7 +98,7 @@ namespace BytStore.Application.Services
         }
         public async Task<Result2<IEnumerable<ProductListDto>>> GetProductsByBrandIdAsync(int brandId)
         {
-            var products = await unitOfWork.ProductRepository.FindAllAsync(p => p.BrandId == brandId, ["Category", "", "Brand", "Images"]);
+            var products = await unitOfWork.ProductRepository.FindAllAsync(p => p.BrandId == brandId, ["Category","Brand", "Images"]);
             var productsDto = products.Select(p => new ProductListDto
             {
                 Id = p.Id,
@@ -123,7 +113,7 @@ namespace BytStore.Application.Services
         // search products by name or description => list of ProductListDto
         public async Task<Result2<IEnumerable<ProductListDto>>> SearchProductsAsync(string query)
         {
-            var products = await unitOfWork.ProductRepository.FindAllAsync(p => p.Name.Contains(query) || p.Description.Contains(query), ["Category", "", "Brand", "Images"]);
+            var products = await unitOfWork.ProductRepository.FindAllAsync(p => p.Name.Contains(query) || p.Description.Contains(query), ["Category", "Brand", "Images"]);
             var productsDto = products.Select(p => new ProductListDto
             {
                 Id = p.Id,
@@ -215,6 +205,13 @@ namespace BytStore.Application.Services
             if (product == null)
                 return Result2<int>.Failure(ProductErrors.NotFound);
 
+            var primaryCount = productImageCreateDtos.Count(p => p.IsPrimary);
+            if (primaryCount > 1)
+            {
+                return Result2<int>.Failure(ProductErrors.MultiplePrimaryImage);
+            }
+
+
             foreach (var picDto in productImageCreateDtos)
             {
                 var uploadResult = await imageService.UploadAsync(picDto.Image, "products");
@@ -239,7 +236,7 @@ namespace BytStore.Application.Services
         {
             var productImage = await unitOfWork.GetRepository<ProductImage>().GetByIdAsync(productImageId);
             if (productImage == null)
-                return Result2.Failure(ProductErrors.NotFound);
+                return Result2.Failure(ProductErrors.ImageNotFound);
             var deleteResult = await imageService.DeleteAsync(productImage.FileId);
             if (!deleteResult.IsSuccess)
             {
@@ -248,9 +245,7 @@ namespace BytStore.Application.Services
 
             if (productImage.IsPrimary)
             {
-                var otherImage = (await unitOfWork.GetRepository<ProductImage>().GetAllAsync())
-                    .Where(img => img.ProductId == productImage.ProductId && img.id != productImage.id)
-                    .FirstOrDefault();
+                var otherImage = await unitOfWork.GetRepository<ProductImage>().FindAsync(img => img.ProductId == productImage.ProductId && img.id != productImage.id);
                 if (otherImage != null)
                 {
                     otherImage.IsPrimary = true;
@@ -282,11 +277,34 @@ namespace BytStore.Application.Services
         }
 
         // product review operations
+
+
+        public async Task<Result2<IEnumerable<ProductReviewDto>>> GetProductReviewsAsync(int productId)
+        {
+            var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
+            if (product == null)
+                return Result2<IEnumerable<ProductReviewDto>>.Failure(ProductErrors.NotFound);
+
+            var productReviews = await unitOfWork.GetRepository<ProductReview>().FindAllAsync(pr => pr.ProductId == productId, ["Customer"]);
+            var productReviewsDto = productReviews.Select(r => new ProductReviewDto
+            {
+                Rating = r.Rating,
+                Commenet = r.Comment,
+                CreatedOn = r.CreatedOn,
+                CustomerName = r.Customer?.fullName??""
+            }).ToList();
+            return Result2<IEnumerable<ProductReviewDto>>.Success(productReviewsDto);
+        }
         public async Task<Result2<int>> AddProductReviewAsync(int productId, ProductReviewCreateDto productReviewCreateDto)
         {
             var product = await unitOfWork.ProductRepository.GetByIdAsync(productId);
             if (product == null)
                 return Result2<int>.Failure(ProductErrors.NotFound);
+
+            var customer = await unitOfWork.CustomerRepository.FindAsync(c=>c.Id==productReviewCreateDto.CustomerId);
+            if (customer == null)
+                return Result2<int>.Failure(CustomerErrors.NotFound);
+
             var review = new ProductReview
             {
                 ProductId = productId,

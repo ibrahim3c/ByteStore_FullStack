@@ -1,6 +1,6 @@
-﻿using ByteStore.Domain.Abstractions.Constants;
-using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Product;
+using BytStore.Application.DTOs.Shared;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,21 +17,21 @@ namespace ByteStore.Presentation.Controllers
         // --- Product Operations ---
 
         // GET: api/products
+
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllProducts()
         {
-            // Use the paged version if pageNumber/pageSize are provided, otherwise get all
-            if (pageNumber > 0 || pageSize > 0)
-            {
-                var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(pageNumber, pageSize);
-                return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
-            }
-            else
-            {
-                var result = await serviceManager.ProductService.GetAllProductsAsync();
-                return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
-            }
+            var pagedResult = await serviceManager.ProductService.GetAllProductsAsync();
+            return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
+        } 
+
+        [AllowAnonymous]
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetAllPagedProducts([FromQuery] RequestParameters parameters)
+        {
+            var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(parameters);
+            return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
         }
 
         // GET: api/products/5
@@ -39,8 +39,8 @@ namespace ByteStore.Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
-            var product = await serviceManager.ProductService.GetProductByIdAsync(id);
-            return product != null ? Ok(product) : NotFound();
+            var result = await serviceManager.ProductService.GetProductByIdAsync(id);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         // GET: api/products/category/5
@@ -73,7 +73,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/products
         [HttpPost]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto productCreateDto)
         {
             var result = await serviceManager.ProductService.AddProductAsync(productCreateDto);
@@ -84,7 +84,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/products/5
         [HttpPut("{id}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductUpdateDto productUpdateDto)
         {
             var result = await serviceManager.ProductService.UpdateProductAsync(id, productUpdateDto);
@@ -93,7 +93,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/products/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var result = await serviceManager.ProductService.DeleteProductAsync(id);
@@ -105,7 +105,7 @@ namespace ByteStore.Presentation.Controllers
 
         // GET: api/products/5/images
         [HttpGet("{productId}/images")]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> GetProductImages(int productId)
         {
             var result = await serviceManager.ProductService.GetProductImagesAsync(productId);
@@ -114,7 +114,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/products/5/images
         [HttpPost("{productId}/images")]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> AddProductImages(int productId, [FromForm] List<ProductImageCreateDto> imageDtos)
         {
             var result = await serviceManager.ProductService.AddProductImagesAsync(productId, imageDtos);
@@ -123,7 +123,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/products/images/15/set-primary
         [HttpPut("images/{imageId}/set-primary")]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> SetPrimaryImage(int imageId)
         {
             var result = await serviceManager.ProductService.SetPrimaryProductImageAsync(imageId);
@@ -132,7 +132,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/products/images/15
         [HttpDelete("images/{imageId}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> DeleteProductImage(int imageId)
         {
             var result = await serviceManager.ProductService.DeleteProductImageAsync(imageId);
@@ -142,9 +142,19 @@ namespace ByteStore.Presentation.Controllers
 
         // --- Product Review Operations (Dependent Resource) ---
 
+
+        // GET: api/products/5/images
+        [HttpGet("{productId}/reviews")]
+        //[Authorize(Roles = Roles.AdminRole)]
+        public async Task<IActionResult> GetProductReviews(int productId)
+        {
+            var result = await serviceManager.ProductService.GetProductReviewsAsync(productId);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        }
+
         // POST: api/products/5/reviews
         [HttpPost("{productId}/reviews")]
-        [Authorize(Roles = Roles.UserRole)]
+        //[Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> AddProductReview(int productId, [FromBody] ProductReviewCreateDto reviewDto)
         {
             var result = await serviceManager.ProductService.AddProductReviewAsync(productId, reviewDto);
@@ -155,7 +165,7 @@ namespace ByteStore.Presentation.Controllers
 
         // PUT: api/products/reviews/8
         [HttpPut("reviews/{reviewId}")]
-        [Authorize(Roles = Roles.UserRole)]
+        //[Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> UpdateProductReview(int reviewId, [FromBody] ProductReviewUpdateDto reviewDto)
         {
             var result = await serviceManager.ProductService.UpdateProductReviewAsync(reviewId, reviewDto);
@@ -164,7 +174,7 @@ namespace ByteStore.Presentation.Controllers
 
         // DELETE: api/products/reviews/8
         [HttpDelete("reviews/{reviewId}")]
-        [Authorize(Roles = Roles.UserRole)]
+        //[Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> DeleteProductReview(int reviewId)
         {
             var result = await serviceManager.ProductService.DeleteProductReviewAsync(reviewId);

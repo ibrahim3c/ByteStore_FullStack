@@ -474,4 +474,9 @@ For unit tests i am using xunit, fluent assertion , moq
 
 // TODO:
     test all things
+        test when product delete what happen to images and reviews ok
+        test search and paged why the it gives me 500 server error
+        test when we delete a primary image make the another one primary
+    ask ai how to test this application which excatly i want to test and types that can i do it and how
     solve problem of fluent validation  
+        but other exceptions work well

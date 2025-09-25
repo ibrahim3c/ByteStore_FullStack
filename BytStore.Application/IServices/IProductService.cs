@@ -1,5 +1,6 @@
 ﻿using ByteStore.Domain.Abstractions.Result;
 using BytStore.Application.DTOs.Product;
+using BytStore.Application.DTOs.Shared;
 using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 namespace BytStore.Application.IServices
@@ -8,7 +9,7 @@ namespace BytStore.Application.IServices
     {
         // Product operations
         Task<Result2<IEnumerable<ProductListDto>>> GetAllProductsAsync();
-        Task<Result2<PagedDto<ProductListDto>>> GetAllProductsAsync(int pageNumber, int pageSize);
+        Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(RequestParameters parameters);
         Task<Result2<ProductDetailsDto>> GetProductByIdAsync(int productId);
         Task<Result2<IEnumerable<ProductListDto>>> GetProductsByCategoryIdAsync(int categoryId);
         Task<Result2<IEnumerable<ProductListDto>>> GetProductsByBrandIdAsync(int brandId);
@@ -24,6 +25,7 @@ namespace BytStore.Application.IServices
         Task<Result2> SetPrimaryProductImageAsync(int productImageId);
 
         // Product review operations
+        Task<Result2<IEnumerable<ProductReviewDto>>> GetProductReviewsAsync(int productId);
         Task<Result2<int>> AddProductReviewAsync(int productId, ProductReviewCreateDto productReviewCreateDto);
         Task<Result2> UpdateProductReviewAsync(int reviewId, ProductReviewUpdateDto productReviewUpdateDto);
         Task<Result2> DeleteProductReviewAsync(int reviewId);
