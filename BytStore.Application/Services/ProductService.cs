@@ -211,6 +211,14 @@ namespace BytStore.Application.Services
                 return Result2<int>.Failure(ProductErrors.MultiplePrimaryImage);
             }
 
+            // check if list has primary image and this product has already image so return error
+            var existingPrimary = await unitOfWork.GetRepository<ProductImage>()
+                    .AnyAsync(pi => pi.ProductId == productId && pi.IsPrimary);
+
+            if (existingPrimary && productImageCreateDtos.Any(p => p.IsPrimary))
+            {
+                return Result2<int>.Failure(ProductErrors.AlreadyHasPrimaryImage);
+            }
 
             foreach (var picDto in productImageCreateDtos)
             {

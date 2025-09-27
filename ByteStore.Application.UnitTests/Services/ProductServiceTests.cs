@@ -181,10 +181,16 @@ namespace ByteStore.Application.UnitTests.Services
             var otherImage = new ProductImage { id = 2, ProductId = 1, FileId = "file2", IsPrimary = false };
             var allImages = new List<ProductImage> { primaryImage, otherImage };
 
-            _mockProductImageRepository.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(primaryImage);
-            _mockImageService.Setup(s => s.DeleteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(Result2.Success()));
-            _mockProductImageRepository.Setup(repo => repo.GetAllAsync(null)).ReturnsAsync(allImages);
+            _mockProductImageRepository.Setup(repo =>
+                repo.GetByIdAsync(1))
+                .ReturnsAsync(primaryImage);
 
+            _mockImageService.Setup(s => s.DeleteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result2.Success());
+
+            _mockProductImageRepository.Setup(repo =>
+                   repo.FindAsync(It.IsAny<Expression<Func<ProductImage, bool>>>(), null))
+                   .ReturnsAsync(otherImage);
             // Act
             var result = await _productService.DeleteProductImageAsync(1);
 

@@ -66,8 +66,12 @@
 
         public static readonly Error InvalidBrand =
             new("Product.InvalidBrand", "The provided brand is invalid");
+
         public static readonly Error MultiplePrimaryImage =
             new("Product.MultiplePrimaryImage", "Only one image can be primary");
+
+        public static readonly Error AlreadyHasPrimaryImage =
+       new("Product.AlreadyHasPrimaryImage", "This product already has a primary image");
     }
     public static class AuthErrors
     {
