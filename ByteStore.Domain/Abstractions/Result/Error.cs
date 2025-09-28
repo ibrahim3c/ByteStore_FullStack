@@ -66,6 +66,8 @@
 
         public static readonly Error InvalidBrand =
             new("Product.InvalidBrand", "The provided brand is invalid");
+        public static readonly Error InvalidPriceRange =
+        new("Product.InvalidPriceRange", "Max price cannot be less than Min price.");
 
         public static readonly Error MultiplePrimaryImage =
             new("Product.MultiplePrimaryImage", "Only one image can be primary");

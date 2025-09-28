@@ -10,6 +10,7 @@ namespace BytStore.Application.IServices
         // Product operations
         Task<Result2<IEnumerable<ProductListDto>>> GetAllProductsAsync();
         Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(RequestParameters parameters);
+        Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(ProductParameters parameters);
         Task<Result2<ProductDetailsDto>> GetProductByIdAsync(int productId);
         Task<Result2<IEnumerable<ProductListDto>>> GetProductsByCategoryIdAsync(int categoryId);
         Task<Result2<IEnumerable<ProductListDto>>> GetProductsByBrandIdAsync(int brandId);

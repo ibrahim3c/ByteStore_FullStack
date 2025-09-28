@@ -2,14 +2,13 @@
 using ByteStore.Domain.Repositories;
 using ByteStore.Persistance.Database;
 
-
-
 namespace ByteStore.Persistance.Repositories
 {
-    internal class ProductRepository:BaseRepository<Product>, IProductRepository
+    internal class ProductRepository : BaseRepository<Product>, IProductRepository
     {
         public ProductRepository(AppDbContext appDbContext) : base(appDbContext)
         {
         }
+
     }
 }

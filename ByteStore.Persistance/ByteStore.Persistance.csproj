@@ -18,11 +18,16 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="StackExchange.Redis" Version="2.9.11" />
     <PackageReference Include="Stripe.net" Version="48.5.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ByteStore.Domain\ByteStore.Domain.csproj" />
     <ProjectReference Include="..\BytStore.Application\BytStore.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extenstions\" />
   </ItemGroup>
 
 </Project>

@@ -470,11 +470,22 @@ For unit tests i am using xunit, fluent assertion , moq
             Keep service code unchanged with ToListAsync / FirstOrDefaultAsync. In tests,
             instead of using List<T>.AsQueryable(), wrap your data with TestAsyncEnumerable<T>.
             This provides IAsyncQueryProvider, so async LINQ works in tests just like in production.
-	
+
+* i did pagination and fitlering and sorting and searching features for products
+    Question: Should I apply Skip & Take first, or should I apply Filter, Search, and Sort first?
+        Correct way: You should always apply Filtering + Searching + Sorting first.
+        Because you want the data to be fully filtered and sorted before selecting the page.
+        If you apply Skip & Take first, you’ll end up cutting the wrong data 
+        (for example, you might fetch a page from data that isn’t filtered or sorted yet).
+    ✅ The correct order is:
+        Filter
+        Search
+        Sort
+        Skip & Take (Pagination)
 
 // TODO:
+    learn specification pattern to implement paging filteration searching sorting 
     test all things
-        test search and paged why the it gives me 500 server error
     ask ai how to test this application which excatly i want to test and types that can i do it and how
     solve problem of fluent validation  
         but other exceptions work well

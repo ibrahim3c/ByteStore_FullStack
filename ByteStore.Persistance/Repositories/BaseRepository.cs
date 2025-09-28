@@ -177,9 +177,6 @@ namespace ByteStore.Persistance.Repositories
             if (criteria != null)
                 query = query.Where(criteria);
 
-            // مش هتحتاج await هنا
-            var totalCount = query.Count();
-
             var items = query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
