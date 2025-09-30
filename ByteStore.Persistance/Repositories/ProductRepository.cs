@@ -1,6 +1,8 @@
 ﻿using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using ByteStore.Persistance.Database;
+using ByteStore.Persistance.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace ByteStore.Persistance.Repositories
 {
@@ -9,6 +11,5 @@ namespace ByteStore.Persistance.Repositories
         public ProductRepository(AppDbContext appDbContext) : base(appDbContext)
         {
         }
-
     }
 }

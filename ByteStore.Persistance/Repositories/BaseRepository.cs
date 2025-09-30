@@ -1,6 +1,8 @@
 ﻿using ByteStore.Domain.Abstractions.Constants;
 using ByteStore.Domain.Repositories;
+using ByteStore.Domain.Specifications;
 using ByteStore.Persistance.Database;
+using ByteStore.Persistance.Specifications;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -32,9 +34,6 @@ namespace ByteStore.Persistance.Repositories
 
         }
 
-
-
-
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
@@ -61,6 +60,25 @@ namespace ByteStore.Persistance.Repositories
         public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
+        }
+
+
+        public async Task<T> FindAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).SingleOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<T>> FindAllAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator.GetQuery<T>(_context.Set<T>().AsQueryable(), spec);
         }
 
         public T Find(Expression<Func<T, bool>> criteria, string[] includes = null)
@@ -228,7 +246,6 @@ namespace ByteStore.Persistance.Repositories
             _context.Set<T>().AddRange(entities);
             return entities;
         }
-
         public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
         {
             await _context.Set<T>().AddRangeAsync(entities);

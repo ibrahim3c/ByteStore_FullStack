@@ -1,4 +1,4 @@
-﻿namespace BytStore.Application.DTOs.Shared
+﻿namespace ByteStore.Domain.Abstractions.Shared
 {
     public class RequestParameters
     {
@@ -9,7 +9,8 @@
         public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            set => _pageSize = value > maxPageSize ? maxPageSize : value;
         }
+        public string? OrderBy { get; set; }
     }
 }

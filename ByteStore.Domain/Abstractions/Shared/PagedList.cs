@@ -1,4 +1,4 @@
-﻿namespace BytStore.Application.DTOs.Shared
+﻿namespace ByteStore.Domain.Abstractions.Shared
 {
     public class PagedList<T> : List<T>
     {

@@ -1,9 +1,8 @@
-﻿using BytStore.Application.DTOs.Shared;
-
-namespace BytStore.Application.DTOs.Product
+﻿namespace ByteStore.Domain.Abstractions.Shared
 {
     public class ProductParameters : RequestParameters
     {
+        public ProductParameters() => OrderBy = "name";
         public decimal MinPrice { get; set; } = 0;
         public decimal MaxPrice { get; set; } = decimal.MaxValue;
         public string? Category { get; set; }
@@ -11,7 +10,7 @@ namespace BytStore.Application.DTOs.Product
 
         public bool ValidPriceRange => MaxPrice >= MinPrice;
 
-    
+        public string? SearchTerm { get; set; }
     }
 
 }

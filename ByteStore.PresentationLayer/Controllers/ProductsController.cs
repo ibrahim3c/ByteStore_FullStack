@@ -1,6 +1,6 @@
-﻿using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.Domain.Abstractions.Shared;
+using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Product;
-using BytStore.Application.DTOs.Shared;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

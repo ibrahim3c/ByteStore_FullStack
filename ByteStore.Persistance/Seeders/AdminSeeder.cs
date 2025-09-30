@@ -1,7 +1,9 @@
 ﻿using ByteStore.Domain.Abstractions.Constants;
 using ByteStore.Domain.Entities;
+using BytStore.Application.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace ByteStore.Persistance.Seeders
 {
@@ -11,6 +13,9 @@ namespace ByteStore.Persistance.Seeders
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
+            var adminOptions = serviceProvider.GetRequiredService<IOptionsMonitor<AdminAccount>>();
+
+            var adminAccount = adminOptions.CurrentValue;
 
             // Ensure Role exists
             string adminRole = Roles.AdminRole;
@@ -23,18 +28,18 @@ namespace ByteStore.Persistance.Seeders
             }
 
             // Create admin user if not exists
-            string adminEmail = "admin@gmail.com";
-            string adminPassword = "Test1234+";
+            string adminEmail = adminAccount.Email;
+            string adminPassword = adminAccount.Password;
 
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
                 adminUser = new AppUser
                 {
-                    UserName = "Admin",
+                    UserName = adminAccount.Password,
                     Email = adminEmail,
                     EmailConfirmed = true,
-                    PhoneNumber = "01011283465",
+                    PhoneNumber = adminAccount.PhoneNumber,
                 };
 
                 var result = await userManager.CreateAsync(adminUser, adminPassword);

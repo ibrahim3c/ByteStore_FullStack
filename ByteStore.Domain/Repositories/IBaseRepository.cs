@@ -1,5 +1,7 @@
 ﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.Domain.Specifications;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ByteStore.Domain.Repositories
 {
@@ -12,7 +14,9 @@ namespace ByteStore.Domain.Repositories
         IEnumerable<T> GetAll(string[] includes = null); // my code
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllAsync(string[] includes = null); // mycode
-
+        Task<T> FindAsync(ISpecification<T> spec);
+        Task<IEnumerable<T>> FindAllAsync(ISpecification<T> spec);
+        Task<int> CountAsync(ISpecification<T> spec);
         T Find(Expression<Func<T, bool>> criteria, string[] includes = null);
         Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, string[] includes = null);

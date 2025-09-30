@@ -17,6 +17,7 @@ namespace BytStore.Application
             services.Configure<Brevo>(configuration.GetSection("Brevo"));
             // configure stripe for payment
             services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
+            services.Configure<AdminAccount>(configuration.GetSection("AdminAccount"));
 
             // register the services
             services.AddScoped<IAuthService, AuthService>();

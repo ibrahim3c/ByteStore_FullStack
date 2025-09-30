@@ -1,9 +1,11 @@
 ﻿using ByteStore.Domain.Abstractions.Result;
+using ByteStore.Domain.Abstractions.Shared;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
+using ByteStore.Domain.Specifications;
 using BytStore.Application.DTOs.Product;
-using BytStore.Application.DTOs.Shared;
 using BytStore.Application.IServices;
+using BytStore.Application.Specifications;
 namespace BytStore.Application.Services
 {
     public class ProductService:IProductService
@@ -59,40 +61,42 @@ namespace BytStore.Application.Services
             if (!parameters.ValidPriceRange)
                 return Result2<PagedList<ProductListDto>>.Failure(ProductErrors.InvalidPriceRange);
 
-            var products = await unitOfWork.ProductRepository.PaginateAsync(
-                parameters.PageNumber,
-                parameters.PageSize,
-                filter: p =>
-                    p.Price >= parameters.MinPrice &&
-                    p.Price <= parameters.MaxPrice &&
-                    (string.IsNullOrEmpty(parameters.Category) || p.Category.Name == parameters.Category) &&
-                    (string.IsNullOrEmpty(parameters.Brand) || p.Brand.Name == parameters.Brand),
-                includes: [ "Category", "Brand", "Images" ]
-            );
-
-            var productsListDto = products.Select(p => new ProductListDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price,
-                CategoryName = p.Category.Name,
-                BrandName = p.Brand.Name,
-                ThumbnailUrl = p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl
-            }).ToList();
-
-            var totalCount = await unitOfWork.ProductRepository.CountAsync(
-                p =>
-                    p.Price >= parameters.MinPrice &&
-                    p.Price <= parameters.MaxPrice &&
-                    (string.IsNullOrEmpty(parameters.Category) || p.Category.Name == parameters.Category) &&
-                    (string.IsNullOrEmpty(parameters.Brand) || p.Brand.Name == parameters.Brand)
-            );
-
+            var spec = new ProductSpecification(parameters);
+            var productsListDto = (await unitOfWork.ProductRepository.FindAllAsync(spec))
+                .Select(p => new ProductListDto
+                { 
+                    Id = p.Id, Name = p.Name,
+                    Price = p.Price,
+                    CategoryName = p.Category.Name, 
+                    BrandName = p.Brand.Name,
+                    ThumbnailUrl = p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl }
+                ).ToList(); 
+            var totalCount = await unitOfWork.ProductRepository.CountAsync(spec);
 
             var PagedList = new PagedList<ProductListDto>(productsListDto, totalCount, parameters.PageNumber, parameters.PageSize);
             return Result2<PagedList<ProductListDto>>.Success(PagedList);
         }
+        public async Task<Result2<PagedList<ProductListDto>>> GetAllProducts2Async(ProductParameters parameters)
+        {
+            if (!parameters.ValidPriceRange)
+                return Result2<PagedList<ProductListDto>>.Failure(ProductErrors.InvalidPriceRange);
 
+            var spec = new ProductWithoutPaginationSpecification(parameters);
+            var productsListDto = (await unitOfWork.ProductRepository.FindAllAsync(spec))
+                .Select(p => new ProductListDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    CategoryName = p.Category.Name,
+                    BrandName = p.Brand.Name,
+                    ThumbnailUrl = p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl
+                }
+                ).ToList();
+
+            var PagedList = PagedList<ProductListDto>.ToPagedList(productsListDto, parameters.PageNumber, parameters.PageSize);
+            return Result2<PagedList<ProductListDto>>.Success(PagedList);
+        }
         public async Task<Result2<ProductDetailsDto>> GetProductByIdAsync(int productId)
         {
             var product = await unitOfWork.ProductRepository.FindAsync(p=>p.Id==productId, new string[] { "Category", "Brand", "Images", "Reviews.Customer" });

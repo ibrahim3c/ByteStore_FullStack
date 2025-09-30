@@ -58,10 +58,10 @@ namespace ByteStore.Api
             //{
             //    var services = scope.ServiceProvider;
 
-            //    await CategorySeeder.SeedAsync(services);
-            //    await BrandSeeder.SeedAsync(services);
-            //    await RoleSeeder.SeedAsync(services);
-            //    await AdminSeeder.SeedAsync(services); 
+            //await CategorySeeder.SeedAsync(services);
+            //await BrandSeeder.SeedAsync(services);
+            //await RoleSeeder.SeedAsync(services);
+            //await AdminSeeder.SeedAsync(services);
             //}
 
             // it cause problem of more than dbContext was found
