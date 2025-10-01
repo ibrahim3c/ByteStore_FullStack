@@ -36,26 +36,26 @@ namespace BytStore.Application.Services
         }
 
         // just pagination
-        public async Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(RequestParameters parameters)
-        {
-            var products = await unitOfWork.ProductRepository.PaginateAsync(parameters.PageNumber, parameters.PageSize, null, ["Category", "Brand", "Images"]);
-            var productsListDto = products.Select(p => new ProductListDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price,
-                CategoryName = p.Category.Name,
-                BrandName = p.Brand.Name,
-                ThumbnailUrl = p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl
-            }).ToList();
+        //public async Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(RequestParameters parameters)
+        //{
+        //    var products = await unitOfWork.ProductRepository.PaginateAsync(parameters.PageNumber, parameters.PageSize, null, ["Category", "Brand", "Images"]);
+        //    var productsListDto = products.Select(p => new ProductListDto
+        //    {
+        //        Id = p.Id,
+        //        Name = p.Name,
+        //        Price = p.Price,
+        //        CategoryName = p.Category.Name,
+        //        BrandName = p.Brand.Name,
+        //        ThumbnailUrl = p.Images.FirstOrDefault(pi => pi.IsPrimary)?.ImageUrl
+        //    }).ToList();
 
-            var totalCount = await unitOfWork.ProductRepository.CountAsync();
+        //    var totalCount = await unitOfWork.ProductRepository.CountAsync();
 
-            var PagedList=new PagedList<ProductListDto>(productsListDto, totalCount,parameters.PageNumber,parameters.PageSize);
-            return Result2<PagedList<ProductListDto>>.Success(PagedList);
-        }
+        //    var PagedList=new PagedList<ProductListDto>(productsListDto, totalCount,parameters.PageNumber,parameters.PageSize);
+        //    return Result2<PagedList<ProductListDto>>.Success(PagedList);
+        //}
 
-        // pagination + filtering 
+        // pagination + filtering + searching + sorting
         public async Task<Result2<PagedList<ProductListDto>>> GetAllProductsAsync(ProductParameters parameters)
         {
             if (!parameters.ValidPriceRange)

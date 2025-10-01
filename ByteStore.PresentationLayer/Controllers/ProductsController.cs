@@ -19,20 +19,29 @@ namespace ByteStore.Presentation.Controllers
         // GET: api/products
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet("All")]
         public async Task<IActionResult> GetAllProducts()
         {
             var pagedResult = await serviceManager.ProductService.GetAllProductsAsync();
             return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
-        } 
+        }
+
+        //[AllowAnonymous]
+        //[HttpGet("paged")]
+        //public async Task<IActionResult> GetAllPagedProducts([FromQuery] RequestParameters parameters)
+        //{
+        //    var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(parameters);
+        //    return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
+        //}
 
         [AllowAnonymous]
-        [HttpGet("paged")]
-        public async Task<IActionResult> GetAllPagedProducts([FromQuery] RequestParameters parameters)
+        [HttpGet()]
+        public async Task<IActionResult> GetAllPagedProducts([FromQuery] ProductParameters parameters)
         {
             var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(parameters);
             return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
         }
+
 
         // GET: api/products/5
         [AllowAnonymous]

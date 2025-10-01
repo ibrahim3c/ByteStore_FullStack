@@ -7,7 +7,6 @@
         public decimal MaxPrice { get; set; } = decimal.MaxValue;
         public string? Category { get; set; }
         public string? Brand { get; set; }
-
         public bool ValidPriceRange => MaxPrice >= MinPrice;
 
         public string? SearchTerm { get; set; }

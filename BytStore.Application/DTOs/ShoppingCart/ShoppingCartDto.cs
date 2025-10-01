@@ -1,6 +1,4 @@
-﻿using ByteStore.Domain.Entities;
-
-namespace BytStore.Application.DTOs.ShoppingCart
+﻿namespace BytStore.Application.DTOs.ShoppingCart
 {
      public class ShoppingCartDto
     {

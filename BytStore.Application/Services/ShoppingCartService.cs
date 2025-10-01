@@ -6,7 +6,7 @@ using BytStore.Application.IServices;
 
 namespace BytStore.Application.Services
 {
-    internal class ShoppingCartService:IShoppingCartService
+    public class ShoppingCartService:IShoppingCartService
     {
         private readonly IShoppingCartRepository shoppingCartRepository;
 

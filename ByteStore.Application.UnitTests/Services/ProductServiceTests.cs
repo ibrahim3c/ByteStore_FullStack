@@ -1,8 +1,8 @@
 ﻿using ByteStore.Domain.Abstractions.Result;
+using ByteStore.Domain.Abstractions.Shared;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Product;
-using BytStore.Application.DTOs.Shared;
 using BytStore.Application.IServices;
 using BytStore.Application.Services;
 using FluentAssertions;
@@ -44,7 +44,7 @@ namespace ByteStore.Application.UnitTests.Services
         public async Task GetAllProductsAsync_Paginated_ShouldReturnPagedList()
         {
             // Arrange
-            var parameters = new RequestParameters { PageNumber = 1, PageSize = 10 };
+            var parameters = new ProductParameters { PageNumber = 1, PageSize = 10 };
             var products = new List<Product>
             {
                 new Product { Id = 1, Name = "Laptop", Category = new Category(), Brand = new Brand(), Images = new List<ProductImage>() }
