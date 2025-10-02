@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ByteStore.Domain\ByteStore.Domain.csproj" />
-    <ProjectReference Include="..\BytStore.Application\BytStore.Application.csproj" />
+    <ProjectReference Include="..\BytStore.Application\ByteStore.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

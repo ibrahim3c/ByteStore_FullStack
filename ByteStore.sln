@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{76780B1C-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{49B105AB-B095-40A2-8AD5-50BDCA3A2DE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytStore.Application", "BytStore.Application\BytStore.Application.csproj", "{B845570F-9DAC-419F-8BB3-7A9694DDBDE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteStore.Application", "BytStore.Application\ByteStore.Application.csproj", "{B845570F-9DAC-419F-8BB3-7A9694DDBDE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteStore.Domain", "ByteStore.Domain\ByteStore.Domain.csproj", "{4F48F2ED-8241-4950-9604-53A319EC94AC}"
 EndProject

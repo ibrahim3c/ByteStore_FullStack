@@ -9,6 +9,10 @@ namespace ByteStore.Persistance.Repositories
     {
         private readonly IDatabase _db;
 
+        public ShoppingCartRepository(IConnectionMultiplexer redis)
+        {
+            _db = redis.GetDatabase();
+        }
         public async Task<bool> ClearCartAsync(string customerId)
         {
             return await _db.KeyDeleteAsync(GetCartKey(customerId));
@@ -16,7 +20,7 @@ namespace ByteStore.Persistance.Repositories
 
         public async Task<ShoppingCart?> GetCartAsync(string customerId)
         {
-            var cart = await _db.StringGetAsync(customerId);
+            var cart = await _db.StringGetAsync(GetCartKey(customerId));
             return cart.IsNullOrEmpty? null:JsonSerializer.Deserialize<ShoppingCart>(cart);
         }
 

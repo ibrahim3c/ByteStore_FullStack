@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ShoppingCartsController : BaseController
     {
         public ShoppingCartsController(IServiceManager serviceManager) : base(serviceManager)
