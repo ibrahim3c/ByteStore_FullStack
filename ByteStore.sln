@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteStore.Persistance", "By
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{5CEB7790-A202-4657-B907-17A773B28885}"
 	ProjectSection(SolutionItems) = preProject
-		MyNotes.txt = MyNotes.txt
+		BackendNotes.txt = BackendNotes.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteStore.Presentation", "ByteStore.PresentationLayer\ByteStore.Presentation.csproj", "{A0459862-0A1E-4B00-8481-15E92BFF290C}"

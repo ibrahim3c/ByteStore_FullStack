@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+
+/*CSS Variables */
+:root {
+  /* 2.1 Color Palette */
+  --primary-color: #0D47A1;
+  --accent-color: #00ACC1;
+  --warn-color: #D32F2F;
+  --background-color: #F5F7FA;
+  --surface-color: #FFFFFF;
+  --text-primary-color: #212121;
+  --text-secondary-color: #757575;
+  --text-hint-color: #BDBDBD;
+
+  /* 2.2 Typography */
+  --font-family: 'Roboto', sans-serif;
+  --font-size-h1: 48px;
+  --font-size-h2: 36px;
+
+  /* 2.3 Sizing & Spacing */
+  --spacing-unit: 8px;
+  --spacing-medium: calc(var(--spacing-unit) * 2); /* 16px */
+  --spacing-large: calc(var(--spacing-unit) * 3);  /* 24px */
+
+  /* 2.4 Border Radius */
+  --border-radius-general: 8px;
+  --border-radius-image: 12px;
+}
+
+
+/* Global Styles */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-primary-color);
+}
+
+
+/* Component Overrides */
+/* Toolbar Override */
+.mat-toolbar {
+  background-color: var(--surface-color) !important;
+  color: var(--text-primary-color) !important;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+/* Main Content Padding */
+.main-content {
+  padding: var(--spacing-large); /* 24px */
+}
