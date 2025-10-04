@@ -362,3 +362,53 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 ByteStore.Api/Secret.json
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+
+# Angular Client (ByStore.Client)
+
+# Compiled output
+/ByStore.Client/dist
+/ByStore.Client/tmp
+/ByStore.Client/out-tsc
+/ByStore.Client/bazel-out
+
+# Node
+/ByStore.Client/node_modules
+/ByStore.Client/npm-debug.log
+/ByStore.Client/yarn-error.log
+
+# IDEs and editors
+/ByStore.Client/.idea/
+/ByStore.Client/.project
+/ByStore.Client/.classpath
+/ByStore.Client/.c9/
+/ByStore.Client/*.launch
+/ByStore.Client/.settings/
+/ByStore.Client/*.sublime-workspace
+
+# Visual Studio Code
+/ByStore.Client/.vscode/*
+!/ByStore.Client/.vscode/settings.json
+!/ByStore.Client/.vscode/tasks.json
+!/ByStore.Client/.vscode/launch.json
+!/ByStore.Client/.vscode/extensions.json
+/ByStore.Client/.history/*
+
+# Miscellaneous
+/ByStore.Client/.angular/cache
+/ByStore.Client/.sass-cache/
+/ByStore.Client/connect.lock
+/ByStore.Client/coverage
+/ByStore.Client/libpeerconnection.log
+/ByStore.Client/testem.log
+/ByStore.Client/typings
+
+# System files
+/ByStore.Client/.DS_Store
+/ByStore.Client/Thumbs.db
