@@ -1,0 +1,99 @@
+.navbar {
+  background-color: var(--surface-color);
+  border-bottom: 1px solid #E0E0E0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--spacing-large,24px);
+  height: 64px;
+}
+
+
+/*
+  CSS-Only Logo for ByteStore
+  Add this to your navbar component's CSS file
+*/
+
+.logo-text-container {
+  text-decoration: none; /* Removes underline from the link */
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 24px;
+  font-weight: 700; /* Bold */
+  letter-spacing: 0.5px;
+}
+
+.logo-byte {
+  color: var(--primary-color, #0D47A1);
+}
+
+.logo-store {
+  color: var(--accent-color, #00ACC1);
+}
+
+/* This creates the blinking cursor effect */
+.logo-text::after {
+  content: '_'; /* The character for the cursor */
+  font-weight: 400; /* Make the cursor a bit thinner */
+  color: var(--text-secondary-color, #757575);
+  animation: blink 1.2s infinite step-end;
+}
+
+/* The animation keyframes for the blink effect */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.navbar-center {
+  display: flex;
+  gap: var(--spacing-medium);
+}
+
+.nav-link {
+  color: var(--text-primary-color);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.cart-btn ::ng-deep .mat-badge-content {
+  font-size: 10px;
+  font-weight: 600;
+  background-color: var(--accent-color);
+  color: white;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+
+.auth-buttons {
+  display: flex;
+  gap: var(--spacing-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-center {
+    display: none;
+  }
+}

@@ -412,3 +412,4 @@ ByteStore.Api/Secret.json
 # System files
 /ByStore.Client/.DS_Store
 /ByStore.Client/Thumbs.db
+

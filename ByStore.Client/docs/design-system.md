@@ -1,12 +1,13 @@
----
-# Design System: "ElectroModern" for E-commerce (Angular Material)
+# Design System: "ByteStore" for E-commerce (Angular Material)
 
 ## 1. Project Goal & Vibe
 - **Vibe:** Modern, clean, trustworthy, professional, and tech-focused.
 - **Goal:** Create a seamless user experience for browsing and purchasing electronic devices. The design should highlight product details and build customer confidence.
+- **Note:** use Angular material for styling.
 - **Note:** All custom styles will be written in CSS (not SCSS).
+- **Note:** this is project standalone not modules.
 
-## 2. Color Palette (For Angular Material Theming)
+## 2. Color Palette
 - **Primary Color (Branding, main buttons, active links):**
   - Hex: `#0D47A1` (Deep Blue)
   - Description: Suggests trust and technology.
@@ -24,7 +25,7 @@
   - **Hint Text:** `#BDBDBD` (Light Gray) - For placeholders in form fields.
 
 ## 3. Typography (Based on Google Fonts - Roboto)
-- **Font Family:** 'Roboto', sans-serif.
+- **Font Family:** `'Roboto', sans-serif`.
 - **Type Scale:**
   - `H1 (display-2)`: 48px, Bold (700) - For main product titles on detail pages.
   - `H2 (headline)`: 36px, Bold (700) - For main section titles.
@@ -57,4 +58,49 @@
 - **Toolbar (`mat-toolbar`):**
   - `background-color`: Surface color (`#FFFFFF`).
   - `border-bottom`: `1px solid #E0E0E0`.
----
+
+## 6. Global Stylesheet (`style.css`)
+The global `style.css` file sets up the Google Font import and defines all the core design tokens as CSS variables.
+
+```css
+@import url('[https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap](https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap)');
+
+/* CSS Variables */
+:root {
+  /* 2.1 Color Palette */
+  --primary-color: #0D47A1;
+  --accent-color: #00ACC1;
+  --warn-color: #D32F2F;
+  --background-color: #F5F7FA;
+  --surface-color: #FFFFFF;
+  --text-primary-color: #212121;
+  --text-secondary-color: #757575;
+  --text-hint-color: #BDBDBD;
+
+  /* 2.2 Typography */
+  --font-family: 'Roboto', sans-serif;
+  --font-size-h1: 48px;
+  --font-size-h2: 36px;
+
+  /* 2.3 Sizing & Spacing */
+  --spacing-unit: 8px;
+  --spacing-medium: calc(var(--spacing-unit) * 2); /* 16px */
+  --spacing-large: calc(var(--spacing-unit) * 3);  /* 24px */
+
+  /* 2.4 Border Radius */
+  --border-radius-general: 8px;
+  --border-radius-image: 12px;
+}
+
+
+/* Global Styles */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-primary-color);
+}
