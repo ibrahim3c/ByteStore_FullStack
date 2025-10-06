@@ -1,99 +1,124 @@
-.navbar {
+/* Note: This assumes the :root variables from your style.css are available globally */
+
+.app-navbar {
+  /* From Design System: 5. Toolbar */
   background-color: var(--surface-color);
   border-bottom: 1px solid #E0E0E0;
+
+  /* Layout */
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 var(--spacing-large,24px);
-  height: 64px;
+  padding: 0 var(--spacing-large); /* 0 24px */
+  height: 72px;
 }
 
-
-/*
-  CSS-Only Logo for ByteStore
-  Add this to your navbar component's CSS file
-*/
-
-.logo-text-container {
-  text-decoration: none; /* Removes underline from the link */
+/* --- Brand/Logo Styling --- */
+.navbar-brand .brand-link {
   display: flex;
   align-items: center;
+  gap: var(--spacing-unit); /* 8px */
+  text-decoration: none;
 }
 
-.logo-text {
-  font-family: var(--font-family, 'Roboto', sans-serif);
-  font-size: 24px;
-  font-weight: 700; /* Bold */
-  letter-spacing: 0.5px;
+.navbar-brand .brand-icon {
+  color: var(--primary-color); /* Use brand color for the icon */
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
 }
 
-.logo-byte {
-  color: var(--primary-color, #0D47A1);
+.navbar-brand span {
+  font-size: 24px; /* H3 */
+  font-weight: 500; /* Medium */
+  font-family: var(--font-family);
+  color: var(--text-primary-color);
 }
 
-.logo-store {
-  color: var(--accent-color, #00ACC1);
-}
-
-/* This creates the blinking cursor effect */
-.logo-text::after {
-  content: '_'; /* The character for the cursor */
-  font-weight: 400; /* Make the cursor a bit thinner */
-  color: var(--text-secondary-color, #757575);
-  animation: blink 1.2s infinite step-end;
-}
-
-/* The animation keyframes for the blink effect */
-@keyframes blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-.navbar-center {
+/* --- Search Bar Styling (Fixed alignment) --- */
+.navbar-search {
+  flex: 1;
   display: flex;
-  gap: var(--spacing-medium);
+  justify-content: center;
+  align-items: flex-end;
+  max-width: 500px;
+}
+
+.search-form-field {
+  width: 100%;
+  min-width: 250px;
+  height: 100%;
+
+}
+
+.search-form-field .mat-mdc-form-field-flex {
+  height: 48px;
+  align-items: center;
+  border-radius: var(--border-radius-general) !important;
+}
+
+.search-form-field .mat-mdc-text-field-wrapper {
+  border-radius: var(--border-radius-general);
+}
+
+.search-form-field .mat-mdc-form-field-icon-prefix {
+  color: var(--text-secondary-color);
+  margin-right: var(--spacing-unit); /* 8px */
+}
+
+/* --- Actions Section Styling --- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* increased for better spacing */
 }
 
 .nav-link {
-  color: var(--text-primary-color);
-  font-weight: 500;
-  text-transform: uppercase;
   font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary-color);
 }
 
 .nav-link:hover {
   color: var(--primary-color);
 }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-medium);
+/* --- Shopping Cart & Icons Fix --- */
+.navbar-actions button[mat-icon-button] {
+  margin-right: 4px;
 }
 
-.cart-btn ::ng-deep .mat-badge-content {
-  font-size: 10px;
+.navbar-actions button[aria-label="Shopping cart icon"] {
+  margin-right: 16px; /* extra space between cart and user icon */
+}
+
+.navbar-actions .mat-mdc-icon-button .mat-icon {
+  color: var(--text-secondary-color);
+}
+
+.login-button {
   font-weight: 600;
-  background-color: var(--accent-color);
-  color: white;
-  min-width: 18px;
-  height: 18px;
-  line-height: 18px;
+  margin-left: var(--spacing-unit); /* 8px */
 }
 
-
-.auth-buttons {
-  display: flex;
-  gap: var(--spacing-medium);
+/* --- Responsive Design for Smaller Screens --- */
+@media (max-width: 960px) {
+  .nav-link {
+    display: none; /* Hide text links on smaller screens */
+  }
+  .navbar-search {
+    max-width: 350px;
+  }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .navbar-center {
-    display: none;
+  .app-navbar {
+    padding: 0 var(--spacing-medium); /* 16px */
+  }
+  .navbar-search {
+    display: none; /* Hide search bar completely on very small screens */
+  }
+  .login-button {
+    display: none; /* Hide login button, rely on icon */
   }
 }
