@@ -1,0 +1,91 @@
+<div class="container product-list-container py-4">
+  <div class="row g-4">
+    <!-- Sidebar Filters -->
+    <div class="col-lg-3 col-md-4">
+      <div class="filter-card shadow-sm p-3">
+        <h5 class="filter-title"><i class="fa-solid fa-filter me-2"></i> Filters</h5>
+
+        <!-- Brand Filter -->
+        <div class="filter-section mt-3">
+          <h6 class="section-title">Brands</h6>
+          <div *ngFor="let brand of brands" class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [id]="brand"
+              (change)="onBrandSelected(brand, $event)"
+            />
+            <label class="form-check-label" [for]="brand">{{ brand }}</label>
+          </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-section mt-4">
+          <h6 class="section-title">Categories</h6>
+
+          <div *ngFor="let category of categories" class="mb-2">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [id]="category.name"
+                (change)="onCategorySelected(category, $event)"
+              />
+              <label class="form-check-label fw-bold" [for]="category.name">
+                {{ category.name }}
+              </label>
+            </div>
+
+            <!-- Subcategories -->
+            <div class="ms-3" *ngIf="category.subCategories?.length">
+              <div *ngFor="let sub of category.subCategories" class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="sub.name"
+                  (change)="onCategorySelected(sub, $event)"
+                />
+                <label class="form-check-label text-muted" [for]="sub.name">
+                  {{ sub.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-outline-primary w-100 mt-3">
+        <i class="fa-solid fa-rotate-left me-2"></i> Clear Filters
+      </button>
+    </div>
+
+    <!-- Product List -->
+    <div class="col-lg-9 col-md-8">
+      <!-- Sort Bar -->
+      <div
+        class="sort-bar d-flex justify-content-between align-items-center mb-4 p-3 shadow-sm rounded"
+      >
+        <h5 class="mb-0 fw-semibold text-primary">All Products</h5>
+
+        <div class="d-flex align-items-center gap-2">
+          <label class="text-secondary fw-medium mb-0">Sort by:</label>
+          <select
+            class="form-select form-select-sm w-auto border-0 shadow-sm"
+            (change)="onSortChanged($event)"
+          >
+            <option value="default">Default</option>
+            <option value="priceLowHigh">Price: Low to High</option>
+            <option value="priceHighLow">Price: High to Low</option>
+            <option value="name">Name</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" *ngFor="let product of filteredProducts">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <div class="logo-icon">
+        <i class="fa-solid fa-microchip"></i>
+      </div>
+      <span class="logo-text">Byte<span class="logo-accent">Store</span></span>
+    </a>
+
+    <!-- Toggle Button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isCollapsed = !isCollapsed"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Collapsible Section -->
+    <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Center: Nav Links -->
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
+        <li class="nav-item"><a class="nav-link active fw-medium" routerLink="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" href="#">Products</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" href="#">Best Seller</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" href="#">Contact</a></li>
+      </ul>
+
+      <!-- Right Side -->
+      <div class="d-flex align-items-center gap-3 search">
+        <!-- Search Box -->
+        <div class="input-group search-group">
+          <input
+            type="text"
+            class="form-control search-input"
+            placeholder="Search products..."
+          />
+          <button class="btn btn-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+        <!-- Cart -->
+        <a class="cart-link position-relative" routerLink="/cart">
+          <i class="fa-solid fa-cart-shopping fa-lg"></i>
+          <span class="cart-count">{{ cartCount }}</span>
+        </a>
+
+        <!-- Auth Buttons -->
+        <div class="d-flex gap-2 auth">
+          <button class="btn-login-modern">Login</button>
+          <button class="btn-register-modern">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -9,6 +9,7 @@
   --text-primary-color: #212121;
   --text-secondary-color: #757575;
   --text-hint-color: #BDBDBD;
+   --border-color: #E0E0E0;
 
   /* 2.2 Typography */
   --font-family: 'Roboto', sans-serif;
@@ -17,6 +18,7 @@
 
   /* 2.3 Sizing & Spacing */
   --spacing-unit: 8px;
+   --spacing-small: var(--spacing-unit);
   --spacing-medium: calc(var(--spacing-unit) * 2); /* 16px */
   --spacing-large: calc(var(--spacing-unit) * 3);  /* 24px */
 

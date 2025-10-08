@@ -1,9 +1,10 @@
-# Design System: "ByteStore" for E-commerce (Angular Material)
+# Design System: "ByteStore" for E-commerce
 
 ## 1. Project Goal & Vibe
 - **Vibe:** Modern, clean, trustworthy, professional, and tech-focused.
 - **Goal:** Create a seamless user experience for browsing and purchasing electronic devices. The design should highlight product details and build customer confidence.
-- **Note:** use Angular material for styling.
+- **Note:** use bootstrap and ng-bootstrap in styling only for styling.
+- **Note:** for icons use font awesome.
 - **Note:** All custom styles will be written in CSS (not SCSS).
 - **Note:** this is project standalone not modules.
 

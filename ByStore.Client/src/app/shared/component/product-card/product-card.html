@@ -1,0 +1,17 @@
+<div class="product-card shadow-sm">
+  <div class="image-wrapper">
+    <img [src]="product.thumbnailUrl" alt="{{ product.name }}" />
+  </div>
+
+  <div class="product-info">
+    <h3 class="product-name">{{ product.name }}</h3>
+    <p class="product-brand">{{ product.brandName }} • {{ product.categoryName }}</p>
+
+    <div class="product-footer">
+      <span class="product-price">${{ product.price | number: '1.0-0' }}</span>
+      <button class="btn btn-accent d-flex align-items-center">
+        <i class="fa-solid fa-cart-shopping me-2"></i> Add to Cart
+      </button>
+    </div>
+  </div>
+</div>

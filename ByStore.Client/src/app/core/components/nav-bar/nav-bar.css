@@ -1,0 +1,133 @@
+.navbar {
+  border-bottom: 1px solid #E0E0E0;
+}
+
+/* Logo */
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--primary-color);
+}
+.logo-accent {
+  color: var(--accent-color);
+}
+
+/* Nav Links */
+.nav-link {
+  color: var(--text-primary-color);
+  font-weight: 500;
+  margin-right: 16px;
+  transition: color 0.3s;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+}
+
+/* Search */
+.search-group {
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.search-input {
+  border: none;
+  padding: 8px 14px;
+  min-width: 220px;
+  outline: none;
+}
+
+.search-input:focus {
+  box-shadow: none;
+}
+
+.btn-search {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 8px 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-search:hover {
+  background-color: var(--accent-color);
+}
+
+/* Cart */
+.cart-link {
+  position: relative;
+  color: var(--text-primary-color);
+  transition: color 0.3s ease;
+}
+.cart-link:hover {
+  color: var(--primary-color);
+}
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: var(--accent-color);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Auth Buttons */
+.btn-login-modern,
+.btn-register-modern {
+  padding: 7px 16px;
+  font-weight: 600;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+/* Login Button */
+.btn-login-modern {
+  background-color: transparent;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-login-modern:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Register Button */
+.btn-register-modern {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+}
+.btn-register-modern:hover {
+  opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .search{
+    flex-direction: column;
+  }
+.auth{ flex-direction: column; width: 100%; }
+}

@@ -30,35 +30,56 @@ The application will use a modular architecture, separating features into their 
   /src
     /app
       /core
-        /guards          // Route guards (AuthGuard, AdminGuard)
-        /interceptors    // HTTP interceptors (JwtInterceptor, ErrorInterceptor)
-        /models          // Global TypeScript interfaces (ApiResponse, User)
-        /services        // Singleton services (AuthService, ApiService, StorageService)
-        /state           // (Optional: for NgRx Store)
-        core.module.ts
+        /guards/              // Route guards (AuthGuard, AdminGuard)
+        /interceptors/        // HTTP interceptors (JwtInterceptor, ErrorInterceptor)
+        /models/              // Global interfaces (ApiResponse, User, Product)
+        /services/            // Global singletons (AuthService, ApiService, CartService)
+        /state/               // Optional: global state (signals, NgRx, etc.)
+        /components/          // Global layout components (Navbar, Footer)
       /features
-        /auth            // Login, Register, Forgot Password components
-        /cart            // Cart view, cart summary components
-        /catalog         // Product list, detail, filters, categories
-        /checkout        // Multi-step checkout process, payment
-        /account         // User profile, order history, address management
-        /admin           // (Lazy Loaded) Admin dashboard, product/order management
-      /shared
-        /components      // Reusable components (Spinner, Button, Modal)
-        /directives      // Reusable directives
-        /pipes           // Reusable pipes (e.g., currency formatting)
-        /validators      // Custom form validators
-        shared.module.ts
-      app-routing.module.ts
+        /auth/
+          login/
+          register/
+          auth.routes.ts
+        /cart/
+          cart.component.ts
+          cart.routes.ts
+        /products/
+          product-list/
+          product-details/
+          catalog.routes.ts
+        /checkout/
+          checkout.component.ts
+          checkout.routes.ts
+        /orders/
+          orders.component.ts
+        /account/
+          profile/
+          orders/
+          account.routes.ts
+        /admin/
+          dashboard/
+          products/
+          orders/
+          admin.routes.ts
+      /shared/
+        /components/          // Reusable UI widgets (Button, Spinner, Modal)
+        /directives/          // Shared directives
+        /pipes/               // Reusable pipes (currency, filter)
+        /validators/          // Custom validators
+        /utils/               // Helper functions
       app.component.ts
-      app.module.ts
-    /assets
-      /icons
-      /images
-      /styles
-    /environments
+      app.component.html
+      app.component.scss
+      app.routes.ts
+      app.config.ts
+    /assets/
+      /icons/
+      /images/
+    /environments/
       environment.ts
-      environment.prod.ts
+    main.ts
+    style.css
 ```
 
 -----
@@ -226,3 +247,9 @@ This roadmap aligns with the backend delivery plan.
 5.  **Checkout & Payment:** Implement the multi-step checkout flow with Stripe Elements integration for payments.
 6.  **Admin Portal:** Build the lazy-loaded admin module for managing store data.
 7.  **Refinement:** Implement caching (e.g., using `shareReplay`), add unit/E2E tests, and perform performance optimizations.
+
+
+
+# To Dos
+1. add bootstrap and use it to create navbar , product-card,..
+2. do product list and product details and routing of them
