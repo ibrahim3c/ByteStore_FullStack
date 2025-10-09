@@ -14,8 +14,7 @@ export class ProductService {
 
   getProducts() {
     const params = new HttpParams().set('pageSize', 50);
-
-    return this.httpClient.get<PagedList<Product[]>>(`${this.apiUrl}/products`, { params })
+    return this.httpClient.get(`${this.apiUrl}`, { params ,observe:'response'})
     .pipe(catchError(this.handleError));
   }
 

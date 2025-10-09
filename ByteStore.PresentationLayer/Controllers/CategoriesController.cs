@@ -15,10 +15,18 @@ namespace ByteStore.Presentation.Controllers
             
         }
 
-        [HttpGet]
+        [HttpGet()]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllCategories()
         {
             var result = await serviceManager.CategoryService.GetAllCategoriesAsync();
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        }
+        [HttpGet("tree")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllCategorieTrees()
+        {
+            var result = await serviceManager.CategoryService.GetAllCategoryTreesAsync();
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 

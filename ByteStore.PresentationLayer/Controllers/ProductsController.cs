@@ -5,6 +5,7 @@ using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using System.Text.Json;
 
 namespace ByteStore.Presentation.Controllers
 {
@@ -39,9 +40,9 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetAllPagedProducts([FromQuery] ProductParameters parameters)
         {
             var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(parameters);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.Value.MetaData));
             return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
         }
-
 
         // GET: api/products/5
         [AllowAnonymous]

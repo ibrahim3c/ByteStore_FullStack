@@ -1,9 +1,9 @@
-﻿using ByteStore.Domain.Abstractions.Result;
+﻿using ByteStore.Application.DTOs.Category;
+using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Category;
 using BytStore.Application.IServices;
-using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 
 namespace BytStore.Application.Services
@@ -27,6 +27,25 @@ namespace BytStore.Application.Services
             });
             return Result2<IEnumerable<CategoryDto>>.Success(categoriesDto);
         }
+
+        public async Task<Result2<IEnumerable<CategoryTreeDto>>> GetAllCategoryTreesAsync()
+        {
+            var categories = await unitOfWork.CategoryRepository.GetAllAsync(["SubCategories"]);
+            var topLevelCategories = categories.Where(c => c.ParentCategoryId == null).ToList();
+            var categoryDtos = topLevelCategories.Select(MapToDto).ToList();
+            return Result2<IEnumerable<CategoryTreeDto>>.Success(categoryDtos);
+        }
+        private CategoryTreeDto MapToDto(Category category)
+        {
+            return new CategoryTreeDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                SubCategories = category.SubCategories?.Select(MapToDto).ToList()
+            };
+        }
+
         public async Task<Result2<CategoryDto>> GetCategoryByIdAsync(int categoryId)
         {
             var category = await unitOfWork.CategoryRepository.GetByIdAsync(categoryId);

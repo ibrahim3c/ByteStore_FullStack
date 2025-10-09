@@ -16,6 +16,7 @@ namespace ByteStore.Presentation.Controllers
 
         // GET: api/brands
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllBrands()
         {
             var result = await serviceManager.BrandService.GetAllBrandsAsync();

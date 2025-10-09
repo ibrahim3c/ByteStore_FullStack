@@ -251,5 +251,7 @@ This roadmap aligns with the backend delivery plan.
 
 
 # To Dos
-1. add bootstrap and use it to create navbar , product-card,..
-2. do product list and product details and routing of them
+  when middle screen solve the shape of button of card
+  filter and sort and pagination
+  search
+ do product list and product details and routing of them
