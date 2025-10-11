@@ -37,7 +37,7 @@
   color: var(--primary-color);
 }
 
-/* Search */
+/* Search
 .search-group {
   border: 1px solid #ccc;
   border-radius: 25px;
@@ -68,6 +68,7 @@
 .btn-search:hover {
   background-color: var(--accent-color);
 }
+ */
 
 /* Cart */
 .cart-link {

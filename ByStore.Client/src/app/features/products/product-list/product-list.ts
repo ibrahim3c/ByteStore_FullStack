@@ -8,54 +8,59 @@ import { HttpResponse } from '@angular/common/http';
 import { MetaData } from '../../../core/models/MetaData';
 import { BrandService } from '../../../core/services/brand.service';
 import { CategoryService } from '../../../core/services/category.service';
+import { FormsModule } from '@angular/forms';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-list',
-  imports: [ProductCard, CommonModule],
+  imports: [ProductCard, CommonModule, FormsModule, NgbPagination],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
 export class ProductList implements OnInit {
   brands: string[] = [];
-  onBrandSelected(_t11: any, $event: Event) {
-    throw new Error('Method not implemented.');
-  }
+  searchTerm: any;
+  pageSize!: number;
+  currentPage!: number;
 
-
-  onCategorySelected(_t19: any, $event: Event) {
-    throw new Error('Method not implemented.');
-  }
-  onSortChanged($event: Event) {
-    throw new Error('Method not implemented.');
-  }
-
-
-  constructor(private productService: ProductService
-    , private brandService: BrandService
-    ,private categoryService:CategoryService
-  , private cdr:ChangeDetectorRef) {}
+  constructor(
+    private productService: ProductService,
+    private brandService: BrandService,
+    private categoryService: CategoryService
+  ) {}
   products: Product[] = [];
   filteredProducts: Product[] = [];
   metaData!: MetaData;
-  categories: Category[] =[]
+  categories: Category[] = [];
   ngOnInit() {
     this.productService.getProducts().subscribe((response: HttpResponse<any>) => {
       this.products = response.body ?? [];
       this.metaData = JSON.parse(response.headers.get('X-Pagination')!);
-      console.log(this.metaData);
       this.filteredProducts = this.products;
-         this.cdr.markForCheck();
+
+      this.pageSize = this.metaData.PageSize;
+      this.currentPage = this.metaData.CurrentPage;
     });
 
     this.brandService.getAllBrands().subscribe((brands) => {
       this.brands = brands.map((b) => b.name);
-      console.log(this.brands);
-         this.cdr.markForCheck();
     });
 
     this.categoryService.getAllCategories().subscribe((categories) => {
       this.categories = categories;
-         this.cdr.markForCheck();
-  });
+    });
+  }
+
+  clearFilters() {
+    throw new Error('Method not implemented.');
+  }
+  applyFilters() {
+    throw new Error('Method not implemented.');
+  }
+  onPageChange($event: number) {
+    throw new Error('Method not implemented.');
+  }
+  onSortChanged($event: Event) {
+    throw new Error('Method not implemented.');
   }
 }

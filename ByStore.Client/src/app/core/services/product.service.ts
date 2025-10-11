@@ -13,7 +13,7 @@ export class ProductService {
   private readonly apiUrl = `${environment.baseUrl}/products`;
 
   getProducts() {
-    const params = new HttpParams().set('pageSize', 50);
+    const params = new HttpParams().set('pageSize', 20);
     return this.httpClient.get(`${this.apiUrl}`, { params ,observe:'response'})
     .pipe(catchError(this.handleError));
   }

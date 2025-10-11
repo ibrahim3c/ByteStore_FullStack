@@ -2,7 +2,7 @@
   <div class="row g-4">
     <!-- Sidebar Filters -->
     <div class="col-lg-3 col-md-4">
-      <div class="filter-card shadow-sm p-3">
+      <form class="filter-card shadow-sm p-3" (ngSubmit)="applyFilters()" (reset)="clearFilters()">
         <h5 class="filter-title"><i class="fa-solid fa-filter me-2"></i> Filters</h5>
 
         <!-- Brand Filter -->
@@ -13,8 +13,9 @@
             <input
               class="form-check-input"
               type="checkbox"
+              name="brands"
+              [value]="brand"
               [id]="brand"
-              (change)="onBrandSelected(brand, $event)"
             />
             <label class="form-check-label" [for]="brand">{{ brand }}</label>
           </div>
@@ -30,8 +31,9 @@
               <input
                 class="form-check-input"
                 type="checkbox"
+                name="categories"
+                [value]="category.name"
                 [id]="category.name"
-                (change)="onCategorySelected(category, $event)"
               />
               <label class="form-check-label fw-bold" [for]="category.name">
                 {{ category.name }}
@@ -44,32 +46,51 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
+                  name="subCategories"
+                  [value]="sub.name"
                   [id]="sub.name"
-                  (change)="onCategorySelected(sub, $event)"
                 />
                 <label class="form-check-label text-muted" [for]="sub.name">
                   {{ sub.name }}
-                  
                 </label>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <button class="btn btn-outline-primary w-100 mt-3">
-        <i class="fa-solid fa-rotate-left me-2"></i> Clear Filters
-      </button>
+
+        <!-- Filter Buttons -->
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check me-2"></i> Apply Filters
+          </button>
+          <button type="reset" class="btn btn-outline-primary">
+            <i class="fa-solid fa-rotate-left me-2"></i> Clear Filters
+          </button>
+        </div>
+      </form>
     </div>
 
     <!-- Product List -->
     <div class="col-lg-9 col-md-8">
-      <!-- Sort Bar -->
+      <!-- Sort and search -->
       <div
-        class="sort-bar d-flex justify-content-between align-items-center mb-4 p-3 shadow-sm rounded"
+        class="search-sort-container d-flex justify-content-between align-items-center mb-4 p-3 shadow-sm rounded"
       >
-        <h5 class="mb-0 fw-semibold text-primary">All Products</h5>
+        <!-- Search Bar -->
+        <div class="search-bar d-flex align-items-center shadow-sm rounded p-1 flex-grow-1">
+          <input
+            type="text"
+            class="form-control border-0 me-2"
+            placeholder="Search for products..."
+            [(ngModel)]="searchTerm"
+          />
+          <button class="btn btn-outline-primary">
+            <i class="fa-solid fa-search"></i>
+          </button>
+        </div>
 
-        <div class="d-flex align-items-center gap-2">
+        <!-- sort dropdown -->
+        <div class="sort-box d-flex align-items-center gap-2">
           <label class="text-secondary fw-medium mb-0">Sort by:</label>
           <select
             class="form-select form-select-sm w-auto border-0 shadow-sm"
@@ -88,6 +109,19 @@
         <div class="col-lg-4 col-md-6" *ngFor="let product of filteredProducts">
           <app-product-card [product]="product"></app-product-card>
         </div>
+      </div>
+
+      <div class="pagination-container d-flex justify-content-center mt-4">
+        <ngb-pagination
+          [collectionSize]="filteredProducts.length"
+          [(page)]="currentPage"
+          [pageSize]="pageSize"
+          (pageChange)="onPageChange($event)"
+          [maxSize]="5"
+          [boundaryLinks]="true"
+          [rotate]="true"
+        >
+        </ngb-pagination>
       </div>
     </div>
   </div>

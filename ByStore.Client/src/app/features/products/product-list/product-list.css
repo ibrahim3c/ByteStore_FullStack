@@ -32,30 +32,122 @@
   border-color: var(--primary-color);
 }
 
-/* Sort Bar */
-.sort-bar {
+/* Sort  search */
+.search-sort-container {
   background-color: var(--surface-color);
   border: 1px solid #e0e0e0;
   border-radius: var(--border-radius-general);
 }
 
-.sort-bar h5 {
+.search-sort-container h5 {
   color: var(--primary-color);
 }
 
-.sort-bar select {
+.search-sort-container select {
   cursor: pointer;
   transition: box-shadow 0.2s ease;
 }
 
-.sort-bar select:focus {
+.search-sort-container select:focus {
   box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.2);
   outline: none;
 }
 
+
+/* search */
+.search-bar {
+  max-width: 400px;
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: 0.95rem;
+}
+
+.search-bar input::placeholder {
+  color: #adb5bd;
+}
+
+.search-bar button {
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}
 /* Responsive Grid */
 @media (max-width: 992px) {
   .filter-card {
     margin-bottom: 16px;
+  }
+
+}
+
+
+/* Pagination */
+.pagination-container {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-general);
+  padding: 12px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+::ng-deep .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+::ng-deep .page-link {
+  color: var(--primary-color);
+}
+
+::ng-deep .page-link:hover {
+  background-color: rgba(13, 71, 161, 0.08);
+  border-color: var(--primary-color);
+}
+
+
+/* Filter Buttons */
+.filter-card .btn {
+  border-radius: var(--border-radius-general);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.filter-card .btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.filter-card .btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.filter-card .btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+@media (max-width: 576px) {
+  .search-sort-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .sort-box {
+    justify-content: center;
+    margin-top:15px;
   }
 }

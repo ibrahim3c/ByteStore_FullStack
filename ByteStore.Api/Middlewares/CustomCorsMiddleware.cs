@@ -17,6 +17,9 @@
             context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
             context.Response.Headers.Add("Access-Control-Allow-Credentials", "true"); // Required for credentials
 
+            // if u don't allow to expose this header the angular app can't see it 
+            context.Response.Headers.Add("Access-Control-Expose-Headers", "X-Pagination");
+
             // Handle preflight request
             if (context.Request.Method == "OPTIONS")
             {
