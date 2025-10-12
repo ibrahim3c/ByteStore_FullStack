@@ -11,16 +11,19 @@ namespace ByteStore.Application.UnitTests.Services
     public class CategoryServiceTests
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-        private readonly Mock<ICategoryRepository> _mockCategoryRepository;
+        private readonly Mock<ICategoryTreeRepository> _mockCategoryTreeRepository;
+        private readonly Mock<IBaseRepository<Category>> _mockCategoryRepository;
         private readonly CategoryService _categoryService;
 
         public CategoryServiceTests()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
-            _mockCategoryRepository = new Mock<ICategoryRepository>();
+            _mockCategoryTreeRepository = new Mock<ICategoryTreeRepository>();
+            _mockCategoryRepository = new Mock<IBaseRepository<Category>>();
 
             // Setup the mock UnitOfWork to return our mock CategoryRepository
-            _mockUnitOfWork.Setup(uow => uow.CategoryRepository).Returns(_mockCategoryRepository.Object);
+            _mockUnitOfWork.Setup(uow => uow.CategoryTreeRepository).Returns(_mockCategoryTreeRepository.Object);
+            _mockUnitOfWork.Setup(uow => uow.GetRepository<Category>()).Returns(_mockCategoryRepository.Object);
 
             // Instantiate the service with the mocked dependency
             _categoryService = new CategoryService(_mockUnitOfWork.Object);

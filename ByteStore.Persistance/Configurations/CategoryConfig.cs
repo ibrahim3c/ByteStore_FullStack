@@ -18,15 +18,6 @@ namespace ByteStore.Persistance.Configurations
 
             builder.Property(c => c.Description)
                    .HasMaxLength(500);
-
-            //builder.Property(c => c.ImageUrl)
-            //       .HasMaxLength(250);
-
-            // Self-referencing relationship: One Category -> Many SubCategories
-            builder.HasOne(c => c.ParentCategory)
-                   .WithMany(c => c.SubCategories)
-                   .HasForeignKey(c => c.ParentCategoryId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

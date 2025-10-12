@@ -13,11 +13,11 @@ namespace ByteStore.Persistance.Repositories
         {
             this.appDbContext = appDbContext;
             ProductRepository = new ProductRepository(appDbContext);
-            CategoryRepository = new CategoryRepository(appDbContext);;
+            CategoryTreeRepository = new CategoryTreeRepository(appDbContext);;
             CustomerRepository = new CustomerRepository(appDbContext);
         }
         public IProductRepository ProductRepository { get; }
-        public ICategoryRepository CategoryRepository { get; }
+        public ICategoryTreeRepository CategoryTreeRepository { get; }
         public IOrderRepository OrderRepository { get; }
         public ICustomerRepository CustomerRepository { get; }
 

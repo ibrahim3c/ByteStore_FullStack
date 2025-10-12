@@ -3,7 +3,7 @@
     public interface IUnitOfWork:IDisposable
     {
         IProductRepository ProductRepository { get; }
-        ICategoryRepository CategoryRepository { get; }
+        ICategoryTreeRepository CategoryTreeRepository { get; }
         IOrderRepository OrderRepository { get; }
         ICustomerRepository CustomerRepository { get; }
 

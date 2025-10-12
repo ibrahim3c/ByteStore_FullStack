@@ -4,9 +4,9 @@ using ByteStore.Persistance.Database;
 
 namespace ByteStore.Persistance.Repositories
 {
-    internal class CategoryRepository : BaseRepository<Category>, ICategoryRepository
+    internal class CategoryTreeRepository : BaseRepository<CategoryTree>, ICategoryTreeRepository
     {
-        public CategoryRepository(AppDbContext appDbContext) : base(appDbContext)
+        public CategoryTreeRepository(AppDbContext appDbContext) : base(appDbContext)
         {
         }
     }

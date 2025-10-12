@@ -11,7 +11,7 @@ export class CategoryService{
   private httpClient=inject(HttpClient)
   private readonly apiUrl=`${environment.baseUrl}/categories`;
   getAllCategories(){
-    return this.httpClient.get<Category[]>(`${this.apiUrl}/tree`).pipe(catchError(this.handleError));
+    return this.httpClient.get<Category[]>(`${this.apiUrl}`).pipe(catchError(this.handleError));
   }
     // Error handling
     private handleError(error: any): Observable<never> {

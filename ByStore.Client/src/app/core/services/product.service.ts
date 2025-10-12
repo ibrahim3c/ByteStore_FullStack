@@ -1,19 +1,28 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Product } from '../models/Product';
-import { PagedList } from '../models/PagedList';
-import { environment } from '../../../environments/environment';
+import * as environment from '../../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
+import { ProductParameters } from '../models/ProductParameters';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   private httpClient = inject(HttpClient);
-  private readonly apiUrl = `${environment.baseUrl}/products`;
+  private readonly apiUrl = `${environment.environment.baseUrl}/products`;
 
-  getProducts() {
-    const params = new HttpParams().set('pageSize', 20);
+  getProducts(productParams:ProductParameters) {
+const params = new HttpParams()
+  .set('pageNumber', productParams.PageNumber??1)
+  .set('pageSize', productParams.PageSize??10)
+  .set('minPrice', productParams.MinPrice ?? '')
+  .set('maxPrice', productParams.MaxPrice ?? '')
+  .set('categoryId', productParams.CategoryId ?? '')
+  .set('brandId', productParams.BrandId ?? '')
+  .set('searchTerm', productParams.SearchTerm ?? '')
+  .set('orderBy', productParams.OrderBy ?? '');
+
     return this.httpClient.get(`${this.apiUrl}`, { params ,observe:'response'})
     .pipe(catchError(this.handleError));
   }

@@ -13,8 +13,11 @@ namespace BytStore.Application.Specifications
                  (productParams.MinPrice == 0 || p.Price >= productParams.MinPrice) &&
                  (productParams.MaxPrice == decimal.MaxValue || p.Price <= productParams.MaxPrice) &&
 
-                 (string.IsNullOrEmpty(productParams.Category) || p.Category.Name == productParams.Category) &&
-                 (string.IsNullOrEmpty(productParams.Brand) || p.Brand.Name == productParams.Brand)
+        //(string.IsNullOrEmpty(productParams.Category) || p.Category.Name == productParams.Category) &&
+        //(string.IsNullOrEmpty(productParams.Brand) || p.Brand.Name == productParams.Brand)
+
+        (!productParams.CategoryId.HasValue || p.CategoryId == productParams.CategoryId.Value) &&
+        (!productParams.BrandId.HasValue || p.BrandId == productParams.BrandId.Value)
              )
         {
             // Include relations

@@ -2,7 +2,7 @@
 
 namespace ByteStore.Domain.Repositories
 {
-    public interface ICategoryRepository:IBaseRepository<Category>
+    public interface ICategoryTreeRepository:IBaseRepository<CategoryTree>
     {
     }
 }

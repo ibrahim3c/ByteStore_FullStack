@@ -53,16 +53,17 @@ namespace ByteStore.Api
             app.MapControllers();
 
 
-            //// seeding
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
+            // seeding
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
-            //await CategorySeeder.SeedAsync(services);
-            //await BrandSeeder.SeedAsync(services);
-            //await RoleSeeder.SeedAsync(services);
-            //await AdminSeeder.SeedAsync(services);
-            //}
+                //await CategoryTreeSeeder.SeedAsync(services);
+                await CategorySeeder.SeedAsync(services);
+                //await BrandSeeder.SeedAsync(services);
+                //await RoleSeeder.SeedAsync(services);
+                //await AdminSeeder.SeedAsync(services);
+            }
 
             // it cause problem of more than dbContext was found
             //  Map Health Checks JSON Endpoint => normal health check just api return json response

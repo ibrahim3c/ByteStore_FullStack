@@ -1,108 +1,108 @@
 <div class="container product-list-container py-4">
   <div class="row g-4">
     <!-- Sidebar Filters -->
-    <div class="col-lg-3 col-md-4">
-      <form class="filter-card shadow-sm p-3" (ngSubmit)="applyFilters()" (reset)="clearFilters()">
-        <h5 class="filter-title"><i class="fa-solid fa-filter me-2"></i> Filters</h5>
+<div class="col-lg-3 col-md-4">
+  <div class="filters shadow-sm bg-white rounded p-4">
+    <h5 class="mb-4 text-primary fw-semibold">
+      <i class="fa-solid fa-filter me-2"></i> Filters
+    </h5>
 
-        <!-- Brand Filter -->
-        <div class="filter-section mt-3">
-          <h6 class="section-title">Brands</h6>
-          @for (brand of brands; track $index) {
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              name="brands"
-              [value]="brand"
-              [id]="brand"
-            />
-            <label class="form-check-label" [for]="brand">{{ brand }}</label>
-          </div>
-          }
-        </div>
-
-        <!-- Category Filter -->
-        <div class="filter-section mt-4">
-          <h6 class="section-title">Categories</h6>
-
-          <div *ngFor="let category of categories" class="mb-2">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="categories"
-                [value]="category.name"
-                [id]="category.name"
-              />
-              <label class="form-check-label fw-bold" [for]="category.name">
-                {{ category.name }}
-              </label>
-            </div>
-
-            <!-- Subcategories -->
-            <div class="ms-3" *ngIf="category.subCategories?.length">
-              <div *ngFor="let sub of category.subCategories" class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  name="subCategories"
-                  [value]="sub.name"
-                  [id]="sub.name"
-                />
-                <label class="form-check-label text-muted" [for]="sub.name">
-                  {{ sub.name }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Filter Buttons -->
-        <div class="d-grid gap-2 mt-4">
-          <button type="submit" class="btn btn-primary">
-            <i class="fa-solid fa-check me-2"></i> Apply Filters
-          </button>
-          <button type="reset" class="btn btn-outline-primary">
-            <i class="fa-solid fa-rotate-left me-2"></i> Clear Filters
-          </button>
-        </div>
-      </form>
+    <!-- Category -->
+    <div class="mb-4">
+      <label for="category" class="form-label fw-medium">Category</label>
+      <select
+        id="category"
+        class="form-select"
+        [(ngModel)]="productParams.CategoryId"
+      >
+        <option value="" selected>All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+      </select>
     </div>
+
+    <!-- Brand -->
+    <div class="mb-4">
+      <label for="brand" class="form-label fw-medium">Brand</label>
+      <select
+        id="brand"
+        class="form-select"
+        [(ngModel)]="productParams.BrandId"
+      >
+        <option value="" selected>All Brands</option>
+        <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+      </select>
+    </div>
+
+    <!-- Min / Max Price -->
+    <div class="mb-4">
+      <label class="form-label fw-medium">Price Range</label>
+      <div class="d-flex gap-2">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="productParams.MinPrice"
+          placeholder="Min"
+        />
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="productParams.MaxPrice"
+          placeholder="Max"
+        />
+      </div>
+    </div>
+
+    <!-- Apply & Reset -->
+    <div class="d-flex justify-content-between mt-4">
+      <button class="btn btn-accent flex-grow-1 me-2" (click)="applyFilters()">
+        <i class="fa-solid fa-check me-1"></i> Apply
+      </button>
+      <button class="btn btn-outline-secondary flex-grow-1" (click)="resetFilters()">
+        <i class="fa-solid fa-rotate-left me-1"></i> Reset
+      </button>
+    </div>
+  </div>
+</div>
+
 
     <!-- Product List -->
     <div class="col-lg-9 col-md-8">
-      <!-- Sort and search -->
-      <div
-        class="search-sort-container d-flex justify-content-between align-items-center mb-4 p-3 shadow-sm rounded"
-      >
-        <!-- Search Bar -->
-        <div class="search-bar d-flex align-items-center shadow-sm rounded p-1 flex-grow-1">
-          <input
-            type="text"
-            class="form-control border-0 me-2"
-            placeholder="Search for products..."
-            [(ngModel)]="searchTerm"
-          />
-          <button class="btn btn-outline-primary">
-            <i class="fa-solid fa-search"></i>
-          </button>
-        </div>
+<!-- Search + Sort -->
+<div
+  class="search-sort-container d-flex flex-wrap justify-content-between align-items-center mb-4 p-3 shadow-sm rounded bg-white"
+>
+  <!-- 🔍 Search Bar -->
+  <div class="search-bar d-flex align-items-center flex-grow-1 shadow-sm rounded p-2">
+    <input
+      type="text"
+      class="form-control border-0 me-2"
+      placeholder="Search for products..."
+      [(ngModel)]="searchTerm"
+      (input)="searchProduct()"
+    />
+    <button class="btn btn-primary">
+      <i class="fa-solid fa-search"></i>
+    </button>
+  </div>
 
-        <!-- sort dropdown -->
-        <div class="sort-box d-flex align-items-center gap-2">
-          <label class="text-secondary fw-medium mb-0">Sort by:</label>
-          <select
-            class="form-select form-select-sm w-auto border-0 shadow-sm"
-            (change)="onSortChanged($event)"
-          >
-            <option value="default">Default</option>
-            <option value="priceLowHigh">Price: Low to High</option>
-            <option value="priceHighLow">Price: High to Low</option>
-            <option value="name">Name</option>
-          </select>
-        </div>
-      </div>
+  <!-- 🔽 Sort Dropdown -->
+  <div
+    class="sort-box d-flex align-items-center gap-2 mt-3 mt-md-0 ms-md-3"
+  >
+    <label class="text-secondary fw-medium mb-0">Sort by:</label>
+    <select
+      class="form-select form-select-sm border-0 shadow-sm w-auto"
+      (change)="onSortChanged($event)"
+    >
+      <option value="default">Default</option>
+      <option value="price">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+      <option value="category">Category</option>
+      <option value="brand">Brand</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+</div>
 
       <!-- Product Grid -->
       <div class="row g-4">
@@ -111,6 +111,7 @@
         </div>
       </div>
 
+      <!-- Pagination -->
       <div class="pagination-container d-flex justify-content-center mt-4">
         <ngb-pagination
           [collectionSize]="filteredProducts.length"
@@ -119,9 +120,7 @@
           (pageChange)="onPageChange($event)"
           [maxSize]="5"
           [boundaryLinks]="true"
-          [rotate]="true"
-        >
-        </ngb-pagination>
+        ></ngb-pagination>
       </div>
     </div>
   </div>

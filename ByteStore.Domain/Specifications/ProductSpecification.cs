@@ -14,8 +14,12 @@ namespace ByteStore.Domain.Specifications
                 (productParams.MinPrice == 0 || p.Price >= productParams.MinPrice) &&
                 (productParams.MaxPrice == decimal.MaxValue || p.Price <= productParams.MaxPrice) &&
 
-                (string.IsNullOrEmpty(productParams.Category) || p.Category.Name == productParams.Category) &&
-                (string.IsNullOrEmpty(productParams.Brand) || p.Brand.Name == productParams.Brand)
+        //(string.IsNullOrEmpty(productParams.Category) || p.Category.Name == productParams.Category) &&
+        //(string.IsNullOrEmpty(productParams.Brand) || p.Brand.Name == productParams.Brand)
+
+
+        (!productParams.CategoryId.HasValue || p.CategoryId == productParams.CategoryId.Value) &&
+        (!productParams.BrandId.HasValue || p.BrandId == productParams.BrandId.Value)
             )
         {
             // Include relations
@@ -40,6 +44,9 @@ namespace ByteStore.Domain.Specifications
                     case "category":
                         AddOrderBy(p => p.Category.Name);
                         break;
+                    case "name":
+                        AddOrderBy(p => p.Category.Name);
+                        break;
                     default:
                         AddOrderBy(p => p.Name);
                         break;
@@ -54,4 +61,6 @@ namespace ByteStore.Domain.Specifications
             ApplyPaging((productParams.PageNumber - 1) * productParams.PageSize, productParams.PageSize);
         }
     }
+
+
 }
