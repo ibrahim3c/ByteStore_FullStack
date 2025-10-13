@@ -13,15 +13,27 @@ export class ProductService {
   private readonly apiUrl = `${environment.environment.baseUrl}/products`;
 
   getProducts(productParams:ProductParameters) {
-const params = new HttpParams()
-  .set('pageNumber', productParams.PageNumber??1)
-  .set('pageSize', productParams.PageSize??10)
-  .set('minPrice', productParams.MinPrice ?? '')
-  .set('maxPrice', productParams.MaxPrice ?? '')
-  .set('categoryId', productParams.CategoryId ?? '')
-  .set('brandId', productParams.BrandId ?? '')
-  .set('searchTerm', productParams.SearchTerm ?? '')
-  .set('orderBy', productParams.OrderBy ?? '');
+let params = new HttpParams()
+  .set('pageNumber', productParams.PageNumber ?? 1)
+  .set('pageSize', productParams.PageSize ?? 10);
+
+if (productParams.MinPrice != null)
+  params = params.set('minPrice', productParams.MinPrice);
+
+if (productParams.MaxPrice != null)
+  params = params.set('maxPrice', productParams.MaxPrice);
+
+if (productParams.CategoryId)
+  params = params.set('categoryId', productParams.CategoryId);
+
+if (productParams.BrandId)
+  params = params.set('brandId', productParams.BrandId);
+
+if (productParams.SearchTerm)
+  params = params.set('searchTerm', productParams.SearchTerm);
+
+if (productParams.OrderBy)
+  params = params.set('orderBy', productParams.OrderBy);
 
     return this.httpClient.get(`${this.apiUrl}`, { params ,observe:'response'})
     .pipe(catchError(this.handleError));

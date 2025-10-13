@@ -15,27 +15,20 @@ import { Brand } from '../../../core/models/Brand';
 
 @Component({
   selector: 'app-product-list',
-  imports: [ProductCard, CommonModule, FormsModule, NgbPagination],
+  imports: [ProductCard, CommonModule, FormsModule,
+    // NgbPagination
+  ],
   templateUrl:'./product-list.html',
   styleUrl: './product-list.css',
 })
 export class ProductList implements OnInit {
-
   products: Product[] = [];
   filteredProducts: Product[] = [];
 
-  // brands: string[] = [];
   brands: Brand[] = [];
   categories: Category[] = [];
-  // selectedCategoryId?:number;
-  // selectedBrandId?:number;
-  // selectedMinPrice?:number;
-  // selectedMaxPrice?:number;
-  searchTerm?: string;
 
-  pageSize!: number;
-  currentPage!: number;
-  metaData!: MetaData;
+  metaData?:MetaData;
 
   productParams:ProductParameters=new ProductParameters();
 
@@ -49,9 +42,6 @@ export class ProductList implements OnInit {
     this.loadProducts();
     this.loadCategories();
     this.loadBrands();
-    console.log(this.filteredProducts)
-    console.log(this.categories)
-    console.log(this.brands)
   }
 
 
@@ -59,9 +49,11 @@ export class ProductList implements OnInit {
       this.productService.getProducts(this.productParams).subscribe((response: HttpResponse<any>) => {
       this.products = response.body ?? [];
       this.metaData = JSON.parse(response.headers.get('X-Pagination')!);
+      console.log(  this.metaData);
       this.filteredProducts = this.products;
-      this.pageSize = this.metaData.PageSize;
-      this.currentPage = this.metaData.CurrentPage;
+
+      this.productParams.PageSize = this.metaData?.PageSize ?? 10;
+      this.productParams.PageNumber = this.metaData?.CurrentPage ?? 1;
     });
   }
   loadCategories(): void {
@@ -71,12 +63,12 @@ export class ProductList implements OnInit {
   }
   loadBrands(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
-    // this.brands = brands.map((b) => b.name);
     this.brands = brands;
     });
   }
 
   applyFilters() {
+    this.productParams.PageNumber=1;
     this.loadProducts();
     }
 
@@ -84,15 +76,20 @@ export class ProductList implements OnInit {
     this.productParams= new ProductParameters();
     this.loadProducts();
   }
-
-  onPageChange($event: number) {
-    throw new Error('Method not implemented.');
-  }
-  onSortChanged($event: Event) {
-    throw new Error('Method not implemented.');
+  onSortChanged() {
+    this.productParams.PageNumber = 1;
+    this.loadProducts();
   }
 
 searchProduct() {
-throw new Error('Method not implemented.');
+  this.productParams.PageNumber = 1;
+  this.loadProducts();
+}
+
+onPageChange(PageNumber: number) {
+  console.log(PageNumber)
+  this.productParams.PageNumber = PageNumber;
+  this.loadProducts();
+  // console.log(this.metaData)
 }
 }

@@ -1,5 +1,5 @@
 export class RequestParameters {
-  PageNumber?: number;
-  PageSize?: number;
-  OrderBy?: string;
+  PageNumber: number=1;
+  PageSize: number=10;
+  OrderBy?: string="default";
 }

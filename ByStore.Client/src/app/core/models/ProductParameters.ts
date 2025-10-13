@@ -7,3 +7,4 @@ export class ProductParameters extends RequestParameters {
   BrandId?: number;
   SearchTerm?: string;
 }
+

@@ -39,7 +39,7 @@ namespace ByteStore.Presentation.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetAllPagedProducts([FromQuery] ProductParameters parameters)
         {
-            var pagedResult = await serviceManager.ProductService.GetAllProductsAsync(parameters);
+            var pagedResult = await serviceManager.ProductService.GetAllProducts2Async(parameters);
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.Value.MetaData));
             return pagedResult.IsSuccess ? Ok(pagedResult.Value) : NotFound(pagedResult.Error);
         }
