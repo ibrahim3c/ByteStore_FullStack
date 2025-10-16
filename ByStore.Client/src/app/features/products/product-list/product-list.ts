@@ -9,15 +9,13 @@ import { MetaData } from '../../../core/models/MetaData';
 import { BrandService } from '../../../core/services/brand.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { FormsModule } from '@angular/forms';
-import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { ProductParameters } from '../../../core/models/ProductParameters';
 import { Brand } from '../../../core/models/Brand';
+import { Pager } from '../../../shared/component/pager/pager';
 
 @Component({
   selector: 'app-product-list',
-  imports: [ProductCard, CommonModule, FormsModule,
-    // NgbPagination
-  ],
+  imports: [ProductCard, CommonModule, FormsModule, Pager],
   templateUrl:'./product-list.html',
   styleUrl: './product-list.css',
 })
@@ -92,4 +90,6 @@ onPageChange(PageNumber: number) {
   this.loadProducts();
   // console.log(this.metaData)
 }
+
 }
+

@@ -1,17 +1,32 @@
-<div class="product-card shadow-sm">
-  <div class="image-wrapper">
-    <img [src]="product.thumbnailUrl" alt="{{ product.name }}" />
+<div class="product-card shadow-sm rounded bg-white">
+  <!-- Product Image -->
+  <div class="image-container">
+    <img
+      [src]="product.thumbnailUrl || placeholderImage"
+      (error)="onImageError($event)"
+      [alt]="product.name"
+      class="product-image rounded-top"
+    />
   </div>
 
-  <div class="product-info">
-    <h3 class="product-name">{{ product.name }}</h3>
-    <p class="product-brand">{{ product.brandName }} • {{ product.categoryName }}</p>
+  <!-- Product Info -->
+  <div class="product-info p-3">
+    <h3 class="product-name text-truncate mb-1">{{ product.name }}</h3>
+    <p class="product-brand mb-3">
+      {{ product.brandName }} • {{ product.categoryName }}
+    </p>
 
-    <div class="product-footer">
-      <span class="product-price">${{ product.price | number: '1.0-0' }}</span>
-      <button class="btn btn-accent d-flex align-items-center">
-        <i class="fa-solid fa-cart-shopping me-2"></i> Add to Cart
-      </button>
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="product-price fw-semibold">${{ product.price | number: '1.0-0' }}</span>
+
+      <div class="action-buttons d-flex gap-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="viewDetails(product.id)">
+          <i class="fa-solid fa-eye"></i>
+        </button>
+        <button class="btn btn-accent btn-sm" (click)="addToCart(product)">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

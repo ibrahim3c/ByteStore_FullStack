@@ -121,9 +121,8 @@
       </div> -->
 
       <!-- Manual Pagination -->
-<div class="pagination-container d-flex justify-content-center mt-4">
+<!-- <div class="pagination-container d-flex justify-content-center mt-4">
   <ul class="pagination mb-0">
-    <!-- Previous Button -->
     <li
       class="page-item"
       [class.disabled]="!metaData?.HasPrevious"
@@ -132,7 +131,6 @@
       <a class="page-link">&laquo; Prev</a>
     </li>
 
-    <!-- Page Numbers -->
     <li
       class="page-item"
       *ngFor="let page of [].constructor(metaData?.TotalPages || 0); let i = index"
@@ -142,7 +140,6 @@
       <a class="page-link">{{ i + 1 }}</a>
     </li>
 
-    <!-- Next Button -->
     <li
       class="page-item"
       [class.disabled]="!metaData?.HasNext"
@@ -151,7 +148,10 @@
       <a class="page-link">Next &raquo;</a>
     </li>
   </ul>
-</div>
+</div> -->
+
+<app-pager [metaData]="this.metaData" (onPageChanges)="onPageChange($event)">
+</app-pager>
 
     </div>
   </div>

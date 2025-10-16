@@ -1,0 +1,32 @@
+      <div class="pagination-container d-flex justify-content-center mt-4">
+        <ul class="pagination mb-0">
+          <!-- Previous Button -->
+          <li
+            class="page-item"
+            [class.disabled]="!metaData?.HasPrevious"
+            (click)="metaData?.HasPrevious && onPageChange(pageNumber - 1)"
+          >
+            <a class="page-link">&laquo; Prev</a>
+          </li>
+
+          <!-- Page Numbers -->
+           @for( i  of totalPages; track $index ){
+          <li
+            class="page-item"
+            [class.active]="pageNumber === i"
+            (click)="onPageChange(i)"
+          >
+            <a class="page-link">{{ i }}</a>
+          </li>
+           }
+
+          <!-- Next Button -->
+          <li
+            class="page-item"
+            [class.disabled]="!metaData?.HasNext"
+            (click)="metaData?.HasNext && onPageChange(pageNumber + 1)"
+          >
+            <a class="page-link">Next &raquo;</a>
+          </li>
+        </ul>
+      </div>

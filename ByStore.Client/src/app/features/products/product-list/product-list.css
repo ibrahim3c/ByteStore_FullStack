@@ -97,7 +97,7 @@
 
 
 /* pagination */
-.pagination {
+/* .pagination {
   list-style: none;
   display: flex;
   gap: 6px;
@@ -133,7 +133,7 @@
 .page-link:hover {
   background-color: #e9ecef;
 }
-
+ */
 
 button.btn-primary {
   background-color: var(--primary-color);

@@ -252,6 +252,4 @@ This roadmap aligns with the backend delivery plan.
 
 # To Dos
   when middle screen solve the shape of button of card
-  filter and sort and pagination
-  search
  do product list and product details and routing of them
