@@ -5,7 +5,7 @@ import { ProductList } from './features/products/product-list/product-list';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,NavBar,ProductList],
+  imports: [RouterOutlet,NavBar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

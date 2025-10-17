@@ -1,7 +1,7 @@
 import { ProductImage } from "./ProductImage";
 import { ProductReview } from "./ProductReview";
 
-export interface ProductDetails {
+export interface MyProductDetails {
   id: number;
   name: string;
   description: string;

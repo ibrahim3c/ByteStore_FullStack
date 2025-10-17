@@ -1,1 +1,88 @@
-<p>product-details works!</p>
+<div class="container my-5">
+  <div class="card product-details-card shadow-sm">
+    <div class="row g-4">
+
+      <!-- 🖼️ Left Section: Product Images -->
+      <div class="col-md-6 text-center">
+        <img
+          [src]="primaryImageUrl || 'https://via.placeholder.com/500x500?text=No+Image'"
+          alt="{{ product.name }}"
+          class="img-fluid main-image rounded mb-3"
+        />
+
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+          <img
+            *ngFor="let img of otherImages"
+            [src]="img"
+            alt="Product thumbnail"
+            class="img-thumbnail thumb"
+            (click)="changeImage(img)"
+          />
+        </div>
+      </div>
+
+      <!-- 📄 Right Section: Product Info -->
+      <div class="col-md-6">
+        <h1 class="display-6 fw-bold">{{ product.name }}</h1>
+        <p class="text-secondary mb-2">{{ product.brandName }} • {{ product.categoryName }}</p>
+
+        <h2 class="text-primary fw-bold mb-3">${{ product.price }}</h2>
+
+        <p class="text-muted mb-3">
+          {{ product.description }}
+        </p>
+
+        <p>
+          <span
+            class="badge"
+            [ngClass]="{
+              'bg-success': product.stockQuantity > 0,
+              'bg-danger': product.stockQuantity === 0
+            }"
+          >
+            {{ product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock' }}
+          </span>
+        </p>
+
+        <button
+          class="btn btn-lg text-white"
+          [disabled]="product.stockQuantity === 0"
+          style="background-color: var(--accent-color); border-radius: var(--border-radius-general);"
+        >
+          <i class="fa fa-shopping-cart me-2"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- ⭐ Reviews Section -->
+    <div class="reviews-section mt-4">
+      <h3 class="fw-bold mb-3">Customer Reviews</h3>
+
+      <div *ngIf="product.reviews?.length; else noReviews">
+        <div *ngFor="let review of product.reviews" class="review p-3 rounded mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>{{ review.customerName }}</strong>
+            <small class="text-muted">
+              {{ review.createdOn | date: 'mediumDate' }}
+            </small>
+          </div>
+
+          <div class="text-warning my-2">
+            <i
+              *ngFor="let s of getStars(review.rating)"
+              class="fa fa-star"
+            ></i>
+          </div>
+
+          <p class="mb-0">{{ review.comment }}</p>
+        </div>
+      </div>
+
+      <ng-template #noReviews>
+        <p class="text-muted">No reviews yet.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

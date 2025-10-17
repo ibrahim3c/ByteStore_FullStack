@@ -1,0 +1,43 @@
+.product-details-card {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-general);
+  padding: 24px;
+}
+
+.main-image {
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: var(--border-radius-image);
+}
+
+.thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: var(--border-radius-general);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.thumb:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+.review {
+  background-color: var(--background-color);
+  border-left: 4px solid var(--primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.display-6 {
+  font-size: 2rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
