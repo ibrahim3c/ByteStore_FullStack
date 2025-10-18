@@ -251,5 +251,6 @@ This roadmap aligns with the backend delivery plan.
 
 
 # To Dos
-  when middle screen solve the shape of button of card
- do product list and product details and routing of them
+  solve spinner
+  check imagePlaceholder i think the url is not right
+  check routing

@@ -1,10 +1,10 @@
+<app-loading-spinner [show]="(loading$ | async)??false" text="Loading..."></app-loading-spinner>
 <app-nav-bar></app-nav-bar>
 
 <!-- Main content area where routed views are displayed -->
 <main class="flex-grow-1 py-4">
   <div class="container">
     <router-outlet></router-outlet>
-     <!-- <app-product-list></app-product-list> -->
   </div>
 </main>
 

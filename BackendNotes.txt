@@ -486,6 +486,5 @@ For unit tests i am using xunit, fluent assertion , moq
 // TODO:
     don't forget to return all authorize attributes
     test all things
-    ask ai how to test this application which excatly i want to test and types that can i do it and how
     solve problem of fluent validation  
-        but other exceptions work well
+        but other exceptions work well => not it does not work :()

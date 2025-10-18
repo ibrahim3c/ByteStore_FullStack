@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import * as environment from '../../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ProductParameters } from '../models/ProductParameters';
-import { ProductDetails } from '../../features/products/product-details/product-details';
 import { MyProductDetails } from '../models/ProductDetails';
 
 @Injectable({
@@ -38,6 +37,7 @@ if (productParams.OrderBy)
 
     return this.httpClient.get(`${this.apiUrl}`, { params ,observe:'response'})
     .pipe(catchError(this.handleError));
+
   }
   getProductDetails(id:number): Observable<MyProductDetails> {
     return this.httpClient.get<MyProductDetails>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));

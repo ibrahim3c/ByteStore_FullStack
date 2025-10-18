@@ -1,14 +1,17 @@
-import { Component, Inject, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NavBar } from './core/components/nav-bar/nav-bar';
-import { ProductList } from './features/products/product-list/product-list';
+import { Component, inject, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';;
+import { NavBar } from './shared/component/nav-bar/nav-bar';
+import { LoadingSpinner } from "./shared/component/loading-spinner/loading-spinner";
+import { LoadingService } from './core/services/loading.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,NavBar],
+  imports: [RouterOutlet, NavBar, LoadingSpinner, AsyncPipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('ByStore.Client');
+  private loadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
 }

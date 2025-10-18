@@ -1,0 +1,29 @@
+/* server-error.component.css */
+.error-page {
+  height: 80vh;
+  background-color: var(--background-color);
+}
+
+.error-page h1 {
+  color: var(--warn-color);
+  font-weight: 700;
+}
+
+.error-page h2 {
+  color: var(--text-primary-color);
+  font-weight: 500;
+}
+
+.error-page p {
+  font-size: 16px;
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  color: #fff;
+  border-radius: var(--border-radius-general);
+}
+
+.btn-accent:hover {
+  background-color: darken(var(--accent-color), 10%);
+}

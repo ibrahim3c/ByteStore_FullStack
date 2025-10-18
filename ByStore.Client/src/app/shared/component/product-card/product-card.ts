@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class ProductCard {
 
   // Online placeholder if no image
-  placeholderImage = 'https://via.placeholder.com/400x300?text=No+Image';
+  placeholderImage = 'https://placehold.co/400x400?text=No+Image&font=roboto';
 
   constructor(private router: Router) {}
 
