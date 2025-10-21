@@ -1,17 +1,10 @@
-<app-loading-spinner [show]="(loading$ | async)??false" text="Loading..."></app-loading-spinner>
+<app-loading-spinner></app-loading-spinner>
 <app-nav-bar></app-nav-bar>
 
-<!-- Main content area where routed views are displayed -->
 <main class="flex-grow-1 py-4">
   <div class="container">
     <router-outlet></router-outlet>
   </div>
 </main>
 
-<!-- <app-footer></app-footer> -->
-
-<footer class="bg-dark text-light py-3 mt-auto">
-  <div class="container text-center">
-    <p class="mb-0">&copy; 2025 ByteStore. All rights reserved.</p>
-  </div>
-</footer>
+<app-footer></app-footer>

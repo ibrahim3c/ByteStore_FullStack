@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+import { SpinnerService } from '../../../core/services/loading.service';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -8,6 +10,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './loading-spinner.css'
 })
 export class LoadingSpinner {
-  @Input() show = false;
-  @Input() text = 'Loading...';
-}
+visible$: Observable<boolean>;
+  constructor(private spinner: SpinnerService) {
+    this.visible$ = this.spinner.visible$;
+  }}

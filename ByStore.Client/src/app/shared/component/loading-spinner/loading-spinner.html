@@ -1,4 +1,9 @@
-<div class="overlay" *ngIf="show">
-      <div class="spinner"></div>
-      <p class="loading-text">{{ text }}</p>
+<div class="global-spinner-overlay" *ngIf="visible$ | async">
+  <div class="spinner-card">
+    <!-- Using Bootstrap spinner -->
+    <div class="spinner-border" role="status" style="width:3.6rem;height:3.6rem;">
+      <span class="visually-hidden">Loading...</span>
     </div>
+    <div class="mt-2">Loading...</div>
+  </div>
+</div>

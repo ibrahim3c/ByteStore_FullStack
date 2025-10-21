@@ -1,0 +1,44 @@
+.about-section {
+  background-color: var(--background-color);
+  color: var(--text-primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-accent {
+  color: var(--accent-color) !important;
+}
+
+.card {
+  border-radius: var(--border-radius-general);
+  background-color: var(--surface-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+img {
+  border-radius: var(--border-radius-image);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-family);
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary-color);
+}
+
+ul li {
+  font-size: 1rem;
+}
+
+.fa-check-circle {
+  font-size: 1.2rem;
+}

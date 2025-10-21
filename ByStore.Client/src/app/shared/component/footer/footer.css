@@ -1,0 +1,71 @@
+.bytestore-footer {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  margin-right: 8px;
+}
+.footer-logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-medium);
+  color: #fff;
+}
+
+.footer-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-link {
+  display: block;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.2s ease;
+
+}
+
+.footer-link:hover {
+  color: var(--accent-color);
+   cursor: pointer;
+}
+
+.footer-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-icons a {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: var(--accent-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
