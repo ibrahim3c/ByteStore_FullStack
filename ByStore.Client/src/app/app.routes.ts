@@ -5,15 +5,16 @@ import { NotFound } from './features/errors/not-found/not-found';
 import { ServerError } from './features/errors/sever-error/server-error';
 import { About } from './shared/component/about/about';
 import { Contact } from './shared/component/contact/contact';
+import { Home } from './shared/component/home/home';
 
 export const routes: Routes = [
-  // {path:'/home',component:Home},
+  {path:'home',component:Home},
   {path:'products',component:ProductList},
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},
   {path:'not-found',component:NotFound},
   {path:'server-error',component:ServerError},
-  {path:'',redirectTo:'/products',pathMatch:'full'}, // later we will change it to home
+  {path:'',redirectTo:'/home',pathMatch:'full'}, // later we will change it to home
   {path:'**',component:NotFound}
 ];
