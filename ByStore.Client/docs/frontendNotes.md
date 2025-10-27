@@ -252,5 +252,5 @@ This roadmap aligns with the backend delivery plan.
 
 # To Dos
   solve spinner
-  check imagePlaceholder i think the url is not right
-  check routing
+  home page need to customize the return of featured product and category card and so on
+  organize routes and use lazy loading too

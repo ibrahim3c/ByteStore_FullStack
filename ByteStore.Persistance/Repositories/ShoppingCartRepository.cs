@@ -13,21 +13,21 @@ namespace ByteStore.Persistance.Repositories
         {
             _db = redis.GetDatabase();
         }
-        public async Task<bool> ClearCartAsync(string customerId)
+        public async Task<bool> ClearCartAsync(string id)
         {
-            return await _db.KeyDeleteAsync(GetCartKey(customerId));
+            return await _db.KeyDeleteAsync(GetCartKey(id));
         }
 
-        public async Task<ShoppingCart?> GetCartAsync(string customerId)
+        public async Task<ShoppingCart?> GetCartAsync(string id)
         {
-            var cart = await _db.StringGetAsync(GetCartKey(customerId));
+            var cart = await _db.StringGetAsync(GetCartKey(id));
             return cart.IsNullOrEmpty? null:JsonSerializer.Deserialize<ShoppingCart>(cart);
         }
 
         public async Task<bool> SaveCartAsync(ShoppingCart cart)
         {
             var cartJson = JsonSerializer.Serialize(cart);
-            return await _db.StringSetAsync(GetCartKey(cart.CustomerId), cartJson, TimeSpan.FromDays(30));
+            return await _db.StringSetAsync(GetCartKey(cart.Id), cartJson, TimeSpan.FromDays(30));
         }
         private string GetCartKey(string customerId) => $"cart:{customerId}";
 

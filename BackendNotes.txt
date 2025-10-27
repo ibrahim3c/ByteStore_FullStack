@@ -485,6 +485,7 @@ For unit tests i am using xunit, fluent assertion , moq
 
 // TODO:
     don't forget to return all authorize attributes
+    edit category with imageUrl
     test all things
     solve problem of fluent validation  
         but other exceptions work well => not it does not work :()

@@ -14,21 +14,21 @@ namespace BytStore.Application.Services
         {
             this.shoppingCartRepository = shoppingCartRepository;
         }
-        public async Task<Result2> ClearCartAsync(string customerId)
+        public async Task<Result2> ClearCartAsync(string id)
         {
-          var isSuccess= await shoppingCartRepository.ClearCartAsync(customerId);
+          var isSuccess= await shoppingCartRepository.ClearCartAsync(id);
             if (!isSuccess)
                 return Result2.Failure(CartErrors.ClearFailed);
             return Result2.Success();
         }
-        public async Task<Result2<ShoppingCartDto>> GetCartAsync(string customerId)
+        public async Task<Result2<ShoppingCartDto>> GetCartAsync(string id)
         {
-           var cart=await shoppingCartRepository.GetCartAsync(customerId);
+           var cart=await shoppingCartRepository.GetCartAsync(id);
            if(cart == null)
                 return  Result2<ShoppingCartDto>.Failure(CartErrors.NotFound);
             var cartDto = new ShoppingCartDto
             {
-                CustomerId = cart.CustomerId,
+                Id = cart.Id,
                 CartItems = cart.CartItems.Select(c => new CartItemDto
                 {
                     BrandName = c.BrandName,
@@ -49,7 +49,7 @@ namespace BytStore.Application.Services
         {
             var cart = new ShoppingCart
             {
-                CustomerId = cartDto.CustomerId,
+                Id = cartDto.Id,
                 CartItems = cartDto.CartItems.Select(c => new CartItem
                 {
                     BrandName = c.BrandName,

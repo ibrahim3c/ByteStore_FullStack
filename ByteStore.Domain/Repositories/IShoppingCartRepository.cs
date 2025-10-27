@@ -4,8 +4,8 @@ namespace ByteStore.Domain.Repositories
 {
     public interface IShoppingCartRepository
     {
-        Task<bool> ClearCartAsync(string customerId);
-        Task<ShoppingCart?> GetCartAsync(string customerId);
+        Task<bool> ClearCartAsync(string id);
+        Task<ShoppingCart?> GetCartAsync(string id);
         Task<bool> SaveCartAsync(ShoppingCart cart);
     }
 }

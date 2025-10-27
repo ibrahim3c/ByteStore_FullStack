@@ -255,7 +255,7 @@ namespace BytStore.Application.Services
             {
                 // delete old order
                 unitOfWork.OrderRepository.Delete(existingOrder);
-                var result = await paymentService.CreateOrUpdatePaymentIntentAsync(cart.CustomerId);
+                var result = await paymentService.CreateOrUpdatePaymentIntentAsync(cart.Id);
                 if (!result.IsSuccess)
                     return Result2.Failure(result.Error);
                 paymentIntentId = result.Value.PaymentIntentId;

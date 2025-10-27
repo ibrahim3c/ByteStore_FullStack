@@ -6,10 +6,12 @@ import { ServerError } from './features/errors/sever-error/server-error';
 import { About } from './shared/component/about/about';
 import { Contact } from './shared/component/contact/contact';
 import { Home } from './shared/component/home/home';
+import { Cart } from './features/cart/cart';
 
 export const routes: Routes = [
   {path:'home',component:Home},
   {path:'products',component:ProductList},
+  {path:'cart',component:Cart},
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},

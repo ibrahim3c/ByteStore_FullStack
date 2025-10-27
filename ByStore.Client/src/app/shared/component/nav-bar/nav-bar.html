@@ -33,22 +33,11 @@
 
       <!-- Right Side -->
       <div class="d-flex align-items-center gap-3 search">
-        <!-- Search Box
-        <div class="input-group search-group">
-          <input
-            type="text"
-            class="form-control search-input"
-            placeholder="Search products..."
-          />
-          <button class="btn btn-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div> -->
 
         <!-- Cart -->
         <a class="cart-link position-relative" routerLink="/cart">
           <i class="fa-solid fa-cart-shopping fa-lg"></i>
-          <span class="cart-count">{{ cartCount }}</span>
+          <span class="cart-count">{{ (cart$ | async)?.cartItems?.length || 0 }}</span>
         </a>
 
         <!-- Auth Buttons -->

@@ -7,7 +7,7 @@ namespace BytStore.Application.Validators.ShoppingCart
     {
         public ShoppingCartValidator()
         {
-            RuleFor(x => x.CustomerId)
+            RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("CustomerId is required.");
 
             RuleFor(x => x.CartItems)
