@@ -1,0 +1,46 @@
+.cart-page {
+  background-color: var(--background-color);
+}
+
+.cart-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.cart-item {
+  border-radius: var(--border-radius-general);
+  background-color: var(--surface-color);
+}
+
+.cart-item-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--border-radius-image);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.cart-item-name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.quantity-control .btn {
+  border-color: #e0e0e0;
+}
+
+.summary-card {
+  border-radius: var(--border-radius-general);
+  background-color: var(--surface-color);
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+}
+
+.btn-accent:hover {
+  background-color: #0097a7;
+}

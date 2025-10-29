@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartService } from '../../../core/services/cart.service';
 import { Observable } from 'rxjs';
-import { IShoppingCart } from '../../../core/models/cart/shoppingCart';
+import { ShoppingCart } from '../../../core/models/cart/shoppingCart';
 
 @Component({
   selector: 'app-nav-bar',
@@ -21,7 +21,7 @@ import { IShoppingCart } from '../../../core/models/cart/shoppingCart';
 })
 export class NavBar implements OnInit {
   private cartService=inject(CartService);
-  cart$?:Observable<IShoppingCart | null>;
+  cart$?:Observable<ShoppingCart | null>;
 
   isCollapsed = true;
   searchQuery = '';

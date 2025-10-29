@@ -51,22 +51,22 @@ namespace ByteStore.Presentation.Controllers
         //}
 
 
-        //// POST: api/shoppingcarts
-        //// for add and update
-        //[HttpPost]
-        //public async Task<IActionResult> SaveCart([FromBody] ShoppingCartDto cart)
-        //{
-        //    // ensure buyerId exists
-        //    if (string.IsNullOrEmpty(cart.Id))
-        //    {
-        //        cart.Id = Request.Cookies[Keys.CartKey] ?? Guid.NewGuid().ToString();
-        //    }
-        //    var result = await serviceManager.ShoppingCartService.SaveCartAsync(cart);
+        // POST: api/shoppingcarts
+        // for add and update
+        [HttpPost]
+        public async Task<IActionResult> SaveCart([FromBody] ShoppingCartDto cart)
+        {
+            // ensure buyerId exists
+            //if (string.IsNullOrEmpty(cart.Id))
+            //{
+            //    cart.Id = Request.Cookies[Keys.CartKey] ?? Guid.NewGuid().ToString();
+            //}
+            var result = await serviceManager.ShoppingCartService.SaveCartAsync(cart);
 
-        //    if (!result.IsSuccess)
-        //        return BadRequest(result.Error);
-        //    return Ok();
-        //}
+            if (!result.IsSuccess)
+                return BadRequest(result.Error);
+            return Ok();
+        }
 
         // DELETE: api/shoppingcarts/{customerId}
         [HttpDelete("{id}")]

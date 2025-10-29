@@ -1,12 +1,6 @@
 import { CartItem } from "./CartItem";
-import { v4 as uuidv4 } from 'uuid';
 
-export interface IShoppingCart {
+export interface ShoppingCart {
   id: string;
   cartItems: CartItem[];
-}
-
-export class ShoppingCart implements IShoppingCart {
-  id=uuidv4();
-  cartItems: CartItem[]=[];
 }
