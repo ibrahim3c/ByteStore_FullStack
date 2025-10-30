@@ -4,6 +4,7 @@ import { ShoppingCart } from '../../core/models/cart/shoppingCart';
 import { CartItem } from '../../core/models/cart/CartItem';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -12,15 +13,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './cart.css'
 })
 export class Cart implements OnInit {
-
-   cart: ShoppingCart | null = null;
+  cart$!: Observable<ShoppingCart | null>;
    constructor(private cartService: CartService) {}
   ngOnInit() {
-  this.cartService.cart$.subscribe(cart => {
-    this.cart = cart;
-  })
-    // load cart from backend
-  this.cartService.getCart().subscribe();
+  this.cart$ = this.cartService.cart$;
 }
 
   removeItem(productId: number): void {
@@ -45,7 +41,7 @@ export class Cart implements OnInit {
   }
 
   clearCart(): void {
-    this.cartService.clearCart().subscribe();
+    this.cartService.clearCart();
   }
 
   getTotalPrice(): number {

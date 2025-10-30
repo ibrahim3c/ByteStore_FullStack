@@ -27,7 +27,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           break;
 
         case 404:
-          router.navigate(['/not-found']);
+          // router.navigate(['/not-found']);
           break;
 
         case 500:

@@ -1,8 +1,6 @@
-﻿using ByteStore.Domain.Abstractions.Constants;
-using ByteStore.PresentationLayer.Controllers;
+﻿using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.ShoppingCart;
 using BytStore.Application.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ByteStore.Presentation.Controllers

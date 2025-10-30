@@ -1,5 +1,5 @@
-import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, map, Observable, throwError } from "rxjs";
+import { inject, Injectable, OnInit } from "@angular/core";
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from "rxjs";
 import {ShoppingCart } from "../models/cart/shoppingCart";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
@@ -12,6 +12,10 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root'
 })
 export class CartService{
+  constructor() {
+    this.loadCart()
+    console.log(this.cart.getValue());
+  }
   private cart = new BehaviorSubject<ShoppingCart | null>(null);
   cart$ = this.cart.asObservable();
 
@@ -25,41 +29,44 @@ export class CartService{
     return this.cart.getValue();
   }
 
-  getCart(): Observable<ShoppingCart> {
-    const id = this.getOrCreateCartId();
-    return this.http.get<ShoppingCart>(`${this.apiUrl}/${id}`).pipe(
-      map((cart) => {
-        this.setCart(cart);
-        return cart;
-      }),
-      catchError(this.handleError)
-    );
+  // getCart(): Observable<ShoppingCart> {
+  //   const id = this.getOrCreateCartId();
+  //   return this.http.get<ShoppingCart>(`${this.apiUrl}/${id}`).pipe(
+  //     map((cart) => {
+  //       this.setCart(cart);
+  //       return cart;
+  //     }),
+  //     catchError(this.handleError)
+  //   );
+  // }
+
+  loadCart(): void {
+  const id = this.getOrCreateCartId();
+  this.http.get<ShoppingCart>(`${this.apiUrl}/${id}`).pipe(
+    catchError(this.handleError)
+  ).subscribe(cart=> this.setCart(cart));
   }
 
-  saveCart(cart: ShoppingCart): Observable<void> {
-    return this.http.post<ShoppingCart>(this.apiUrl, cart).pipe(
-      map((savedCart) => {
-        this.setCart(savedCart);
-      }),
-      catchError(this.handleError)
-    );
+  saveCart(cart: ShoppingCart): void {
+  this.http.post<ShoppingCart>(this.apiUrl, cart).pipe(
+    catchError(this.handleError)
+  ).subscribe(cart => this.setCart(cart));
   }
 
-  addItemToCart(product: Product, quantity = 1): void {
+  addItemToCart(product: Product, quantity = 1): void
+  {
     // convert Product to CartItem
     const item: CartItem={
       productId:product.id,
       name: product.name,
       price: product.price,
       imageUrl: product.thumbnailUrl,
-      quantity:0, // will be set later,
+      quantity:quantity,
       brandName: product.brandName,
       categoryName: product.categoryName
     }
-
-
     let cart = this.getCurrentCartValue();
-
+    console.log('Current cart before adding item:', cart);
     // if no cart → create new one
     if (!cart) {
       cart = {
@@ -67,42 +74,41 @@ export class CartService{
         cartItems: [],
       };
     }
-
     // check if item already exists
     const index = cart.cartItems.findIndex(i => i.productId === item.productId);
+    console.log('Item index in cart:', index);
+    console.log('productId to add:', item.productId);
 
     if (index === -1) {
-      // new item
-      item.quantity = quantity;
       cart.cartItems.push(item);
     } else {
-      // increase quantity
       cart.cartItems[index].quantity += quantity;
     }
-
     // update observable
     this.cart.next(cart);
-
     // save to backend
-    this.saveCart(cart).subscribe();
+    this.saveCart(cart);
+    console.log('Cart after adding item:', cart);
   }
 
-  clearCart(): Observable<void> {
-     const id = this.getOrCreateCartId();
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      map(() => this.setCart(null)),
-      catchError(this.handleError)
-    );
-  }
-
-  removeItem(productId: number): void {
+clearCart(): void
+  {
+  const id = this.getOrCreateCartId();
+  this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+    tap(() => {
+      localStorage.removeItem('cart_id');
+      this.setCart(null);
+    }),
+    catchError(this.handleError)
+  ).subscribe();
+}
+removeItem(productId: number): void
+  {
   const cart = this.getCurrentCartValue();
   if (!cart) return;
-
   cart.cartItems = cart.cartItems.filter(i => i.productId !== productId);
-
   this.setCart(cart);
-  this.saveCart(cart).subscribe();
+  this.saveCart(cart);
 }
 
 updateItemQuantity(productId: number, quantity: number): void {
@@ -113,7 +119,7 @@ updateItemQuantity(productId: number, quantity: number): void {
   if (item) {
     item.quantity = quantity;
     this.setCart(cart);
-    this.saveCart(cart).subscribe();
+    this.saveCart(cart);
   }
 }
 
@@ -133,7 +139,7 @@ getTotalPrice(): number {
     }
     return cartId;
   }
-    // Error handling
+  // Error handling
   private handleError(error: any): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
 
