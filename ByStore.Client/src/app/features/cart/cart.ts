@@ -16,25 +16,22 @@ export class Cart implements OnInit {
   cart$!: Observable<ShoppingCart | null>;
    constructor(private cartService: CartService) {}
   ngOnInit() {
-  this.cart$ = this.cartService.cart$;
+    this.cart$ = this.cartService.cart$;
+    this.cartService.getCart().subscribe();
+    console.log("onInit",this.cart$)
 }
 
   removeItem(productId: number): void {
-    this.cartService.removeItem(productId);
+    this.cartService.removeItemFromCart(productId);
   }
 
-  private updateQuantity(item: CartItem, event: any): void {
-    const quantity = Number(event.target.value);
-    if (quantity > 0) {
-      this.cartService.updateItemQuantity(item.productId, quantity);
-    }
-  }
   decreaseQuantity(item: CartItem): void {
     if (item.quantity === 1) {
-      this.cartService.removeItem(item.productId);
+      this.cartService.removeItemFromCart(item.productId);
     } else {
       this.cartService.updateItemQuantity(item.productId, item.quantity - 1);
     }
+    console.log("Current cart in decreaseQuantity:", this.cart$);
   }
   increaseQuantity(item: CartItem): void {
     this.cartService.updateItemQuantity(item.productId, item.quantity + 1);

@@ -48,6 +48,7 @@
           class="btn btn-lg text-white"
           [disabled]="product.stockQuantity === 0"
           style="background-color: var(--accent-color); border-radius: var(--border-radius-general);"
+           (click)="addToCart()"
         >
           <i class="fa fa-shopping-cart me-2"></i> Add to Cart
         </button>

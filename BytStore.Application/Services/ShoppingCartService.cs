@@ -66,5 +66,30 @@ namespace BytStore.Application.Services
                 return Result2.Failure(CartErrors.SaveFailed);
             return Result2.Success();
         }
+        // for add or update
+        public async Task<Result2<ShoppingCartDto>> SaveCart2Async(ShoppingCartDto cartDto)
+        {
+            var cart = new ShoppingCart
+            {
+                Id = cartDto.Id,
+                CartItems = cartDto.CartItems.Select(c => new CartItem
+                {
+                    BrandName = c.BrandName,
+                    CategoryName = c.CategoryName,
+                    ImageUrl = c.ImageUrl,
+                    Name = c.Name,
+                    Price = c.Price,
+                    ProductId = c.ProductId,
+                    Quantity = c.Quantity
+                }).ToList()
+            };
+            var isSuccess = await shoppingCartRepository.SaveCartAsync(cart);
+            if (!isSuccess)
+                return Result2<ShoppingCartDto>.Failure(CartErrors.SaveFailed);
+            var shoppingCart = (await GetCartAsync(cartDto.Id)).Value;
+            return Result2<ShoppingCartDto>.Success(shoppingCart);
+        }
+
+
     }
 }

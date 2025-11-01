@@ -3,6 +3,8 @@ import { MyProductDetails } from '../../../core/models/ProductDetails';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
+import { CartService } from '../../../core/services/cart.service';
+import { ConstantPool } from '@angular/compiler';
 @Component({
   selector: 'app-product-details',
   imports: [CommonModule],
@@ -13,6 +15,7 @@ export class ProductDetails {
 
   private activateRoute = inject(ActivatedRoute);
   private productService = inject(ProductService);
+  private cartService=inject(CartService)
 
   product!: MyProductDetails;
 
@@ -36,6 +39,9 @@ export class ProductDetails {
 
   getStars(rating: number): number[] {
     return Array(Math.round(rating)).fill(0);
+  }
+  addToCart(){
+    this.cartService.addItemToCart(this.product, 1);
   }
 
   

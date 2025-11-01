@@ -59,11 +59,12 @@ namespace ByteStore.Presentation.Controllers
             //{
             //    cart.Id = Request.Cookies[Keys.CartKey] ?? Guid.NewGuid().ToString();
             //}
-            var result = await serviceManager.ShoppingCartService.SaveCartAsync(cart);
+            //var result = await serviceManager.ShoppingCartService.SaveCartAsync(cart);
+            var result = await serviceManager.ShoppingCartService.SaveCart2Async(cart);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            return Ok();
+            return Ok(result.Value);
         }
 
         // DELETE: api/shoppingcarts/{customerId}
