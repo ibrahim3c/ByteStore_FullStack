@@ -7,6 +7,8 @@ import { About } from './shared/component/about/about';
 import { Contact } from './shared/component/contact/contact';
 import { Home } from './shared/component/home/home';
 import { Cart } from './features/cart/cart';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
 
 export const routes: Routes = [
   {path:'home',component:Home},
@@ -15,6 +17,8 @@ export const routes: Routes = [
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},
+  {path:'login',component:Login},
+  {path:'register',component:Register},
   {path:'not-found',component:NotFound},
   {path:'server-error',component:ServerError},
   {path:'',redirectTo:'/home',pathMatch:'full'}, // later we will change it to home

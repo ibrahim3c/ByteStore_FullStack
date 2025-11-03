@@ -4,6 +4,7 @@ using BytStore.Application.DTOs.Identity;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BytStore.Application.Services
 {
@@ -23,6 +24,27 @@ namespace BytStore.Application.Services
         }
 
         // get
+        public async Task<Result2<UserDto>> GetCurrentUserAsync(ClaimsPrincipal userPrincipal)
+        {
+            var userId = userManager.GetUserId(userPrincipal);
+
+            if (userId == null)
+                return Result2<UserDto>.Failure(UserErrors.NotFound);
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return Result2<UserDto>.Failure(UserErrors.NotFound);
+
+            var userDto = new UserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+            };
+            return Result2<UserDto>.Success(userDto);
+        }
+
         public async Task<Result2<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
             var users = await userManager.Users.Select(u => new UserDto

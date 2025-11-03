@@ -16,7 +16,7 @@ namespace BytStore.Application.DTOs.Identity
 
         [Required]
         [Phone]
-        [RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "Invalid Egyptian phone number.")]
+        //[RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "Invalid Egyptian phone number.")]
         public string PhoneNumber { get; set; } = default!;
 
         public bool IsActive { get; set; } = true; // Default to active

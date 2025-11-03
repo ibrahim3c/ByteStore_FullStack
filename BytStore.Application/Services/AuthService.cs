@@ -3,10 +3,13 @@ using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Auth;
+using BytStore.Application.DTOs.Identity;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Net.Http;
+using System.Security.Claims;
 using MyResult = ByteStore.Domain.Abstractions.Result.Result;
 
 namespace BytStore.Application.Services

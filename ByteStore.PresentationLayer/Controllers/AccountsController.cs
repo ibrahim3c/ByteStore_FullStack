@@ -17,6 +17,15 @@ namespace ByteStore.Presentation.Controllers
         {
         }
 
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var user = await serviceManager.UserService.GetCurrentUserAsync(User);
+            return Ok(user);
+        }
+
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)

@@ -1,10 +1,13 @@
 ﻿using ByteStore.Domain.Abstractions.Result;
 using BytStore.Application.DTOs.Identity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BytStore.Application.IServices
 {
     public interface IUserService
     {
+        Task<Result2<UserDto>> GetCurrentUserAsync(ClaimsPrincipal userPrincipal);
         Task<Result2<IEnumerable<UserDto>>> GetAllUsersAsync();
         Task<Result2<UserDto>> GetUserByIdAsync(string userID);
         Task<Result2<UserDto>> GetUserByEmailAsync(string email);

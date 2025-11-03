@@ -33,7 +33,7 @@ The application will use a modular architecture, separating features into their 
         /guards/              // Route guards (AuthGuard, AdminGuard)
         /interceptors/        // HTTP interceptors (JwtInterceptor, ErrorInterceptor)
         /models/              // Global interfaces (ApiResponse, User, Product)
-        /services/            // Global singletons (AuthService, ApiService, CartService)
+        /services/            // Global singletons (AuthService,   ApiService, CartService)
         /state/               // Optional: global state (signals, NgRx, etc.)
         /components/          // Global layout components (Navbar, Footer)
       /features
