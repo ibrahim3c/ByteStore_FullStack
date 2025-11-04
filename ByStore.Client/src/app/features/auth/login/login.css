@@ -1,0 +1,43 @@
+.login-container {
+  min-height: 100vh;
+  background-color: var(--background-color);
+  padding: 32px;
+}
+
+.login-card {
+  background-color: var(--surface-color);
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--border-radius-general);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-control {
+  border-radius: var(--border-radius-general);
+  padding: 10px 12px;
+}
+
+.input-group-text {
+  border-right: 0;
+  border-radius: var(--border-radius-general) 0 0 var(--border-radius-general);
+}
+
+.input-group .form-control {
+  border-left: 0;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius-general);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  background-color: #0b3c8a;
+}
+
+.text-danger {
+  font-size: 13px;
+}

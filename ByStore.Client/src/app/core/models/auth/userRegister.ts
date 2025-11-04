@@ -2,7 +2,6 @@
  {
   Fname: string = '';
   Lname: string = '';
-  CountryId: number = 0
   PhoneNumber: string = '';
   BirthDate: Date = new Date()
   Address: string = '';

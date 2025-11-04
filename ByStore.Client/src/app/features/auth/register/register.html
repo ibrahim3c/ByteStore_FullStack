@@ -1,1 +1,122 @@
-<p>register works!</p>
+<div class="register-container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="register-card shadow-lg p-4 rounded-4 bg-white" style="width: 100%; max-width: 700px;">
+    <h2 class="text-center mb-4 fw-bold text-primary">Create Your Account</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row g-4">
+
+        <!-- First Name -->
+        <div class="col-md-6">
+          <label for="fname" class="form-label">First Name</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa fa-user text-secondary"></i></span>
+            <input id="fname" type="text" class="form-control" formControlName="Fname" placeholder="John" />
+          </div>
+          <small *ngIf="registerForm.get('Fname')?.touched && registerForm.get('Fname')?.invalid" class="text-danger">
+            First name is required.
+          </small>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-md-6">
+          <label for="lname" class="form-label">Last Name</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa fa-user text-secondary"></i></span>
+            <input id="lname" type="text" class="form-control" formControlName="Lname" placeholder="Doe" />
+          </div>
+          <small *ngIf="registerForm.get('Lname')?.touched && registerForm.get('Lname')?.invalid" class="text-danger">
+            Last name is required.
+          </small>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6">
+          <label for="phone" class="form-label">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa fa-phone text-secondary"></i></span>
+            <input id="phone" type="text" class="form-control" formControlName="PhoneNumber" placeholder="+20123456789" />
+          </div>
+          <small *ngIf="registerForm.get('PhoneNumber')?.touched && registerForm.get('PhoneNumber')?.invalid" class="text-danger">
+            Phone number is required.
+          </small>
+        </div>
+
+        <!-- Birthdate -->
+        <div class="col-md-6">
+          <label for="birth" class="form-label">Birth Date</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa fa-calendar text-secondary"></i></span>
+            <input id="birth" type="date" class="form-control" formControlName="BirthDate" />
+          </div>
+          <small *ngIf="registerForm.get('BirthDate')?.touched && registerForm.get('BirthDate')?.invalid" class="text-danger">
+            Birth date is required.
+          </small>
+        </div>
+
+        <!-- Address -->
+        <div class="col-12">
+          <label for="address" class="form-label">Address</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa fa-map-marker text-secondary"></i></span>
+            <input id="address" type="text" class="form-control" formControlName="Address" placeholder="Street, City" />
+          </div>
+          <small *ngIf="registerForm.get('Address')?.touched && registerForm.get('Address')?.invalid" class="text-danger">
+            Address is required.
+          </small>
+        </div>
+
+        <!-- Email -->
+        <div class="col-12">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="fa fa-envelope text-secondary"></i></span>
+            <input id="email" type="email" class="form-control" formControlName="Email" placeholder="example@email.com" />
+          </div>
+          <small *ngIf="registerForm.get('Email')?.touched && registerForm.get('Email')?.invalid" class="text-danger">
+            Enter a valid email address.
+          </small>
+        </div>
+
+        <!-- Passwords -->
+        <div formGroupName="passwords" class="row g-4 mt-1">
+          <!-- Password -->
+          <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="fa fa-lock text-secondary"></i></span>
+              <input id="password" type="password" class="form-control" formControlName="Password" />
+            </div>
+            <small *ngIf="registerForm.get('passwords.Password')?.touched && registerForm.get('passwords.Password')?.invalid" class="text-danger">
+              Password must be at least 6 characters.
+            </small>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="col-md-6">
+            <label for="confirm" class="form-label">Confirm Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="fa fa-lock text-secondary"></i></span>
+              <input id="confirm" type="password" class="form-control" formControlName="ConfirmPassword" />
+            </div>
+            <small *ngIf="registerForm.get('passwords')?.hasError('notEqual') && registerForm.get('passwords.ConfirmPassword')?.touched" class="text-danger">
+              Passwords do not match.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">Register</button>
+      </div>
+
+      <!-- Login link -->
+      <div class="text-center mt-3">
+        <p class="text-secondary">
+          Already have an account?
+          <a routerLink="/login" class="text-primary fw-medium text-decoration-none">Login here</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

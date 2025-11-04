@@ -31,7 +31,7 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
             var result = await serviceManager.AuthService.RegisterAsync(dto, Request.Scheme, Request.Host.Value);
-            return result.IsSuccess ? Ok("Please verify your email, through the verification email we have just send") : BadRequest(result.Errors);
+            return result.IsSuccess ? Ok(new { message = "Please verify your email through the verification email we have just sent." }) : BadRequest(result.Errors);
         }
 
         [HttpGet("verify-email")]

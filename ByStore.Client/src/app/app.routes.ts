@@ -9,6 +9,7 @@ import { Home } from './shared/component/home/home';
 import { Cart } from './features/cart/cart';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { VerifyEmail } from './features/auth/verify-email/verify-email';
 
 export const routes: Routes = [
   {path:'home',component:Home},
@@ -19,6 +20,7 @@ export const routes: Routes = [
   {path:'contact',component:Contact},
   {path:'login',component:Login},
   {path:'register',component:Register},
+  { path: 'verify-email', component: VerifyEmail},
   {path:'not-found',component:NotFound},
   {path:'server-error',component:ServerError},
   {path:'',redirectTo:'/home',pathMatch:'full'}, // later we will change it to home

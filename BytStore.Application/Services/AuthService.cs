@@ -172,7 +172,9 @@ namespace BytStore.Application.Services
             var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
             // Generate the URL =>https://localhost:7030/api/Accounts/verify-email?userId=dkl&code=ioerw
-            var callbackUrl = $"{scheme}://{host}/api/Accounts/verify-email?userId={user.Id}&code={Uri.EscapeDataString(code)}";
+            //var callbackUrl = $"{scheme}://{host}/api/Accounts/verify-email?userId={user.Id}&code={Uri.EscapeDataString(code)}";
+            //https://yourfrontend.com/verify-email?userId=123&code=XYZ
+            var callbackUrl = $"http://localhost:4200/verify-email?userId={user.Id}&code={Uri.EscapeDataString(code)}";
 
             // it should be in the contrller not service
             //var callbackUrl = Url.Action(
