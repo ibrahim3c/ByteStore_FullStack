@@ -14,24 +14,25 @@ export class AuthService {
   private router = inject(Router);
   private readonly apiUrl = `${environment.baseUrl}/accounts`;
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('accessToken');
   }
 
   register(userRegister: UserRegister) {
     return this.httpClient.post(`${this.apiUrl}/register`, userRegister);
   }
   login(userLogin: UserLogin) {
-    return this.httpClient.post<{ token: string }>(`${this.apiUrl}/login`, userLogin).pipe(
+    return this.httpClient.post<{ token: string }>(`${this.apiUrl}/login`, userLogin,{withCredentials:true}).pipe(
     tap((result: any) => {
       const token = result.token;
       if (token) {
-        localStorage.setItem('token', token);
+        localStorage.setItem('accessToken', token);
       }
     }))
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
+    this.revokeToken().subscribe()
     this.router.navigateByUrl('/');
   }
   verifyEmail(userId: string, code: string) {
@@ -39,5 +40,12 @@ export class AuthService {
       params: { userId, code },
       responseType: 'text',
     });
+  }
+  refreshToken() {
+    return this.httpClient.post(`${this.apiUrl}/refresh-token`,{},{withCredentials:true})
+  }
+
+  revokeToken() {
+    return this.httpClient.post(`${this.apiUrl}/revoke-token`, {}, { withCredentials: true });
   }
 }

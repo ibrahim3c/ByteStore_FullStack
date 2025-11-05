@@ -47,14 +47,22 @@ namespace ByteStore.Presentation.Controllers
         public async Task<ActionResult<AuthResult>> Login([FromBody] UserLoginDto dto)
         {
             var result = await serviceManager.AuthService.LoginAsync(dto);
-            return result.IsSuccess ? Ok(result) : BadRequest(result.Messages);
+
+            if (result.IsSuccess)
+            {
+            //set refresh token in response cookie
+            setRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiresOn);
+             return   Ok(result); 
+            }
+            return BadRequest(result.Messages);
         }
 
         [HttpPost("refresh-token")]
         [AllowAnonymous]
         public async Task<ActionResult<AuthResult>> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            var result = await serviceManager.AuthService.RefreshTokenAsync(request.RefreshToken);
+            string token = request.RefreshToken ?? HttpContext.Request.Cookies[Keys.RefreshTokenKey];
+            var result = await serviceManager.AuthService.RefreshTokenAsync(token);
             if (!result.IsSuccess)
                 return BadRequest(result.Messages);
 
