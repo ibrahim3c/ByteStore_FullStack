@@ -10,6 +10,8 @@ import { Cart } from './features/cart/cart';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { VerifyEmail } from './features/auth/verify-email/verify-email';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+import { ResetPassword } from './features/auth/reset-password/reset-password';
 
 export const routes: Routes = [
   {path:'home',component:Home},
@@ -21,6 +23,8 @@ export const routes: Routes = [
   {path:'login',component:Login},
   {path:'register',component:Register},
   { path: 'verify-email', component: VerifyEmail},
+  { path: 'forgot-password', component: ForgotPassword},
+  { path: 'reset-password', component: ResetPassword},
   {path:'not-found',component:NotFound},
   {path:'server-error',component:ServerError},
   {path:'',redirectTo:'/home',pathMatch:'full'}, // later we will change it to home

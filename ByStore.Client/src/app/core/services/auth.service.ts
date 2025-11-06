@@ -5,6 +5,8 @@ import { UserRegister } from '../models/auth/userRegister';
 import { UserLogin } from '../models/auth/userLogin';
 import { map, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import {ResetPasswordRequest } from '../models/auth/resetPassword';
+import { ForgotPasswordRequest } from '../models/auth/ForgotPassword';
 
 @Injectable({
   providedIn: 'root',
@@ -47,5 +49,18 @@ export class AuthService {
 
   revokeToken() {
     return this.httpClient.post(`${this.apiUrl}/revoke-token`, {}, { withCredentials: true });
+  }
+
+  resetPassword(resetPassword: ResetPasswordRequest) {
+    return this.httpClient.post(`${this.apiUrl}/reset-password`,resetPassword, {
+      responseType: 'text'
+    });
+  }
+
+
+  forgotPassword(forgotPassword: ForgotPasswordRequest) {
+    return this.httpClient.post(`${this.apiUrl}/forgot-password`, forgotPassword, {
+      responseType: 'text'
+    });
   }
 }

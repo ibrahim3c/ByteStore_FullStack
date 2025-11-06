@@ -18,7 +18,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([errorInterceptor, loaderInterceptor, authInterceptor])),
+    provideHttpClient(withInterceptors([
+      // errorInterceptor,
+      //  loaderInterceptor,
+       authInterceptor])),
     provideAnimations(),
     provideToastr({
       positionClass: 'toast-bottom-right',

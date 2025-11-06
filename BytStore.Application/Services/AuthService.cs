@@ -35,6 +35,12 @@ namespace BytStore.Application.Services
         // JWT Token With Email Verification With RefreshToken
         public async Task<MyResult> RegisterAsync(UserRegisterDto userRegisterDto, string scheme, string host)
         {
+
+            // 1️⃣ Check if email already exists
+            var existingUser = await userManager.FindByEmailAsync(userRegisterDto.Email);
+            if (existingUser != null)
+                return MyResult.Failure(["Email is already registered."]);
+
             //  Create a new user
             var user = new AppUser
             {
@@ -269,7 +275,7 @@ namespace BytStore.Application.Services
 
             // generete token and  send it to user
             //await SendPasswordResetEmailAsync(user, scheme, host);
-            await SendResetPasswordEmailAsync(user);
+            await SendResetPasswordEmailAsync(user,forgotPasswordDto.BaseUrl);
 
 
             return Result<string>.Success("Please go to your email and reset your password");
@@ -304,6 +310,17 @@ namespace BytStore.Application.Services
             await emailService.SendMailByBrevoAsync(user.Email, "Reset Your Password",
                 $"Please reset your password by clicking this link: <a href='{callbackUrl}'>Reset Password</a>");
         }
+        private async Task SendResetPasswordEmailAsync(AppUser user,string baseUrl)
+        {
+            // Generate the password reset token
+            var code = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Construct the reset link
+            var callbackUrl = $"{baseUrl}?userId={user.Id}&code={Uri.EscapeDataString(code)}";
+            // Send email with the reset link
+            await emailService.SendMailByBrevoAsync(user.Email, "Reset Your Password",
+                $"Please reset your password by clicking this link: <a href='{callbackUrl}'>Reset Password</a>");
+        }
         public async Task<Result<string>> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
             if (string.IsNullOrWhiteSpace(resetPasswordDto.UserId) || string.IsNullOrWhiteSpace(resetPasswordDto.code))
@@ -332,7 +349,6 @@ namespace BytStore.Application.Services
         }
 
         /*
-         
          Flow Between Frontend and Backend
             User Requests a Password Reset
                 Frontend:
