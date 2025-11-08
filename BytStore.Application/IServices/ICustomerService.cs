@@ -9,6 +9,7 @@ namespace BytStore.Application.IServices
     {
         // Customer Profile
         Task<Result2<CustomerDto>> GetCustomerProfileByIdAsync(Guid customerId);
+        Task<Result2<CustomerDto>> GetCustomerProfileByUserIdAsync(string userId);
         Task<Result2<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync();
         Task<Result2> UpdateCustomerProfileAsync(Guid customerId, CustomerUpdateDto customerDto);
         Task<Result2> DeleteCustomerAsync(Guid customerId);

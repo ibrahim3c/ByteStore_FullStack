@@ -12,19 +12,22 @@ import { Register } from './features/auth/register/register';
 import { VerifyEmail } from './features/auth/verify-email/verify-email';
 import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
 import { ResetPassword } from './features/auth/reset-password/reset-password';
+import { loginGuard } from './core/guards/login-guard';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {path:'home',component:Home},
   {path:'products',component:ProductList},
-  {path:'cart',component:Cart},
+  {path:'cart',component:Cart,canActivate:[authGuard]},
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},
-  {path:'login',component:Login},
-  {path:'register',component:Register},
+
+  {path:'login',component:Login,canActivate:[loginGuard]},
+  {path:'register',component:Register,canActivate:[loginGuard]},
   { path: 'verify-email', component: VerifyEmail},
-  { path: 'forgot-password', component: ForgotPassword},
-  { path: 'reset-password', component: ResetPassword},
+  { path: 'forgot-password', component: ForgotPassword,canActivate:[loginGuard]},
+  { path: 'reset-password', component: ResetPassword,canActivate:[loginGuard]},
   {path:'not-found',component:NotFound},
   {path:'server-error',component:ServerError},
   {path:'',redirectTo:'/home',pathMatch:'full'}, // later we will change it to home

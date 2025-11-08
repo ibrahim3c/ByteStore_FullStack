@@ -33,6 +33,27 @@ namespace BytStore.Application.Services
             };
             return Result2<CustomerDto>.Success(customerDto);
         }
+
+        public async Task<Result2<CustomerDto>> GetCustomerProfileByUserIdAsync(string userId)
+        {
+            var customer = await unitOfWork.CustomerRepository.FindAsync(c => c.AppUserId == userId, ["AppUser"]);
+            if (customer == null)
+                return Result2<CustomerDto>.Failure(CustomerErrors.NotFound);
+            if (customer.AppUser == null)
+                return Result2<CustomerDto>.Failure(UserErrors.NotFound);
+            var customerDto = new CustomerDto
+            {
+                Id = customer.Id,
+                DateOfBirth = customer.DateOfBirth,
+                Email = customer.AppUser.Email,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.AppUser.PhoneNumber
+            };
+            return Result2<CustomerDto>.Success(customerDto);
+        }
+
+
         public async Task<Result2<IEnumerable<CustomerDto>>> GetAllCustomerProfilesAsync()
         {
             var customers = await unitOfWork.CustomerRepository.GetAllAsync(["AppUser"]);

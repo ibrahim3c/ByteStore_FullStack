@@ -40,11 +40,37 @@
           <span class="cart-count">{{ (cart$ | async)?.cartItems?.length || 0 }}</span>
         </a>
 
-        <!-- Auth Buttons -->
-        <div class="d-flex gap-2 auth">
-          <button class="btn-login-modern" routerLink="/login">Login</button>
-          <button class="btn-register-modern" routerLink="/register">Register</button>
-        </div>
+
+  <!-- Auth / User Dropdown -->
+        <ng-container *ngIf="user$ | async as user; else guestView">
+          <div ngbDropdown class="d-inline-block">
+            <button type="button" class="btn dropdown-toggle-custom" ngbDropdownToggle>
+              <i class="fa-solid fa-user-circle fa-lg me-2"></i>
+              Hello, {{ user.userName || user.email }}
+            </button>
+            <div ngbDropdownMenu class="dropdown-menu-custom">
+              <a ngbDropdownItem routerLink="/profile" class="dropdown-item-custom">
+                <i class="fa-solid fa-user me-2"></i> Profile
+              </a>
+              <a ngbDropdownItem routerLink="/orders" class="dropdown-item-custom">
+                <i class="fa-solid fa-box-archive me-2"></i> My Orders
+              </a>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem (click)="logout()" class="dropdown-item-custom text-danger">
+                <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Guest View -->
+        <ng-template #guestView>
+          <div class="d-flex gap-2">
+            <a class="btn btn-login-custom" routerLink="/login">Login</a>
+            <a class="btn btn-register-custom" routerLink="/register">Register</a>
+          </div>
+        </ng-template>
+
       </div>
     </div>
   </div>

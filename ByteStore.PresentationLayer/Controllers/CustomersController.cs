@@ -1,4 +1,5 @@
 ﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.Domain.Abstractions.Result;
 using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Customer;
 using BytStore.Application.IServices;
@@ -30,6 +31,14 @@ namespace ByteStore.Presentation.Controllers
         public async Task<IActionResult> GetCustomerById(Guid customerId)
         {
             var result = await serviceManager.CustomerService.GetCustomerProfileByIdAsync(customerId);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+        }
+
+
+        [HttpGet("user/{customerId}")]
+        public async Task<IActionResult> GetCustomerByUserId(string userId)
+        {
+            var result = await serviceManager.CustomerService.GetCustomerProfileByUserIdAsync(userId);
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 

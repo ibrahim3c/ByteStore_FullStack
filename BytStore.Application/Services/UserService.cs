@@ -1,4 +1,5 @@
-﻿using ByteStore.Domain.Abstractions.Result;
+﻿using ByteStore.Domain.Abstractions.Constants;
+using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using BytStore.Application.DTOs.Identity;
 using BytStore.Application.IServices;
@@ -26,7 +27,17 @@ namespace BytStore.Application.Services
         // get
         public async Task<Result2<UserDto>> GetCurrentUserAsync(ClaimsPrincipal userPrincipal)
         {
-            var userId = userManager.GetUserId(userPrincipal);
+            // ⚠ Important Note:
+            // userManager.GetUserId(userPrincipal) expects a Claim with NameIdentifier.
+            // In our JWT, the UserId is stored in a custom claim: Keys.UserIdKey ("UserId").
+            // So we must use FindFirstValue(Keys.UserIdKey) to get the actual userId.
+            //var userId = userManager.GetUserId(userPrincipal);
+
+            // 1️⃣ احصل على UserId من الـ JWT Claim الصحيح
+            var userId = userPrincipal.FindFirstValue(Keys.UserIdKey); // Keys.UserIdKey = "UserId"
+
+            if (string.IsNullOrEmpty(userId))
+                return Result2<UserDto>.Failure(UserErrors.NotFound);
 
             if (userId == null)
                 return Result2<UserDto>.Failure(UserErrors.NotFound);
@@ -38,6 +49,7 @@ namespace BytStore.Application.Services
 
             var userDto = new UserDto
             {
+                UserId=user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
@@ -49,6 +61,7 @@ namespace BytStore.Application.Services
         {
             var users = await userManager.Users.Select(u => new UserDto
             {
+                UserId = u.Id,
                 UserName = u.UserName,
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
@@ -65,6 +78,8 @@ namespace BytStore.Application.Services
                 return Result2<UserDto>.Failure(UserErrors.NotFound);
             var userDto = new UserDto
             {
+                UserId = user.Id,
+
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
@@ -108,6 +123,7 @@ namespace BytStore.Application.Services
                 return Result2<UserDto>.Failure(UserErrors.NotFound);
             var userDto = new UserDto
             {
+                UserId = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,

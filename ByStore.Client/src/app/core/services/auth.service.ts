@@ -3,10 +3,11 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserRegister } from '../models/auth/userRegister';
 import { UserLogin } from '../models/auth/userLogin';
-import { map, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import {ResetPasswordRequest } from '../models/auth/resetPassword';
 import { ForgotPasswordRequest } from '../models/auth/ForgotPassword';
+import { User } from '../models/auth/User';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,47 @@ export class AuthService {
   private httpClient = inject(HttpClient);
   private router = inject(Router);
   private readonly apiUrl = `${environment.baseUrl}/accounts`;
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken');
+
+  private currentUserSource=new BehaviorSubject<User | null>(null);
+  $user=this.currentUserSource.asObservable()
+  //  isLoggedIn$ = this.$user.pipe(
+  //   map(user => !!user)
+  // );
+
+
+ constructor() {
+  console.log("auth start")
+    this.getCurrentUser().subscribe({
+      // error:console.log(error)
+    });
+    // console.log("THE USER",this.$user)
+  }
+
+
+  getCurrentUser():Observable<User | null>{
+  // console.log("get current user start")
+
+    const token = localStorage.getItem('accessToken');
+    // console.log("token from getCurrent",token)
+    if(!token)
+    {
+      this.currentUserSource.next(null)
+      return of(null)
+    }
+
+
+    return this.httpClient.get<User>(`${this.apiUrl}/me`).pipe(
+      tap(user=>{
+        console.log("get current user",user)
+        this.currentUserSource.next(user)}
+      ),
+    catchError((err) => {
+      console.log("ERRRRRORRRR",err)
+      // localStorage.removeItem('accessToken')
+      this.currentUserSource.next(null);
+      return of(null);
+    })
+    )
   }
 
   register(userRegister: UserRegister) {
@@ -28,14 +68,24 @@ export class AuthService {
       const token = result.token;
       if (token) {
         localStorage.setItem('accessToken', token);
+        this.getCurrentUser().subscribe();
       }
     }))
   }
 
   logout() {
-    localStorage.removeItem('accessToken');
-    this.revokeToken().subscribe()
-    this.router.navigateByUrl('/');
+    this.revokeToken().subscribe({
+    next: () => {
+      localStorage.removeItem('accessToken');
+      this.currentUserSource.next(null);
+      this.router.navigateByUrl('/');
+    },
+    error: () => {
+      localStorage.removeItem('accessToken');
+      this.currentUserSource.next(null);
+      this.router.navigateByUrl('/');
+    }
+  });
   }
   verifyEmail(userId: string, code: string) {
     return this.httpClient.get(`${this.apiUrl}/verify-email`, {
