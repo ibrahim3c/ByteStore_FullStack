@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartService } from '../../../core/services/cart.service';
-import { Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { ShoppingCart } from '../../../core/models/cart/shoppingCart';
 import { User } from '../../../core/models/auth/User';
 import { AuthService } from '../../../core/services/auth.service';
@@ -33,7 +33,6 @@ export class NavBar implements OnInit {
   ngOnInit(){
     this.cart$=this.cartService.cart$;
     this.user$=this.authService.$user
-    this.user$.subscribe(val=> console.log("user from nav",val))
   }
 
   logout(): void {

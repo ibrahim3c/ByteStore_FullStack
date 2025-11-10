@@ -25,19 +25,14 @@ export class AuthService {
 
 
  constructor() {
-  console.log("auth start")
     this.getCurrentUser().subscribe({
-      // error:console.log(error)
     });
-    // console.log("THE USER",this.$user)
   }
 
 
   getCurrentUser():Observable<User | null>{
-  // console.log("get current user start")
 
     const token = localStorage.getItem('accessToken');
-    // console.log("token from getCurrent",token)
     if(!token)
     {
       this.currentUserSource.next(null)
@@ -47,11 +42,9 @@ export class AuthService {
 
     return this.httpClient.get<User>(`${this.apiUrl}/me`).pipe(
       tap(user=>{
-        console.log("get current user",user)
         this.currentUserSource.next(user)}
       ),
     catchError((err) => {
-      console.log("ERRRRRORRRR",err)
       // localStorage.removeItem('accessToken')
       this.currentUserSource.next(null);
       return of(null);

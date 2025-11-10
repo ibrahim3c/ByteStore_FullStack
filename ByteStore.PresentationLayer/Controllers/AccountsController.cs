@@ -22,8 +22,8 @@ namespace ByteStore.Presentation.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
         {
-            var user = await serviceManager.UserService.GetCurrentUserAsync(User);
-            return Ok(user);
+            var result = await serviceManager.UserService.GetCurrentUserAsync(User);
+            return result.IsSuccess? Ok(result.Value) : BadRequest(result.Error);
         }
 
         [HttpPost("register")]

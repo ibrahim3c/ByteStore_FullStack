@@ -1,0 +1,55 @@
+.profile-container {
+  color: var(--text-primary-color);
+}
+
+.profile-card {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-general);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: none;
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--text-secondary-color);
+}
+
+.form-control {
+  border-radius: var(--border-radius-general);
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius-general);
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  color: #fff;
+  border-radius: var(--border-radius-general);
+}
+
+.btn-outline-primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline-danger {
+  border-color: var(--warn-color);
+  color: var(--warn-color);
+}
+
+.address-card {
+  background-color: var(--background-color);
+  border: 1px solid #eee;
+  border-radius: var(--border-radius-general);
+  transition: all 0.2s ease-in-out;
+}
+
+.address-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

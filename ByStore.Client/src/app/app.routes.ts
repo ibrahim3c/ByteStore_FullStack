@@ -14,11 +14,13 @@ import { ForgotPassword } from './features/auth/forgot-password/forgot-password'
 import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { loginGuard } from './core/guards/login-guard';
 import { authGuard } from './core/guards/auth-guard';
+import { Profile } from './features/auth/profile/profile';
 
 export const routes: Routes = [
   {path:'home',component:Home},
   {path:'products',component:ProductList},
   {path:'cart',component:Cart,canActivate:[authGuard]},
+  {path:'profile',component:Profile,canActivate:[authGuard]},
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},
@@ -28,6 +30,7 @@ export const routes: Routes = [
   { path: 'verify-email', component: VerifyEmail},
   { path: 'forgot-password', component: ForgotPassword,canActivate:[loginGuard]},
   { path: 'reset-password', component: ResetPassword,canActivate:[loginGuard]},
+
   {path:'not-found',component:NotFound},
   {path:'server-error',component:ServerError},
   {path:'',redirectTo:'/home',pathMatch:'full'}, // later we will change it to home

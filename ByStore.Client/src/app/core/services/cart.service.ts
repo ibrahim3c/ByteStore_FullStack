@@ -15,7 +15,9 @@ export class CartService {
   private cartSource = new BehaviorSubject<ShoppingCart | null>(null);
   cart$ = this.cartSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.getCart().subscribe();
+  }
 
   private getOrCreateCartId(): string {
     let cartId = localStorage.getItem('cart_id');

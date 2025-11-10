@@ -35,7 +35,7 @@ namespace ByteStore.Presentation.Controllers
         }
 
 
-        [HttpGet("user/{customerId}")]
+        [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetCustomerByUserId(string userId)
         {
             var result = await serviceManager.CustomerService.GetCustomerProfileByUserIdAsync(userId);

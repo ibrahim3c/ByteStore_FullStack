@@ -255,3 +255,4 @@ This roadmap aligns with the backend delivery plan.
   home page need to customize the return of featured product and category card and so on
   organize routes and use lazy loading too
   revise error handling and validations
+  refresh token does not work
