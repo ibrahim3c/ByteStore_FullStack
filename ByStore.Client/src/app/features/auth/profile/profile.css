@@ -53,3 +53,18 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--text-secondary-color);
+}
+
+.form-control, .form-select {
+  border-radius: var(--border-radius-general);
+  border: 1px solid #ddd;
+}
