@@ -1,0 +1,43 @@
+<div class="checkout-container">
+
+  <!-- Stepper Header -->
+  <div class="stepper-header">
+    <div
+      class="step"
+      *ngFor="let step of steps; let i = index"
+      [class.active]="i === currentStep"
+      [class.completed]="i < currentStep">
+
+      <div class="circle">{{ i + 1 }}</div>
+      <div class="label">{{ step.label }}</div>
+    </div>
+  </div>
+
+  <div class="step-content mt-4">
+
+    <!-- Step 1: Select Address -->
+    <div *ngIf="currentStep === 0">
+      <app-address-selector
+       [addresses]="addresses"
+        (next)="goNext()"
+        (back)="goBack()">
+      </app-address-selector>
+    </div>
+
+    <!-- Step 2: Payment -->
+    <!-- <div *ngIf="currentStep === 1">
+      <app-payment-method
+        (next)="goNext()"
+        (back)="goBack()">
+      </app-payment-method>
+    </div>
+ -->
+    <!-- Step 3: Confirm Order -->
+    <!-- <div *ngIf="currentStep === 2">
+      <app-order-summary
+        (back)="goBack()">
+      </app-order-summary>
+    </div> -->
+
+  </div>
+</div>

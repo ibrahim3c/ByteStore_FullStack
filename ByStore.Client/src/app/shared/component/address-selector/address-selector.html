@@ -1,0 +1,98 @@
+<div class="container">
+
+  <!-- Manage Button -->
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-outline-primary" (click)="goManageAddresses()">
+      <i class="fa-solid fa-pen me-2"></i>
+      Manage Addresses
+    </button>
+  </div>
+
+  <!-- SHIPPING -->
+  <h5 class="fw-bold mb-3">Shipping Address <span class="text-danger">*</span></h5>
+
+  <div *ngIf="shippingAddresses.length; else noShipping">
+    <div class="row g-3">
+      <div class="col-md-6" *ngFor="let addr of shippingAddresses">
+        <div class="address-card p-3 rounded shadow-sm"
+             [class.selected]="shippingAddressId === addr.id"
+             (click)="selectShipping(addr.id)">
+
+          <div class="d-flex justify-content-between">
+            <h6 class="fw-bold mb-1">
+              {{ addr.addressType }}
+              <span *ngIf="addr.isPrimary" class="badge bg-primary ms-2">Primary</span>
+            </h6>
+            <input type="radio" name="shippingAddress"
+                   [checked]="shippingAddressId === addr.id" />
+          </div>
+
+          <p class="mb-1 text-secondary">{{ addr.street }}</p>
+          <p class="mb-1 text-secondary">{{ addr.city }}, {{ addr.state }} {{ addr.postalCode }}</p>
+          <p class="mb-2 text-secondary">{{ addr.country }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noShipping>
+    <p class="text-danger">
+      No shipping address available. Please <a href="#" (click)="goManageAddresses()">manage addresses</a> first.
+    </p>
+  </ng-template>
+
+  <div *ngIf="shippingError" class="text-danger mt-1 ms-1">
+    Please select a shipping address.
+  </div>
+
+  <hr class="my-4">
+
+  <!-- BILLING -->
+  <h5 class="fw-bold mb-3">Billing Address <span class="text-danger">*</span></h5>
+
+  <div *ngIf="billingAddresses.length; else noBilling">
+    <div class="row g-3">
+      <div class="col-md-6" *ngFor="let addr of billingAddresses">
+        <div class="address-card p-3 rounded shadow-sm"
+             [class.selected]="billingAddressId === addr.id"
+             (click)="selectBilling(addr.id)">
+
+          <div class="d-flex justify-content-between">
+            <h6 class="fw-bold mb-1">
+              {{ addr.addressType }}
+              <span *ngIf="addr.isPrimary" class="badge bg-primary ms-2">Primary</span>
+            </h6>
+            <input type="radio" name="billingAddress"
+                   [checked]="billingAddressId === addr.id" />
+          </div>
+
+          <p class="mb-1 text-secondary">{{ addr.street }}</p>
+          <p class="mb-1 text-secondary">{{ addr.city }}, {{ addr.state }} {{ addr.postalCode }}</p>
+          <p class="mb-2 text-secondary">{{ addr.country }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noBilling>
+    <p class="text-danger">
+      No billing address available. Please <a href="#" (click)="goManageAddresses()">manage addresses</a> first.
+    </p>
+  </ng-template>
+
+  <div *ngIf="billingError" class="text-danger mt-1 ms-1">
+    Please select a billing address.
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="d-flex justify-content-between mt-4">
+    <button class="btn btn-outline-secondary" (click)="goBack()">
+      Back
+    </button>
+
+    <button class="btn btn-primary" (click)="goNext()">
+      Next
+    </button>
+  </div>
+
+</div>

@@ -484,6 +484,7 @@ For unit tests i am using xunit, fluent assertion , moq
         Skip & Take (Pagination)
 
 // TODO:
+    don't forget to change work with cartId in frontend and backend in order we deal with customerId
     don't forget to return all authorize attributes
     edit category with imageUrl
     test all things

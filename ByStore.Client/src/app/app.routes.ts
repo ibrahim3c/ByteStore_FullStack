@@ -15,12 +15,18 @@ import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { loginGuard } from './core/guards/login-guard';
 import { authGuard } from './core/guards/auth-guard';
 import { Profile } from './features/auth/profile/profile';
+import { Checkout } from './features/checkout/checkout';
+import { CheckoutStepper } from './features/checkout-stepper/checkout-stepper';
 
 export const routes: Routes = [
   {path:'home',component:Home},
   {path:'products',component:ProductList},
   {path:'cart',component:Cart,canActivate:[authGuard]},
   {path:'profile',component:Profile,canActivate:[authGuard]},
+  // {path:'checkout',component:Checkout
+  //   // ,canActivate:[authGuard]
+  // },
+  {path:'stepper',component:CheckoutStepper},
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},

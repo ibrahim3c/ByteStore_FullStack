@@ -4,7 +4,6 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { NgbDropdown, NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, switchMap } from 'rxjs';
 import { Customer } from '../../../core/models/customer/customer';
-import { CustomTransformer } from 'typescript';
 import { CustomerService } from '../../../core/services/customer.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../core/models/auth/User';
@@ -30,7 +29,6 @@ export class Profile implements OnInit {
     this.user$?.subscribe((user) => {
       if (user) {
         this.customerService.getCustomerByUserId(user.userId).subscribe((customer) => {
-          console.log('the customer ', customer);
           this.customer = customer;
 
           this.customerService.getCustomerAddresses(customer.id).subscribe((adds) => {
@@ -73,11 +71,6 @@ export class Profile implements OnInit {
   }
 
   saveAddress(modal: any) {
-    console.log('saveAddress starts');
-    console.log('modal', modal);
-    console.log('customerId', this.customer?.id);
-    console.log('isEditing', this.isEditing);
-
     if (!this.customer?.id) return; // safety check
     if (this.isEditing) {
       // edit
