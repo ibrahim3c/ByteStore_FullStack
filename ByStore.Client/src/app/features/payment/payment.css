@@ -1,0 +1,59 @@
+.payment-container {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-general);
+  padding: var(--spacing-large);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: var(--font-family);
+}
+
+.payment-container h4 {
+  font-size: 20px;
+  color: var(--text-primary-color);
+}
+
+.payment-method .card {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius-general);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-method .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.payment-method .card i {
+  color: var(--primary-color);
+}
+
+button.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+button.btn-primary:hover {
+  background-color: #0b3d91;
+  border-color: #0b3d91;
+}
+
+button.btn-outline-secondary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 500;
+}
+
+button.btn-outline-secondary:hover {
+  background-color: var(--primary-color);
+  color: var(--surface-color);
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}

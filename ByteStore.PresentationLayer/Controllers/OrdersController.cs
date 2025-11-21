@@ -64,7 +64,7 @@ namespace ByteStore.Presentation.Controllers
 
         // POST: api/orders
         [HttpPost]
-        [Authorize(Roles = Roles.AdminRole)]
+        //[Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderDto dto)
         {
             var result = await serviceManager.OrderService.PlaceOrderAsync(dto);
