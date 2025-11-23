@@ -29,7 +29,7 @@ namespace ByteStore.Persistance.Repositories
             var cartJson = JsonSerializer.Serialize(cart);
             return await _db.StringSetAsync(GetCartKey(cart.Id), cartJson, TimeSpan.FromDays(30));
         }
-        private string GetCartKey(string customerId) => $"cart:{customerId}";
+        private string GetCartKey(string cartId) => $"cart:{cartId}";
 
     }
 }

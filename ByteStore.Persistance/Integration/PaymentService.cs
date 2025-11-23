@@ -22,14 +22,13 @@ namespace ByteStore.Persistance.Services
             this.unitOfWork = unitOfWork;
             StripeConfiguration.ApiKey = this.stripeSettings.SecretKey; // ✅ هنا يتسجل مره وحده
         }
-        public async Task<Result2<PaymentIntentDto>> CreateOrUpdatePaymentIntentAsync(string customerId)
+        public async Task<Result2<PaymentIntentDto>> CreateOrUpdatePaymentIntentAsync(string cartId)
         {
-            var cart = await shoppingCartRepository.GetCartAsync(customerId);
+            var cart = await shoppingCartRepository.GetCartAsync(cartId);
             if (cart == null) return Result2<PaymentIntentDto>.Failure(CartErrors.NotFound);
 
 
             var shippingPrice = StripeConsts.ShippingPrice;
-           // 🛑 متحسبش الأسعار من cart.Price (دي ممكن تكون متلعب فيها)
             decimal subtotal = 0;
             foreach (var item in cart.CartItems)
             {
@@ -42,6 +41,20 @@ namespace ByteStore.Persistance.Services
 
 
             var service = new PaymentIntentService();
+
+            if (!string.IsNullOrEmpty(cart.PaymentIntentId))
+            {
+                var existingIntent = await service.GetAsync(cart.PaymentIntentId);
+
+                if (existingIntent.Status == "succeeded")
+                {
+                    // Payment completed before → must create new one
+                    cart.PaymentIntentId = null;
+                    cart.ClientSecret = null;
+                }
+            }
+
+
             PaymentIntent intent;
             if (string.IsNullOrEmpty(cart.PaymentIntentId))
             {

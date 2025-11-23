@@ -1,4 +1,5 @@
-﻿using ByteStore.Domain.Abstractions.Constants;
+﻿using ByteStore.Application.DTOs.Payment;
+using ByteStore.Domain.Abstractions.Constants;
 using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +14,17 @@ namespace ByteStore.Presentation.Controllers
         {
         }
 
-        [HttpPost("{customerId}")]
-        public async Task<IActionResult> CreateOrUpdatePaymentIntent(string customerId)
+        [HttpPost("payment-intent")]
+        public async Task<IActionResult> CreateOrUpdatePaymentIntent(PaymentIntentRequestDto dto)
         {
-            var result = await serviceManager.PaymentService.CreateOrUpdatePaymentIntentAsync(customerId);
+            var result = await serviceManager.PaymentService.CreateOrUpdatePaymentIntentAsync(dto.CartId);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error); // ترجع errors لو حصل fail
 
             return Ok(result.Value); // ترجع PaymentIntentDto لو نجح
         }
+
+
     }
 }

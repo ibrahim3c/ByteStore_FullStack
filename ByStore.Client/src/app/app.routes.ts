@@ -15,7 +15,6 @@ import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { loginGuard } from './core/guards/login-guard';
 import { authGuard } from './core/guards/auth-guard';
 import { Profile } from './features/auth/profile/profile';
-import { Checkout } from './features/checkout/checkout';
 import { CheckoutStepper } from './features/checkout-stepper/checkout-stepper';
 
 export const routes: Routes = [

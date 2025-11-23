@@ -1,36 +1,46 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
-import { catchError, Observable, throwError } from "rxjs";
-import { environment } from "../../../environments/environment";
-import { Order } from "../models/order/order";
-import { PlaceOrder } from "../models/order/placeOrder";
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { Order } from '../models/order/order';
+import { PlaceOrder } from '../models/order/placeOrder';
+import { PaymentIntent } from '../models/order/paymentIntent';
 
 @Injectable({
-  providedIn:'any'
+  providedIn: 'any',
 })
-export class OrderService{
-  private httpClient=inject(HttpClient)
-  private readonly apiUrl=`${environment.baseUrl}/orders`;
-  getCustomerOrders(){
+export class OrderService {
+  private httpClient = inject(HttpClient);
+  private readonly apiUrl = `${environment.baseUrl}/orders`;
+  getCustomerOrders() {
     return this.httpClient.get<Order[]>(`${this.apiUrl}`).pipe(catchError(this.handleError));
   }
 
-  placeCustomerOrder(placeOrder:PlaceOrder){
-      return this.httpClient.post(`${this.apiUrl}`,placeOrder).pipe(catchError(this.handleError));
+  placeCustomerOrder(placeOrder: PlaceOrder) {
+    return this.httpClient.post(`${this.apiUrl}`, placeOrder).pipe(catchError(this.handleError));
   }
-    // Error handling
-    private handleError(error: any): Observable<never> {
-      let errorMessage = 'An unknown error occurred!';
+  createOrUpdatePaymentIntent(cartId: string): Observable<PaymentIntent> {
+    return this.httpClient
+      .post<PaymentIntent>(
+        `${environment.baseUrl}/payments/payment-intent`,
+        { cartId } // JSON body
+      )
+      .pipe(catchError(this.handleError));
+  }
 
-      if (error.error instanceof ErrorEvent) {
-        // Client-side error
-        errorMessage = `Error: ${error.error.message}`;
-      } else {
-        // Server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
+  // Error handling
+  private handleError(error: any): Observable<never> {
+    let errorMessage = 'An unknown error occurred!';
 
-      console.error(errorMessage);
-      return throwError(() => new Error(errorMessage));
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
+  }
 }

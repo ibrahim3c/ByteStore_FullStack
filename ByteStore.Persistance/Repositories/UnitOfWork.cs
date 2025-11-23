@@ -15,6 +15,7 @@ namespace ByteStore.Persistance.Repositories
             ProductRepository = new ProductRepository(appDbContext);
             CategoryTreeRepository = new CategoryTreeRepository(appDbContext);;
             CustomerRepository = new CustomerRepository(appDbContext);
+            OrderRepository = new OrderRepository(appDbContext);
         }
         public IProductRepository ProductRepository { get; }
         public ICategoryTreeRepository CategoryTreeRepository { get; }

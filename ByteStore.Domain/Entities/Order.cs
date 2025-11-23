@@ -21,6 +21,6 @@ namespace ByteStore.Domain.Entities
         public Customer Customer { get; set; }
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }=new List<OrderItem>();
     }
 }

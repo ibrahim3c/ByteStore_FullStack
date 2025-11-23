@@ -8,6 +8,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../../core/models/auth/User';
 import { Payment } from '../payment/payment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stepper',
@@ -16,6 +17,7 @@ import { Payment } from '../payment/payment';
   styleUrl: './checkout-stepper.css',
 })
 export class CheckoutStepper {
+
   currentStep = 0;
   addresses: Address[] = [];
   shippingAddressId!: number;
@@ -24,6 +26,7 @@ export class CheckoutStepper {
   private customerService = inject(CustomerService);
   private userService = inject(AuthService);
   user$?: Observable<User | null>;
+  router=inject(Router)
 
   ngOnInit(): void {
     this.user$ = this.userService.$user;
@@ -60,4 +63,7 @@ export class CheckoutStepper {
       this.currentStep--;
     }
   }
+  orderComplete() {
+    this.router.navigateByUrl('/')
+}
 }

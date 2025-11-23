@@ -5,7 +5,6 @@ using ByteStore.Domain.Repositories;
 using BytStore.Application.DTOs.Order;
 using BytStore.Application.DTOs.Product;
 using BytStore.Application.IServices;
-using Microsoft.EntityFrameworkCore;
 
 namespace BytStore.Application.Services
 {
@@ -214,19 +213,19 @@ namespace BytStore.Application.Services
         }
         public async Task<Result2> PlaceOrderAsync(PlaceOrderDto dto)
         {
-            var cart = await shoppingCartRepository.GetCartAsync(dto.CustomerId);
+            var cart = await shoppingCartRepository.GetCartAsync(dto.CartId);
             if (cart is null)
                 return Result2.Failure(CartErrors.NotFound);
 
             if (!Guid.TryParse(dto.CustomerId, out var customerId))
                 return Result2.Failure(OrderErrors.InvalidCustomerId);
 
-            var billingAddress = await unitOfWork.GetRepository<Address>().AnyAsync(a=>a.CustomerId==customerId && a.AddressType==AddressType.Billing);
-            if (billingAddress)
+            var billingAddress = await unitOfWork.GetRepository<Address>().AnyAsync(a=> a.Id==dto.BillingAddressId && a.CustomerId==customerId && a.AddressType==AddressType.Billing);
+            if (!billingAddress)
                 return Result2.Failure(OrderErrors.BillingAddressNotFound);
 
-            var shippingAddress = await unitOfWork.GetRepository<Address>().AnyAsync(a => a.CustomerId == customerId && a.AddressType == AddressType.Shipping);
-            if (shippingAddress)
+            var shippingAddress = await unitOfWork.GetRepository<Address>().AnyAsync(a => a.Id == dto.ShippingAddressId && a.CustomerId == customerId && a.AddressType == AddressType.Shipping);
+            if (!shippingAddress)
                 return Result2.Failure(OrderErrors.ShippingAddressNotFound);
 
 
@@ -248,16 +247,27 @@ namespace BytStore.Application.Services
                 If no order exists → Just creates the new order using the PaymentIntentId.
              */
 
-            var existingOrder = await unitOfWork.OrderRepository.FindAsync(
-                m => m.PaymentIntentId == cart.PaymentIntentId);
+            Order existingOrder = null;
+
+            //if (cart.PaymentIntentId is not null)
+            if (!string.IsNullOrWhiteSpace(cart.PaymentIntentId))
+
+            {
+                existingOrder = await unitOfWork.OrderRepository.FindAsync(
+                    m => m.PaymentIntentId == cart.PaymentIntentId);
+            }
+
             string paymentIntentId;
+
             if (existingOrder is not null)
             {
                 // delete old order
                 unitOfWork.OrderRepository.Delete(existingOrder);
+
                 var result = await paymentService.CreateOrUpdatePaymentIntentAsync(cart.Id);
                 if (!result.IsSuccess)
                     return Result2.Failure(result.Error);
+
                 paymentIntentId = result.Value.PaymentIntentId;
             }
             else
@@ -265,6 +275,7 @@ namespace BytStore.Application.Services
                 // reuse basket payment intent
                 paymentIntentId = cart.PaymentIntentId;
             }
+
             // now create the order
             var order = new Order
             {
@@ -307,10 +318,11 @@ namespace BytStore.Application.Services
             await unitOfWork.SaveChangesAsync();
 
             // Clear shopping cart
-            await shoppingCartRepository.ClearCartAsync(dto.CustomerId);
+            await shoppingCartRepository.ClearCartAsync(dto.CartId);
 
             return Result2.Success();
         }
+       
         public async Task<Result2> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
         {
             // check if newStatus is valid in OrderStatus enum
