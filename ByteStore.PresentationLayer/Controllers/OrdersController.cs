@@ -50,6 +50,15 @@ namespace ByteStore.Presentation.Controllers
 
             return Ok(result.Value);
         }
+        [HttpGet("my-orders/{customerId:guid}")]
+        public async Task<IActionResult> GetCustomerOrdersSummary(Guid customerId)
+        {
+            var result = await serviceManager.OrderService.GetCustomerOrdersSummaryAsync(customerId);
+            if (!result.IsSuccess)
+                return BadRequest(result.Error);
+
+            return Ok(result.Value);
+        }
 
         // GET: api/orders/{orderId}
         [HttpGet("{orderId:guid}")]

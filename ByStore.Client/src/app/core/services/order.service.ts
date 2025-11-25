@@ -5,6 +5,9 @@ import { environment } from '../../../environments/environment';
 import { Order } from '../models/order/order';
 import { PlaceOrder } from '../models/order/placeOrder';
 import { PaymentIntent } from '../models/order/paymentIntent';
+import { OrderSummary } from '../models/order/OrderSummary';
+import { OrderDetails } from '../../order-details/order-details';
+import { GetOrderDetails } from '../models/order/orderDetails';
 
 @Injectable({
   providedIn: 'any',
@@ -26,6 +29,17 @@ export class OrderService {
         { cartId } // JSON body
       )
       .pipe(catchError(this.handleError));
+  }
+  getAllCustomerOrders(customerId: string) {
+    return this.httpClient
+      .get<OrderSummary[]>(`${this.apiUrl}/my-orders/${customerId}`)
+      .pipe(catchError(this.handleError));
+  }
+  getOrderById(orderId:string){
+        return this.httpClient
+      .get<GetOrderDetails>(`${this.apiUrl}/${orderId}`)
+      .pipe(catchError(this.handleError));
+
   }
 
   // Error handling

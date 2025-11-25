@@ -1,0 +1,86 @@
+<div *ngIf="loading" class="loading text-center mt-5">
+  <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+  <p>Loading order details...</p>
+</div>
+
+<div *ngIf="!loading && order" class="container mt-4">
+
+  <h2 class="mb-4"><i class="fa-solid fa-box"></i> Order Details</h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Order Info</h5>
+      <p><strong>Order ID:</strong> {{ order.id }}</p>
+      <p><strong>Date:</strong> {{ order.orderDate | date:'fullDate' }}</p>
+      <p><strong>Status:</strong>
+        <span class="status-badge" [ngClass]="formatStatus(order.status)">
+          {{ order.status }}
+        </span>
+      </p>
+      <p><strong>Total Amount:</strong> {{ order.totalAmount | currency }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Customer Info</h5>
+          <p><strong>Name:</strong> {{ order.customerName }}</p>
+          <p><strong>Customer ID:</strong> {{ order.customerId }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Shipping Address</h5>
+          <p>{{ order.shippingAddress.street }}</p>
+          <p>{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }}</p>
+          <p>{{ order.shippingAddress.postalCode }}</p>
+          <p>{{ order.shippingAddress.country }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Billing Address</h5>
+          <p>{{ order.billingAddress.street }}</p>
+          <p>{{ order.billingAddress.city }}, {{ order.billingAddress.state }}</p>
+          <p>{{ order.billingAddress.postalCode }}</p>
+          <p>{{ order.billingAddress.country }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Order Items</h5>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.orderItems">
+            <td>{{ item.productName }}</td>
+            <td>{{ item.unitPrice | currency }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ getTotalItemPrice(item) | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

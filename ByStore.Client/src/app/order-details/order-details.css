@@ -1,0 +1,38 @@
+.container {
+  font-family: var(--font-family);
+}
+
+.card {
+  background-color: var(--surface-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: var(--border-radius-general);
+  padding: 16px;
+}
+
+.card-title {
+  font-weight: 500;
+  color: var(--text-primary-color);
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: var(--border-radius-general);
+  color: #fff;
+  font-size: 12px;
+}
+
+.status-badge.Pending {
+  background-color: #757575;
+}
+
+.status-badge.PaymentReceived {
+  background-color: var(--primary-color);
+}
+
+.status-badge.PaymentFailed {
+  background-color: var(--warn-color);
+}
+
+.loading {
+  color: var(--text-secondary-color);
+}

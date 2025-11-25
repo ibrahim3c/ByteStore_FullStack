@@ -3,7 +3,7 @@ import { GetOrderItem } from "./orderItem";
 
 export interface Order {
   id: string;                  // Guid
-  orderDate: string;           // DateTime → string (ISO) في Angular
+  orderDate: string;        
   totalAmount: number;
   status: OrderStatus;         // Enum
   customerId: string;          // Guid

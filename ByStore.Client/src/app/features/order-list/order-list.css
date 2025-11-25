@@ -1,0 +1,69 @@
+.orders-container {
+  background-color: var(--background-color);
+}
+
+.section-title {
+  font-size: var(--font-size-h2);
+  font-weight: 700;
+  color: var(--text-primary-color);
+}
+
+.order-card {
+  background: var(--surface-color);
+  padding: 24px;
+  border-radius: var(--border-radius-general);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.order-date,
+.order-items,
+.order-amount {
+  color: var(--text-secondary-color);
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.details-btn {
+  border-radius: var(--border-radius-general);
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 8px 16px;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--text-secondary-color);
+  padding: 24px;
+  font-size: 16px;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-general);
+  font-size: 12px;
+  margin-top: 8px;
+  color: white;
+}
+
+.status-badge.Pending {
+  background-color: #757575;
+}
+
+.status-badge.PaymentReceived {
+  background-color: #0D47A1;
+}
+
+.status-badge.PaymentFailed {
+  background-color: #D32F2F;
+}

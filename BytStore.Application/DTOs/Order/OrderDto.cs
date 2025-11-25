@@ -1,5 +1,4 @@
 ﻿using ByteStore.Domain.Abstractions.Enums;
-using BytStore.Application.DTOs.Customer;
 
 namespace BytStore.Application.DTOs.Order
 {

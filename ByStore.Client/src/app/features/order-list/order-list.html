@@ -1,0 +1,48 @@
+<div class="orders-container container mt-4">
+
+  <h2 class="section-title mb-4">
+    <i class="fa-solid fa-box"></i> My Orders
+  </h2>
+
+  <div *ngIf="orders.length === 0" class="empty-message">
+    <i class="fa-solid fa-circle-info"></i>
+    No orders found.
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-3" *ngFor="let order of orders">
+      <div class="order-card">
+
+        <div class="order-info">
+          <h3 class="order-title">Order #{{ order.id }}</h3>
+
+          <p class="order-date">
+            Placed on: {{ order.orderDate | date:'mediumDate' }}
+          </p>
+
+          <p class="order-items">
+            <i class="fa-solid fa-cart-shopping"></i>
+            {{ order.itemsCount }} items
+          </p>
+
+          <p class="order-amount">
+            <strong>Total:</strong> {{ order.totalAmount | currency }}
+          </p>
+
+          <span class="status-badge" [ngClass]="formatStatus(order.status)">
+            {{ order.status }}
+          </span>
+        </div>
+
+        <div>
+          <button class="details-btn btn btn-outline-primary"
+                  (click)="goToDetails(order.id)">
+            <i class="fa-solid fa-circle-info"></i> View Details
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

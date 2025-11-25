@@ -1,4 +1,5 @@
-﻿using ByteStore.Domain.Abstractions.Enums;
+﻿using ByteStore.Application.DTOs.Order;
+using ByteStore.Domain.Abstractions.Enums;
 using ByteStore.Domain.Abstractions.Result;
 using BytStore.Application.DTOs.Order;
 using BytStore.Application.DTOs.Product;
@@ -9,6 +10,8 @@ namespace BytStore.Application.IServices
     {
         Task<Result2> PlaceOrderAsync(PlaceOrderDto dto);
         Task<Result2<IEnumerable<OrderDto>>> GetCustomerOrdersAsync(Guid customerId);
+        Task<Result2<IEnumerable<OrderSummaryDto>>> GetCustomerOrdersSummaryAsync(Guid customerId);
+
         Task<Result2<OrderDto>> GetOrderByIdAsync(Guid orderId);
 
         // Admin

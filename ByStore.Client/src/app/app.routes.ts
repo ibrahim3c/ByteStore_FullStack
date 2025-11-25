@@ -16,11 +16,15 @@ import { loginGuard } from './core/guards/login-guard';
 import { authGuard } from './core/guards/auth-guard';
 import { Profile } from './features/auth/profile/profile';
 import { CheckoutStepper } from './features/checkout-stepper/checkout-stepper';
+import { OrderList } from './features/order-list/order-list';
+import { OrderDetails } from './order-details/order-details';
 
 export const routes: Routes = [
   {path:'home',component:Home},
   {path:'products',component:ProductList},
   {path:'cart',component:Cart,canActivate:[authGuard]},
+  {path:'orders',component:OrderList,canActivate:[authGuard]},
+  {path:'order-details/:id',component:OrderDetails,canActivate:[authGuard]},
   {path:'profile',component:Profile,canActivate:[authGuard]},
   // {path:'checkout',component:Checkout
   //   // ,canActivate:[authGuard]

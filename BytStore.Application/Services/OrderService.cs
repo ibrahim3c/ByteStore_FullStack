@@ -1,4 +1,5 @@
-﻿using ByteStore.Domain.Abstractions.Enums;
+﻿using ByteStore.Application.DTOs.Order;
+using ByteStore.Domain.Abstractions.Enums;
 using ByteStore.Domain.Abstractions.Result;
 using ByteStore.Domain.Entities;
 using ByteStore.Domain.Repositories;
@@ -164,6 +165,19 @@ namespace BytStore.Application.Services
 
 
             return Result2<IEnumerable<OrderDto>>.Success(orders);
+        }
+        public async Task<Result2<IEnumerable<OrderSummaryDto>>>GetCustomerOrdersSummaryAsync(Guid customerId)
+        {
+            var orders = (await unitOfWork.OrderRepository.FindAllAsync(o => o.CustomerId == customerId, ["OrderItems"])).Select(o => new OrderSummaryDto
+            {
+                Id = o.Id,
+                OrderDate = o.OrderDate,
+                TotalAmount = o.TotalAmount,
+                Status = o.Status,
+                ItemsCount = o.OrderItems.Count()
+            });
+
+            return Result2<IEnumerable<OrderSummaryDto>>.Success(orders);
         }
         public async Task<Result2<OrderDto>> GetOrderByIdAsync(Guid orderId)
         {
