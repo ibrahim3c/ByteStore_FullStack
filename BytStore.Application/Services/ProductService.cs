@@ -172,6 +172,16 @@ namespace BytStore.Application.Services
         }
         public async Task<Result2<int>> AddProductAsync(ProductCreateDto productCreateDto)
         {
+             if (await unitOfWork.GetRepository<Category>().GetByIdAsync(productCreateDto.CategoryId) is null)
+            {
+                return Result2<int>.Failure(CategoryErrors.CategoryNotFound);
+            }
+
+            if (await unitOfWork.GetRepository<Brand>().GetByIdAsync(productCreateDto.BrandId) is null)
+            {
+                return Result2<int>.Failure(BrandErrors.BrandNotFound);
+            }
+
             var product = new Product
             {
                 Name = productCreateDto.Name,

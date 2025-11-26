@@ -21,7 +21,7 @@
         class="col-md-6 col-lg-3 mb-4"
         *ngFor="let category of categories"
       >
-        <a [routerLink]="[category.link]" class="category-card">
+        <a [routerLink]="[category.imageUrl]" class="category-card">
           <img [src]="category.imageUrl" [alt]="category.name" class="category-card-img" />
           <div class="category-card-overlay">
             <h3 class="category-card-title">{{ category.name }}</h3>
@@ -38,7 +38,7 @@
         class="col-md-6 col-lg-4 mb-4"
         *ngFor="let product of featuredProducts"
       >
-        <div class="card product-card h-100">
+        <!-- <div class="card product-card h-100">
           <div class="product-image-container">
             <img
               [src]="product.imageUrl"
@@ -62,8 +62,10 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
+          <app-product-card [product]="product"></app-product-card>
       </div>
+
     </div>
     <div class="text-center mt-4">
       <button [routerLink]="['/products']" class="btn btn-primary btn-lg">

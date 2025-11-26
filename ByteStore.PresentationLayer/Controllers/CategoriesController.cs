@@ -1,4 +1,5 @@
-﻿using ByteStore.Domain.Abstractions.Constants;
+﻿using ByteStore.Application.DTOs.Category;
+using ByteStore.Domain.Abstractions.Constants;
 using ByteStore.PresentationLayer.Controllers;
 using BytStore.Application.DTOs.Category;
 using BytStore.Application.IServices;
@@ -41,7 +42,7 @@ namespace ByteStore.Presentation.Controllers
         // POST: api/categories
         [HttpPost]
         [Authorize(Roles = Roles.AdminRole)]
-        public async Task<IActionResult> CreateCategory([FromBody] CategoryDto categoryDto)
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryForCreateDto categoryDto)
         {
             var result = await serviceManager.CategoryService.CreateCategoryAsync(categoryDto);
 
@@ -55,7 +56,7 @@ namespace ByteStore.Presentation.Controllers
         // PUT: api/categories/5
         [HttpPut("{id}")]
         [Authorize(Roles = Roles.AdminRole)]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryForCreateDto categoryDto)
         {
             var result = await serviceManager.CategoryService.UpdateCategoryAsync(id, categoryDto);
             return result.IsSuccess ? NoContent() : BadRequest(result.Error);

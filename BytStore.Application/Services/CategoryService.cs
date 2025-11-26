@@ -11,10 +11,12 @@ namespace BytStore.Application.Services
     public class CategoryService:ICategoryService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IImageService imageService;
 
-        public CategoryService(IUnitOfWork unitOfWork)
+        public CategoryService(IUnitOfWork unitOfWork, IImageService imageService)
         {
             this.unitOfWork = unitOfWork;
+            this.imageService = imageService;
         }
 
 
@@ -25,7 +27,9 @@ namespace BytStore.Application.Services
             {
                 Id = c.Id,
                 Name = c.Name,
-                Description = c.Description
+                Description = c.Description,
+                ImageUrl=c.ImageUrl
+                
             });
             return Result2<IEnumerable<CategoryDto>>.Success(categoriesDto);
         }
@@ -38,16 +42,23 @@ namespace BytStore.Application.Services
             {
                 Id = category.Id,
                 Name = category.Name,
-                Description = category.Description
+                Description = category.Description,
+                ImageUrl = category.ImageUrl
+
             };
             return Result2<CategoryDto>.Success(categoryDto);
         }
-        public async Task<Result2> CreateCategoryAsync(CategoryDto categoryDto)
+        public async Task<Result2> CreateCategoryAsync(CategoryForCreateDto categoryDto)
         {
+            var result = await imageService.UploadAsync(categoryDto.Image, "categories");
+            if (!result.IsSuccess)
+                return Result2.Failure(result.Error);
+
             var category = new Category
             {
                 Name = categoryDto.Name,
-                Description = categoryDto.Description
+                Description = categoryDto.Description,
+                ImageUrl=result.Value.Url
             };
             await unitOfWork.GetRepository<Category>().AddAsync(category);
             await unitOfWork.SaveChangesAsync();
@@ -55,13 +66,19 @@ namespace BytStore.Application.Services
         }
 
 
-        public async Task<Result2> UpdateCategoryAsync(int categoryId, CategoryDto categoryDto)
+        public async Task<Result2> UpdateCategoryAsync(int categoryId, CategoryForCreateDto categoryDto)
         {
             var category = await unitOfWork.GetRepository<Category>().GetByIdAsync(categoryId);
             if (category == null)
                 return Result2.Failure(CategoryErrors.CategoryNotFound);
+            var result=await imageService.UpdateImageAsync(category.ImageUrl, categoryDto.Image);
+            if (!result.IsSuccess)
+                return Result2.Failure(result.Error);
+
             category.Name = categoryDto.Name;
             category.Description = categoryDto.Description;
+            category.ImageUrl = result.Value;
+
             unitOfWork.GetRepository<Category>().Update(category);
             await unitOfWork.SaveChangesAsync();
             return Result2.Success();
@@ -76,7 +93,11 @@ namespace BytStore.Application.Services
             if (category == null)
                 return Result2.Failure(CategoryErrors.CategoryNotFound);
             unitOfWork.GetRepository<Category>().Delete(category);
+           var result= await imageService.DeleteAsync(category.ImageUrl);
+            if (!result.IsSuccess)
+                return Result2.Failure(result.Error);
             await unitOfWork.SaveChangesAsync();
+
             return Result2.Success();
         }
 

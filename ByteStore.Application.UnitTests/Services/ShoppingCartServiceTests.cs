@@ -28,7 +28,7 @@ namespace ByteStore.Application.UnitTests.Services
             var customerId = "test-customer";
             var shoppingCart = new ShoppingCart()
             {
-                CustomerId=customerId,
+                Id =customerId,
                 CartItems = new List<CartItem>
                 {
                     new CartItem { ProductId = 1, Name = "Laptop", Quantity = 1 }
@@ -42,7 +42,7 @@ namespace ByteStore.Application.UnitTests.Services
             // Assert
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().NotBeNull();
-            result.Value.CustomerId.Should().Be(customerId);
+            result.Value.Id.Should().Be(customerId);
             result.Value.CartItems.Should().HaveCount(1);
             result.Value.CartItems.First().Name.Should().Be("Laptop");
         }
@@ -71,7 +71,7 @@ namespace ByteStore.Application.UnitTests.Services
             // Arrange
             var cartDto = new ShoppingCartDto
             {
-                CustomerId = "test-customer",
+                Id = "test-customer",
                 CartItems = new List<CartItemDto> { new CartItemDto { ProductId = 1, Quantity = 2 } }
             };
             _mockShoppingCartRepository.Setup(repo => repo.SaveCartAsync(It.IsAny<ShoppingCart>())).ReturnsAsync(true);
@@ -82,7 +82,7 @@ namespace ByteStore.Application.UnitTests.Services
             // Assert
             result.IsSuccess.Should().BeTrue();
             _mockShoppingCartRepository.Verify(repo => repo.SaveCartAsync(
-                It.Is<ShoppingCart>(c => c.CustomerId == cartDto.CustomerId && c.CartItems.First().Quantity == 2)), Times.Once);
+                It.Is<ShoppingCart>(c => c.Id == cartDto.Id && c.CartItems.First().Quantity == 2)), Times.Once);
         }
 
         [Fact]

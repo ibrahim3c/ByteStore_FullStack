@@ -1,78 +1,42 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { CategoryService } from '../../../core/services/category.service';
+import { Category } from '../../../core/models/Category';
+import { ProductCard } from '../product-card/product-card';
+import { Product } from '../../../core/models/Product';
+import { ProductService } from '../../../core/services/product.service';
+import { HttpResponse } from '@angular/common/http';
 
 
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
-
-interface Category {
-  name: string;
-  imageUrl: string;
-  link: string;
-}
 
 @Component({
   selector: 'app-home',
   imports: [CommonModule, // For *ngFor
-    RouterLink],
+    RouterLink,
+  ProductCard],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 
-export class Home {
-// Mock data for "Featured Products" section
-  featuredProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Sleek Ultrabook Pro',
-      price: 1399.99,
-      imageUrl: '[Image of a sleek silver ultrabook laptop]',
-      category: 'Laptops'
-    },
-    {
-      id: 2,
-      name: 'Galaxy-S Ultra Smartphone',
-      price: 999.99,
-      imageUrl: '[Image of a premium modern smartphone]',
-      category: 'Smartphones'
-    },
-    {
-      id: 3,
-      name: 'Studio ANC Headphones',
-      price: 349.99,
-      imageUrl: '[Image of wireless noise-cancelling headphones]',
-      category: 'Audio'
-    }
-  ];
+export class Home implements OnInit {
+  ngOnInit(): void {
+    this.categoryService.getAllCategories().subscribe(cats=>{
+      this.categories=cats;
+    })
 
-  // Mock data for "Shop by Category" section
-  categories: Category[] = [
-    {
-      name: 'Laptops',
-      imageUrl: '[Image of a collection of modern laptops]',
-      link: '/products?category=laptops'
-    },
-    {
-      name: 'Smartphones',
-      imageUrl: '[Image of the latest smartphones on display]',
-      link: '/products?category=smartphones'
-    },
-    {
-      name: 'Audio',
-      imageUrl: '[Image of stylish wireless headphones and earbuds]',
-      link: '/products?category=audio'
-    },
-    {
-      name: 'Gaming',
-      imageUrl: '[Image of high-tech gaming accessories keyboard mouse]',
-      link: '/products?category=gaming'
-    }
-  ];
+    this.productService.getProducts({
+      PageSize:3,
+      PageNumber:1
+    }).subscribe((response: HttpResponse<any>) => {
+      this.featuredProducts = response.body ?? [];
+    })
+  }
+
+  private readonly categoryService=inject(CategoryService)
+  private readonly productService=inject(ProductService)
+  featuredProducts: Product[]=[];
+  categories: Category[]=[]
+
+
 }

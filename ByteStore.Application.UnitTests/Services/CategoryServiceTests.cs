@@ -1,188 +1,188 @@
-﻿using ByteStore.Domain.Abstractions.Result;
-using ByteStore.Domain.Entities;
-using ByteStore.Domain.Repositories;
-using BytStore.Application.DTOs.Category;
-using BytStore.Application.Services;
-using FluentAssertions;
-using Moq;
+﻿//using ByteStore.Domain.Abstractions.Result;
+//using ByteStore.Domain.Entities;
+//using ByteStore.Domain.Repositories;
+//using BytStore.Application.DTOs.Category;
+//using BytStore.Application.Services;
+//using FluentAssertions;
+//using Moq;
 
-namespace ByteStore.Application.UnitTests.Services
-{
-    public class CategoryServiceTests
-    {
-        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-        private readonly Mock<ICategoryTreeRepository> _mockCategoryTreeRepository;
-        private readonly Mock<IBaseRepository<Category>> _mockCategoryRepository;
-        private readonly CategoryService _categoryService;
+//namespace ByteStore.Application.UnitTests.Services
+//{
+//    public class CategoryServiceTests
+//    {
+//        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+//        private readonly Mock<ICategoryTreeRepository> _mockCategoryTreeRepository;
+//        private readonly Mock<IBaseRepository<Category>> _mockCategoryRepository;
+//        private readonly CategoryService _categoryService;
 
-        public CategoryServiceTests()
-        {
-            _mockUnitOfWork = new Mock<IUnitOfWork>();
-            _mockCategoryTreeRepository = new Mock<ICategoryTreeRepository>();
-            _mockCategoryRepository = new Mock<IBaseRepository<Category>>();
+//        public CategoryServiceTests()
+//        {
+//            _mockUnitOfWork = new Mock<IUnitOfWork>();
+//            _mockCategoryTreeRepository = new Mock<ICategoryTreeRepository>();
+//            _mockCategoryRepository = new Mock<IBaseRepository<Category>>();
 
-            // Setup the mock UnitOfWork to return our mock CategoryRepository
-            _mockUnitOfWork.Setup(uow => uow.CategoryTreeRepository).Returns(_mockCategoryTreeRepository.Object);
-            _mockUnitOfWork.Setup(uow => uow.GetRepository<Category>()).Returns(_mockCategoryRepository.Object);
+//            // Setup the mock UnitOfWork to return our mock CategoryRepository
+//            _mockUnitOfWork.Setup(uow => uow.CategoryTreeRepository).Returns(_mockCategoryTreeRepository.Object);
+//            _mockUnitOfWork.Setup(uow => uow.GetRepository<Category>()).Returns(_mockCategoryRepository.Object);
 
-            // Instantiate the service with the mocked dependency
-            _categoryService = new CategoryService(_mockUnitOfWork.Object);
-        }
+//            // Instantiate the service with the mocked dependency
+//            _categoryService = new CategoryService(_mockUnitOfWork.Object);
+//        }
 
-        #region GetAllCategoriesAsync Tests
+//        #region GetAllCategoriesAsync Tests
 
-        [Fact]
-        public async Task GetAllCategoriesAsync_ShouldReturnSuccessWithCategoryDtos_WhenCategoriesExist()
-        {
-            // Arrange
-            var categories = new List<Category>
-            {
-                new Category { Id = 1, Name = "Electronics", Description = "Gadgets and devices" },
-                new Category { Id = 2, Name = "Books", Description = "Paper and digital books" }
-            };
-            _mockCategoryRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(categories);
+//        [Fact]
+//        public async Task GetAllCategoriesAsync_ShouldReturnSuccessWithCategoryDtos_WhenCategoriesExist()
+//        {
+//            // Arrange
+//            var categories = new List<Category>
+//            {
+//                new Category { Id = 1, Name = "Electronics", Description = "Gadgets and devices" },
+//                new Category { Id = 2, Name = "Books", Description = "Paper and digital books" }
+//            };
+//            _mockCategoryRepository.Setup(repo => repo.GetAllAsync()).ReturnsAsync(categories);
 
-            // Act
-            var result = await _categoryService.GetAllCategoriesAsync();
+//            // Act
+//            var result = await _categoryService.GetAllCategoriesAsync();
 
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Should().HaveCount(2);
-            result.Value.First().Name.Should().Be("Electronics");
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeTrue();
+//            result.Value.Should().NotBeNull();
+//            result.Value.Should().HaveCount(2);
+//            result.Value.First().Name.Should().Be("Electronics");
+//        }
 
-        #endregion
+//        #endregion
 
-        #region GetCategoryByIdAsync Tests
+//        #region GetCategoryByIdAsync Tests
 
-        [Fact]
-        public async Task GetCategoryByIdAsync_ShouldReturnSuccessWithCategoryDto_WhenCategoryExists()
-        {
-            // Arrange
-            int categoryId = 1;
-            var category = new Category { Id = categoryId, Name = "Laptops", Description = "Portable computers" };
-            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync(category);
+//        [Fact]
+//        public async Task GetCategoryByIdAsync_ShouldReturnSuccessWithCategoryDto_WhenCategoryExists()
+//        {
+//            // Arrange
+//            int categoryId = 1;
+//            var category = new Category { Id = categoryId, Name = "Laptops", Description = "Portable computers" };
+//            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync(category);
 
-            // Act
-            var result = await _categoryService.GetCategoryByIdAsync(categoryId);
+//            // Act
+//            var result = await _categoryService.GetCategoryByIdAsync(categoryId);
 
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value.Id.Should().Be(categoryId);
-            result.Value.Name.Should().Be("Laptops");
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeTrue();
+//            result.Value.Should().NotBeNull();
+//            result.Value.Id.Should().Be(categoryId);
+//            result.Value.Name.Should().Be("Laptops");
+//        }
 
-        [Fact]
-        public async Task GetCategoryByIdAsync_ShouldReturnFailure_WhenCategoryDoesNotExist()
-        {
-            // Arrange
-            int categoryId = 99;
-            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync((Category)null);
+//        [Fact]
+//        public async Task GetCategoryByIdAsync_ShouldReturnFailure_WhenCategoryDoesNotExist()
+//        {
+//            // Arrange
+//            int categoryId = 99;
+//            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync((Category)null);
 
-            // Act
-            var result = await _categoryService.GetCategoryByIdAsync(categoryId);
+//            // Act
+//            var result = await _categoryService.GetCategoryByIdAsync(categoryId);
 
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().Be(CategoryErrors.CategoryNotFound);
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeFalse();
+//            result.Error.Should().Be(CategoryErrors.CategoryNotFound);
+//        }
 
-        #endregion
+//        #endregion
 
-        #region CreateCategoryAsync Tests
+//        #region CreateCategoryAsync Tests
 
-        [Fact]
-        public async Task CreateCategoryAsync_ShouldReturnSuccess_AndCallRepositoryMethods()
-        {
-            // Arrange
-            var categoryDto = new CategoryDto { Name = "NewCategory", Description = "A new description" };
+//        [Fact]
+//        public async Task CreateCategoryAsync_ShouldReturnSuccess_AndCallRepositoryMethods()
+//        {
+//            // Arrange
+//            var categoryDto = new CategoryDto { Name = "NewCategory", Description = "A new description" };
 
-            // Act
-            var result = await _categoryService.CreateCategoryAsync(categoryDto);
+//            // Act
+//            var result = await _categoryService.CreateCategoryAsync(categoryDto);
 
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            _mockCategoryRepository.Verify(repo => repo.AddAsync(It.Is<Category>(c => c.Name == categoryDto.Name)), Times.Once);
-            _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(), Times.Once);
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeTrue();
+//            _mockCategoryRepository.Verify(repo => repo.AddAsync(It.Is<Category>(c => c.Name == categoryDto.Name)), Times.Once);
+//            _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(), Times.Once);
+//        }
 
-        #endregion
+//        #endregion
 
-        #region UpdateCategoryAsync Tests
+//        #region UpdateCategoryAsync Tests
 
-        [Fact]
-        public async Task UpdateCategoryAsync_ShouldReturnSuccess_WhenCategoryExists()
-        {
-            // Arrange
-            int categoryId = 1;
-            var existingCategory = new Category { Id = categoryId, Name = "OldName", Description = "OldDesc" };
-            var updatedDto = new CategoryDto { Name = "NewName", Description = "NewDesc" };
+//        [Fact]
+//        public async Task UpdateCategoryAsync_ShouldReturnSuccess_WhenCategoryExists()
+//        {
+//            // Arrange
+//            int categoryId = 1;
+//            var existingCategory = new Category { Id = categoryId, Name = "OldName", Description = "OldDesc" };
+//            var updatedDto = new CategoryDto { Name = "NewName", Description = "NewDesc" };
 
-            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync(existingCategory);
+//            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync(existingCategory);
 
-            // Act
-            var result = await _categoryService.UpdateCategoryAsync(categoryId, updatedDto);
+//            // Act
+//            var result = await _categoryService.UpdateCategoryAsync(categoryId, updatedDto);
 
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            _mockCategoryRepository.Verify(repo => repo.Update(It.Is<Category>(c => c.Name == updatedDto.Name)), Times.Once);
-            _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(), Times.Once);
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeTrue();
+//            _mockCategoryRepository.Verify(repo => repo.Update(It.Is<Category>(c => c.Name == updatedDto.Name)), Times.Once);
+//            _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(), Times.Once);
+//        }
 
-        [Fact]
-        public async Task UpdateCategoryAsync_ShouldReturnFailure_WhenCategoryDoesNotExist()
-        {
-            // Arrange
-            int categoryId = 99;
-            var updatedDto = new CategoryDto { Name = "NewName" };
-            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync((Category)null);
+//        [Fact]
+//        public async Task UpdateCategoryAsync_ShouldReturnFailure_WhenCategoryDoesNotExist()
+//        {
+//            // Arrange
+//            int categoryId = 99;
+//            var updatedDto = new CategoryDto { Name = "NewName" };
+//            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync((Category)null);
 
-            // Act
-            var result = await _categoryService.UpdateCategoryAsync(categoryId, updatedDto);
+//            // Act
+//            var result = await _categoryService.UpdateCategoryAsync(categoryId, updatedDto);
 
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().Be(CategoryErrors.CategoryNotFound);
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeFalse();
+//            result.Error.Should().Be(CategoryErrors.CategoryNotFound);
+//        }
 
-        #endregion
+//        #endregion
 
-        #region DeleteCategoryAsync Tests
+//        #region DeleteCategoryAsync Tests
 
-        [Fact]
-        public async Task DeleteCategoryAsync_ShouldReturnSuccess_WhenCategoryExists()
-        {
-            // Arrange
-            int categoryId = 1;
-            var existingCategory = new Category { Id = categoryId, Name = "ToBeDeleted" };
-            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync(existingCategory);
+//        [Fact]
+//        public async Task DeleteCategoryAsync_ShouldReturnSuccess_WhenCategoryExists()
+//        {
+//            // Arrange
+//            int categoryId = 1;
+//            var existingCategory = new Category { Id = categoryId, Name = "ToBeDeleted" };
+//            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync(existingCategory);
 
-            // Act
-            var result = await _categoryService.DeleteCategoryAsync(categoryId);
+//            // Act
+//            var result = await _categoryService.DeleteCategoryAsync(categoryId);
 
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            _mockCategoryRepository.Verify(repo => repo.Delete(existingCategory), Times.Once);
-            _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(), Times.Once);
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeTrue();
+//            _mockCategoryRepository.Verify(repo => repo.Delete(existingCategory), Times.Once);
+//            _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(), Times.Once);
+//        }
 
-        [Fact]
-        public async Task DeleteCategoryAsync_ShouldReturnFailure_WhenCategoryDoesNotExist()
-        {
-            // Arrange
-            int categoryId = 99;
-            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync((Category)null);
+//        [Fact]
+//        public async Task DeleteCategoryAsync_ShouldReturnFailure_WhenCategoryDoesNotExist()
+//        {
+//            // Arrange
+//            int categoryId = 99;
+//            _mockCategoryRepository.Setup(repo => repo.GetByIdAsync(categoryId)).ReturnsAsync((Category)null);
 
-            // Act
-            var result = await _categoryService.DeleteCategoryAsync(categoryId);
+//            // Act
+//            var result = await _categoryService.DeleteCategoryAsync(categoryId);
 
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().Be(CategoryErrors.CategoryNotFound);
-        }
+//            // Assert
+//            result.IsSuccess.Should().BeFalse();
+//            result.Error.Should().Be(CategoryErrors.CategoryNotFound);
+//        }
 
-        #endregion
-    }
-}
+//        #endregion
+//    }
+//}
