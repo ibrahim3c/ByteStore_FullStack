@@ -26,10 +26,8 @@ export const routes: Routes = [
   {path:'orders',component:OrderList,canActivate:[authGuard]},
   {path:'order-details/:id',component:OrderDetails,canActivate:[authGuard]},
   {path:'profile',component:Profile,canActivate:[authGuard]},
-  // {path:'checkout',component:Checkout
-  //   // ,canActivate:[authGuard]
-  // },
-  {path:'stepper',component:CheckoutStepper},
+
+{path:'stepper',component:CheckoutStepper},
   {path:'product/:id',component:ProductDetails},
   {path:'about',component:About},
   {path:'contact',component:Contact},

@@ -24,10 +24,20 @@ export class AuthService {
   // );
 
 
- constructor() {
+  initUser(): Promise<any> {
+  return new Promise(resolve => {
     this.getCurrentUser().subscribe({
+      next: () => resolve(true),
+      error: () => resolve(true)
     });
-  }
+  });
+}
+
+
+//  constructor() {
+//     this.getCurrentUser().subscribe({
+//     });
+//   }
 
 
   getCurrentUser():Observable<User | null>{
@@ -87,7 +97,14 @@ export class AuthService {
     });
   }
   refreshToken() {
-    return this.httpClient.post(`${this.apiUrl}/refresh-token`,{},{withCredentials:true})
+    return this.httpClient.post(`${this.apiUrl}/refresh-token`,{},{withCredentials:true}).pipe(
+    tap((result: any) => {
+      const token = result.token;
+      if (token) {
+        localStorage.setItem('accessToken', token);
+        this.getCurrentUser().subscribe();
+      }
+    }))
   }
 
   revokeToken() {

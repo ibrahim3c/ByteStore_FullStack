@@ -51,11 +51,13 @@ export class CartService {
     return this.http.post<ShoppingCart>(this.baseUrl, cart).pipe(
       tap((updatedCart) => { this.setCart(updatedCart)}),
       catchError(err => {
+        console.log("errorrrr")
         console.error('Error saving cart:', err);
         return throwError(() => err);
       })
     );
   }
+
   deleteCart(): Observable<void> {
     const cartId = this.getOrCreateCartId();
     return this.http.delete<void>(`${this.baseUrl}/${cartId}`).pipe(
@@ -77,7 +79,7 @@ export class CartService {
       productId: product.id,
       name: product.name,
       price: product.price,
-      imageUrl: product.thumbnailUrl,
+      imageUrl: product.thumbnailUrl??"",
       quantity,
       brandName: product.brandName,
       categoryName: product.categoryName

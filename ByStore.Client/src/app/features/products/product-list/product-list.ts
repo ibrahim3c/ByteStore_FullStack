@@ -12,11 +12,12 @@ import { FormsModule } from '@angular/forms';
 import { ProductParameters } from '../../../core/models/ProductParameters';
 import { Brand } from '../../../core/models/Brand';
 import { Pager } from '../../../shared/component/pager/pager';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
   imports: [ProductCard, CommonModule, FormsModule, Pager],
-  templateUrl:'./product-list.html',
+  templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
 export class ProductList implements OnInit {
@@ -26,28 +27,38 @@ export class ProductList implements OnInit {
   brands: Brand[] = [];
   categories: Category[] = [];
 
-  metaData?:MetaData;
+  metaData?: MetaData;
 
-  productParams:ProductParameters=new ProductParameters();
+  productParams: ProductParameters = new ProductParameters();
 
   constructor(
     private productService: ProductService,
     private brandService: BrandService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.loadProducts();
+    // this.loadProducts();
     this.loadCategories();
     this.loadBrands();
+
+    this.route.queryParams.subscribe((params) => {
+      const categoryId = params['categoryId'] ? +params['categoryId'] : null;
+      if (categoryId) {
+        this.productParams.CategoryId = categoryId;
+        this.loadProducts();
+      } else {
+        this.loadProducts();
+      }
+    });
   }
 
-
-  loadProducts():void{
-      this.productService.getProducts(this.productParams).subscribe((response: HttpResponse<any>) => {
+  loadProducts(): void {
+    this.productService.getProducts(this.productParams).subscribe((response: HttpResponse<any>) => {
       this.products = response.body ?? [];
       this.metaData = JSON.parse(response.headers.get('X-Pagination')!);
-      console.log(  this.metaData);
+      console.log(this.metaData);
       this.filteredProducts = this.products;
 
       this.productParams.PageSize = this.metaData?.PageSize ?? 10;
@@ -56,22 +67,22 @@ export class ProductList implements OnInit {
   }
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe((categories) => {
-    this.categories = categories;
+      this.categories = categories;
     });
   }
   loadBrands(): void {
     this.brandService.getAllBrands().subscribe((brands) => {
-    this.brands = brands;
+      this.brands = brands;
     });
   }
 
   applyFilters() {
-    this.productParams.PageNumber=1;
+    this.productParams.PageNumber = 1;
     this.loadProducts();
-    }
+  }
 
   resetFilters() {
-    this.productParams= new ProductParameters();
+    this.productParams = new ProductParameters();
     this.loadProducts();
   }
   onSortChanged() {
@@ -79,17 +90,15 @@ export class ProductList implements OnInit {
     this.loadProducts();
   }
 
-searchProduct() {
-  this.productParams.PageNumber = 1;
-  this.loadProducts();
-}
+  searchProduct() {
+    this.productParams.PageNumber = 1;
+    this.loadProducts();
+  }
 
-onPageChange(PageNumber: number) {
-  console.log(PageNumber)
-  this.productParams.PageNumber = PageNumber;
-  this.loadProducts();
-  // console.log(this.metaData)
+  onPageChange(PageNumber: number) {
+    console.log(PageNumber);
+    this.productParams.PageNumber = PageNumber;
+    this.loadProducts();
+    // console.log(this.metaData)
+  }
 }
-
-}
-

@@ -1,12 +1,9 @@
 <div class="hero-container container-fluid p-0">
-  <div class="hero-image">
-    </div>
+  <div class="hero-image"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content text-center">
     <h1 class="hero-title">Tech That Inspires</h1>
-    <p class="hero-subtitle">
-      Discover the latest in high-performance electronics at ByteStore.
-    </p>
+    <p class="hero-subtitle">Discover the latest in high-performance electronics at ByteStore.</p>
     <button [routerLink]="['/products']" class="btn btn-accent btn-lg">
       Shop New Arrivals <i class="fas fa-arrow-right ms-2"></i>
     </button>
@@ -17,11 +14,12 @@
   <section class="py-5 my-4">
     <h2 class="section-title text-center">Browse by Category</h2>
     <div class="row">
-      <div
-        class="col-md-6 col-lg-3 mb-4"
-        *ngFor="let category of categories"
-      >
-        <a [routerLink]="[category.imageUrl]" class="category-card">
+      <div class="col-md-6 col-lg-3 mb-4" *ngFor="let category of categories">
+        <a
+          [routerLink]="['/products']"
+          [queryParams]="{ categoryId: category.id }"
+          class="category-card"
+        >
           <img [src]="category.imageUrl" [alt]="category.name" class="category-card-img" />
           <div class="category-card-overlay">
             <h3 class="category-card-title">{{ category.name }}</h3>
@@ -34,10 +32,7 @@
   <section class="py-5">
     <h2 class="section-title text-center">Featured Products</h2>
     <div class="row">
-      <div
-        class="col-md-6 col-lg-4 mb-4"
-        *ngFor="let product of featuredProducts"
-      >
+      <div class="col-md-6 col-lg-4 mb-4" *ngFor="let product of featuredProducts">
         <!-- <div class="card product-card h-100">
           <div class="product-image-container">
             <img
@@ -63,14 +58,11 @@
             </div>
           </div>
         </div> -->
-          <app-product-card [product]="product"></app-product-card>
+        <app-product-card [product]="product"></app-product-card>
       </div>
-
     </div>
     <div class="text-center mt-4">
-      <button [routerLink]="['/products']" class="btn btn-primary btn-lg">
-        Shop All Products
-      </button>
+      <button [routerLink]="['/products']" class="btn btn-primary btn-lg">Shop All Products</button>
     </div>
   </section>
 </div>
@@ -79,9 +71,7 @@
   <div class="promo-content">
     <h3>The Future of Wearables</h3>
     <p>Explore our new collection of smartwatches and fitness trackers.</p>
-    <button [routerLink]="['/products']" class="btn btn-light">
-      Shop Now
-    </button>
+    <button [routerLink]="['/products']" class="btn btn-light">Shop Now</button>
   </div>
 </section>
 

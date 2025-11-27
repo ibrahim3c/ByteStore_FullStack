@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
   provideBrowserGlobalErrorListeners,
@@ -11,7 +12,11 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { authInterceptor } from './core/interceptors/auth-interceptor-interceptor';
+import { AuthService } from './core/services/auth.service';
 
+export function appInit(authService: AuthService) {
+  return () => authService.initUser();
+}
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -26,5 +31,11 @@ export const appConfig: ApplicationConfig = {
       timeOut: 3000,
       preventDuplicates: true,
     }),
+     {
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      deps: [AuthService],
+      multi: true
+    }
   ],
 };

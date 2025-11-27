@@ -3,7 +3,7 @@ export interface CartItem {
   name: string;
   price: number; // snapshot of the price when added
   quantity: number;
-  imageUrl?: string;
+  imageUrl: string;
   brandName?: string;     // optional
   categoryName?: string;  // optional
 }
