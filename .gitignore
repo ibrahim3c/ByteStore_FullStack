@@ -413,3 +413,4 @@ ByteStore.Api/Secret.json
 /ByStore.Client/.DS_Store
 /ByStore.Client/Thumbs.db
 
+.env

@@ -1,0 +1,23 @@
+services:
+  bytestore.api:
+    image: ${DOCKER_REGISTRY-}bytestoreapi
+    build:
+      context: .
+      dockerfile: ByteStore.Api/Dockerfile
+    ports:
+        - "5000:5000"
+        - "5001:5001"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - "6379:6379"
+  # bytestore.client:
+  #   image: bytestoreangular
+  #   build: ./ByteStore.Client
+  #   ports:
+  #     - "4200:4200"

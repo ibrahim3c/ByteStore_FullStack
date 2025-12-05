@@ -10,7 +10,7 @@ namespace ByteStore.Persistance.Seeders
     public class AdminSeeder
     {
         public static async Task SeedAsync(IServiceProvider serviceProvider)
-        {
+       {
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
             var adminOptions = serviceProvider.GetRequiredService<IOptionsMonitor<AdminAccount>>();

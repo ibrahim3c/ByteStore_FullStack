@@ -28,6 +28,7 @@
           appsettings.json
           Program.cs
           secret.json
+          Dockerfile
         /Persistence (Infrastructure)
           /Database (DbContext, Configurations)
           /Migrations
@@ -483,7 +484,4 @@ For unit tests i am using xunit, fluent assertion , moq
         Sort
         Skip & Take (Pagination)
 
-// TODO:
-    test all things
-    solve problem of fluent validation  
-        but other exceptions work well => not it does not work :()
+* to dockerize this app u need to create dockerfile in src/external/api folder 

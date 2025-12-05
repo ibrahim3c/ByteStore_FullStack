@@ -4,7 +4,6 @@ using ByteStore.Domain.Entities;
 using ByteStore.Persistance.Database;
 using ByteStore.Persistance.Seeders;
 using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
@@ -60,9 +59,9 @@ namespace ByteStore.Api
 
                 //await CategoryTreeSeeder.SeedAsync(services);
                 await CategorySeeder.SeedAsync(services);
-                //await BrandSeeder.SeedAsync(services);
-                //await RoleSeeder.SeedAsync(services);
-                //await AdminSeeder.SeedAsync(services);
+                await BrandSeeder.SeedAsync(services);
+                await RoleSeeder.SeedAsync(services);
+                await AdminSeeder.SeedAsync(services);
             }
 
             // it cause problem of more than dbContext was found

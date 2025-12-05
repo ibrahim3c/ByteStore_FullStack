@@ -12,7 +12,15 @@
         public async Task Invoke(HttpContext context)
         {
             // Set CORS headers for all responses
-            context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:4200"); // Specific origin
+
+            var allowedOrigins = new[] { "http://localhost:4200", "http://bytestore.client:4200" };
+            var requestOrigin = context.Request.Headers["Origin"].ToString();
+
+            if (allowedOrigins.Contains(requestOrigin))
+            {
+                context.Response.Headers["Access-Control-Allow-Origin"] = requestOrigin;
+            }
+            //context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:4200"); // Specific origin
             context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
             context.Response.Headers.Add("Access-Control-Allow-Credentials", "true"); // Required for credentials
