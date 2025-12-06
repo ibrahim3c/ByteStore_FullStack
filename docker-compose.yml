@@ -16,8 +16,9 @@ services:
     restart: always
     ports:
       - "6379:6379"
-  # bytestore.client:
-  #   image: bytestoreangular
-  #   build: ./ByteStore.Client
-  #   ports:
-  #     - "4200:4200"
+  bytestore.client:
+    image: bytestoreangular
+    # build: ./ByteStore.Client
+    build: ./ByStore.Client #typo in folder name
+    ports:
+      - "4200:80"

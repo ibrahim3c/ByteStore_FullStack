@@ -39,12 +39,10 @@
         /Presentation (apis)
             /Controllers (DbContext, Configurations)
             AssymblylReference.cs
+    /Client (Frontend - angular)
     /test
-
-  /deploy
     docker-compose.yml
-  /docs
-    ERD.png / API.postman_collection.json
+    .env
 ```
 
 ---
@@ -484,4 +482,4 @@ For unit tests i am using xunit, fluent assertion , moq
         Sort
         Skip & Take (Pagination)
 
-* to dockerize this app u need to create dockerfile in src/external/api folder 
+* we dockerized this app sucessfully :)

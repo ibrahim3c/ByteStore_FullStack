@@ -40,7 +40,7 @@ namespace ByteStore.Api
             }
 
             app.UseRateLimiter();
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection(); // for test app we will deactivate that
 
             // custom middlewares
             app.UseGlobalExceptionHandler();
